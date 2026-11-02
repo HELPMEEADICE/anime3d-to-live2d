@@ -1,0 +1,4 @@
+numpy>=2.2,<3
+scipy>=1.15,<2
+Pillow>=11,<14
+psutil>=6,<9

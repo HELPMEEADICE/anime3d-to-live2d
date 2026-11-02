@@ -1,0 +1,29 @@
+name: Asset-free geometry checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  geometry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Install numeric dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Python geometry checks (no character assets)
+        run: |
+          python -m unittest discover -s tests -p test_pipeline.py -k GeometryTests -v
+          python -m unittest discover -s tests -p test_visibility.py -k VisibilityGeometryTests -v
+      - name: Fetch unmodified pinned runtime dependency for workspace resolution
+        run: |
+          git clone https://github.com/AyagamiDev/ayagami vendor/ayagami
+          git -C vendor/ayagami checkout 0d1d7aa3efe57b1b363b72e672e353c52a9c15d6
+          test -z "$(git -C vendor/ayagami status --porcelain)"
+      - name: Rust toolchain
+        run: rustup update stable --no-self-update
+      - name: Rust geometry checks (no GPU or character assets)
+        run: cargo +stable test --manifest-path rust/Cargo.toml -p popy-geometry --locked

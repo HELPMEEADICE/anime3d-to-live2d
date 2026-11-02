@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "popy.rig/1",
+  "type": "object",
+  "required": ["schema", "name", "canvas", "camera", "parameters", "meshes", "textures", "keyform_data", "root_warp", "body_rotation", "head_rotation", "head_warp"],
+  "properties": {
+    "schema": {"const": "popy.rig/1"},
+    "canvas": {"type": "array", "minItems": 2, "maxItems": 2},
+    "parameters": {"type": "array", "items": {"type": "object", "required": ["id", "min", "max", "default"]}},
+    "meshes": {"type": "array", "items": {"type": "object", "required": ["id", "positions", "uvs", "indices", "texture", "axes", "cells", "source"], "properties": {
+      "axes": {"type": "array"},
+      "cells": {"type": "array", "items": {"required": ["coordinate", "offset", "order"]}},
+      "source": {"type": "object", "required": ["object", "vertices", "triangles", "barycentric"]}
+    }}},
+    "keyform_data": {"type": "string", "description": "Little endian f32. Cell offset counts floats, not bytes. Each cell has 2*vertexCount floats. With parent_absolute geometry encoding, keyforms are absolute normalized parent-space positions; legacy encoding uses canvas rest plus normalized delta. CMO adapter converts to editor rest-relative positions."},
+    "geometry_encoding": {"enum": ["parent_absolute"]},
+    "glues": {"type": "array", "description": "Native source-identity seam constraints, master weight zero / copy weight one."},
+    "visibility": {"type": "object", "description": "Native inverse foreground masks and semantic stable eye layering; no runtime depth buffer."},
+    "body_warps": {"type": "array"},
+    "parts": {"type": "array"},
+    "physics": {"type": "array", "description": "Empty until a physically validated binding is implemented."},
+    "diagnostics": {"type": "object"}
+  }
+}

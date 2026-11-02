@@ -1,0 +1,242 @@
+[
+  {
+    "stage": "audit",
+    "seconds": 7.591500200000155,
+    "peak_process_tree_rss_bytes": 845631488,
+    "exit_code": 0
+  },
+  {
+    "stage": "semantics",
+    "seconds": 0.4750887000009243,
+    "peak_process_tree_rss_bytes": 31612928,
+    "exit_code": 0
+  },
+  {
+    "stage": "sampling",
+    "seconds": 55.644094200000836,
+    "peak_process_tree_rss_bytes": 1362006016,
+    "exit_code": 0
+  },
+  {
+    "stage": "geometry_ir",
+    "seconds": 109.25401780000175,
+    "peak_process_tree_rss_bytes": 484839424,
+    "exit_code": 0
+  },
+  {
+    "stage": "occlusion",
+    "seconds": 19.842470399999,
+    "peak_process_tree_rss_bytes": 469155840,
+    "exit_code": 0
+  },
+  {
+    "stage": "export",
+    "seconds": 10.088767900000676,
+    "peak_process_tree_rss_bytes": 4469547008,
+    "exit_code": 0
+  },
+  {
+    "stage": "editor_geometry",
+    "seconds": 27.8538804000018,
+    "peak_process_tree_rss_bytes": 178462720,
+    "exit_code": 0
+  },
+  {
+    "stage": "editor_occlusion",
+    "seconds": 6.212895700002264,
+    "peak_process_tree_rss_bytes": 193794048,
+    "exit_code": 0
+  },
+  {
+    "stage": "editor_export",
+    "seconds": 52.3991926000017,
+    "peak_process_tree_rss_bytes": 7694610432,
+    "exit_code": 0
+  },
+  {
+    "stage": "editor_ayagami",
+    "seconds": 3.6582907999982126,
+    "peak_process_tree_rss_bytes": 234237952,
+    "exit_code": 0
+  },
+  {
+    "stage": "editor_comparison",
+    "seconds": 22.93204219999825,
+    "peak_process_tree_rss_bytes": 370982912,
+    "exit_code": 0
+  },
+  {
+    "stage": "ayagami",
+    "seconds": 2.9559764999976323,
+    "peak_process_tree_rss_bytes": 379654144,
+    "exit_code": 0
+  },
+  {
+    "stage": "comparison",
+    "seconds": 22.024843600000167,
+    "peak_process_tree_rss_bytes": 582049792,
+    "exit_code": 0
+  },
+  {
+    "stage": "rust_tests",
+    "seconds": 1.006144499999209,
+    "peak_process_tree_rss_bytes": 214458368,
+    "exit_code": 0
+  },
+  {
+    "stage": "regression",
+    "seconds": 0.3302838999989035,
+    "peak_process_tree_rss_bytes": 249057280,
+    "exit_code": 0
+  },
+  {
+    "stage": "geometry_ir",
+    "seconds": 127.82845210000232,
+    "peak_process_tree_rss_bytes": 496742400,
+    "exit_code": 0
+  },
+  {
+    "stage": "occlusion",
+    "seconds": 20.459163399998943,
+    "peak_process_tree_rss_bytes": 513732608,
+    "exit_code": 0
+  },
+  {
+    "stage": "export",
+    "seconds": 10.36644829999932,
+    "peak_process_tree_rss_bytes": 3885457408,
+    "exit_code": 0
+  },
+  {
+    "stage": "editor_geometry",
+    "seconds": 54.31493050000063,
+    "peak_process_tree_rss_bytes": 187330560,
+    "exit_code": 0
+  },
+  {
+    "stage": "editor_occlusion",
+    "seconds": 6.976686099998915,
+    "peak_process_tree_rss_bytes": 174948352,
+    "exit_code": 0
+  },
+  {
+    "stage": "editor_export",
+    "seconds": 52.08425029999853,
+    "peak_process_tree_rss_bytes": 7850307584,
+    "exit_code": 0
+  },
+  {
+    "stage": "editor_ayagami",
+    "seconds": 4.417853599999944,
+    "peak_process_tree_rss_bytes": 241401856,
+    "exit_code": 0
+  },
+  {
+    "stage": "editor_comparison",
+    "seconds": 21.962487799999508,
+    "peak_process_tree_rss_bytes": 375128064,
+    "exit_code": 0
+  },
+  {
+    "stage": "ayagami",
+    "seconds": 2.3363453000019945,
+    "peak_process_tree_rss_bytes": 418594816,
+    "exit_code": 0
+  },
+  {
+    "stage": "comparison",
+    "seconds": 22.178280500000255,
+    "peak_process_tree_rss_bytes": 597229568,
+    "exit_code": 0
+  },
+  {
+    "stage": "rust_tests",
+    "seconds": 0.45049809999909485,
+    "peak_process_tree_rss_bytes": 49881088,
+    "exit_code": 0
+  },
+  {
+    "stage": "regression",
+    "seconds": 0.46664719999898807,
+    "peak_process_tree_rss_bytes": 235450368,
+    "exit_code": 0
+  },
+  {
+    "stage": "delivery",
+    "seconds": 14.366296899999725,
+    "peak_process_tree_rss_bytes": 260911104,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_runtime",
+    "seconds": 11.046795800000837,
+    "peak_process_tree_rss_bytes": 510980096,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_eye_runtime",
+    "seconds": 6.335065499999473,
+    "peak_process_tree_rss_bytes": 417632256,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_report",
+    "seconds": 0.5467346000004909,
+    "peak_process_tree_rss_bytes": 50757632,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_runtime",
+    "seconds": 10.76714659999925,
+    "peak_process_tree_rss_bytes": 418566144,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_eye_runtime",
+    "seconds": 6.253875900001731,
+    "peak_process_tree_rss_bytes": 445620224,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_report",
+    "seconds": 0.6813589000012144,
+    "peak_process_tree_rss_bytes": 51892224,
+    "exit_code": 0
+  },
+  {
+    "stage": "ayagami",
+    "seconds": 2.4519732000007934,
+    "peak_process_tree_rss_bytes": 455614464,
+    "exit_code": 0
+  },
+  {
+    "stage": "comparison",
+    "seconds": 25.26029810000182,
+    "peak_process_tree_rss_bytes": 660422656,
+    "exit_code": 0
+  },
+  {
+    "stage": "rust_tests",
+    "seconds": 0.33236460000262014,
+    "peak_process_tree_rss_bytes": 47943680,
+    "exit_code": 0
+  },
+  {
+    "stage": "regression",
+    "seconds": 0.9947595999983605,
+    "peak_process_tree_rss_bytes": 317968384,
+    "exit_code": 0
+  },
+  {
+    "stage": "delivery",
+    "seconds": 12.452261800000997,
+    "peak_process_tree_rss_bytes": 290656256,
+    "exit_code": 0
+  },
+  {
+    "stage": "delivery",
+    "seconds": 24.80727300000217,
+    "peak_process_tree_rss_bytes": 290639872,
+    "exit_code": 0
+  }
+]

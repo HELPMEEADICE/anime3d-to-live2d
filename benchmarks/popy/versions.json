@@ -1,0 +1,30 @@
+{
+  "recorded_date": "2026-11-03",
+  "timezone": "Asia/Shanghai",
+  "python": "3.14.6",
+  "platform": "Windows",
+  "blender": "5.2.2 LTS",
+  "jdk": "26",
+  "dependencies": {
+    "numpy": "2.5.0",
+    "scipy": "1.18.1",
+    "Pillow": "12.2.0",
+    "psutil": "7.2.2"
+  },
+  "upstream": {
+    "psd2live": {
+      "repository": "https://github.com/tsunehimatoi/psd2live",
+      "commit": "bafabab1a360e208671d39adf5087c62f6cae1f2",
+      "patch": "popy/setup_exporter.py: drawable render-order groupIndex sentinel 0 -> -1"
+    },
+    "ayagami": {
+      "repository": "https://github.com/AyagamiDev/ayagami",
+      "commit": "0d1d7aa3efe57b1b363b72e672e353c52a9c15d6",
+      "modified": false
+    }
+  },
+  "target": "Cubism 5.0; MOC3 version byte 5",
+  "official_cubism_editor_verified": false,
+  "rustc": "1.98.1 (MSYS2 build)",
+  "cargo": "1.98.1 (MSYS2 build)"
+}

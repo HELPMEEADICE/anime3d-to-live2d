@@ -1,0 +1,14 @@
+{
+  "name": "POPY",
+  "canvas": [768, 1024],
+  "camera": {"type": "ORTHO", "center": [0, 0, 1.31], "ortho_scale": 0.68},
+  "head_x_keys": [-45, -30, -15, 0, 15, 30, 45],
+  "head_y_keys": [-30, -15, 0, 15, 30],
+  "patch_triangles": 48,
+  "render_samples": 64,
+  "body_range": 15,
+  "head_z_range": 30,
+  "max_grid_cells": 20000,
+  "couple_body_pitch": true,
+  "influence_epsilon": 0.000002
+}

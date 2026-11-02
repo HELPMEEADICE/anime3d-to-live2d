@@ -1,0 +1,268 @@
+{
+  "artmeshes": 817,
+  "ayagami_commit": "0d1d7aa3efe57b1b363b72e672e353c52a9c15d6",
+  "backend": "Vulkan",
+  "canvas": [
+    768,
+    1024
+  ],
+  "cases": [
+    {
+      "name": "front",
+      "pose_to_gpu_complete_ms": 7.8100000000000005,
+      "total_with_readback_and_files_ms": 42.2433
+    },
+    {
+      "name": "left",
+      "pose_to_gpu_complete_ms": 5.381600000000001,
+      "total_with_readback_and_files_ms": 22.1006
+    },
+    {
+      "name": "right",
+      "pose_to_gpu_complete_ms": 5.1881,
+      "total_with_readback_and_files_ms": 22.074900000000003
+    },
+    {
+      "name": "up",
+      "pose_to_gpu_complete_ms": 8.4682,
+      "total_with_readback_and_files_ms": 24.9651
+    },
+    {
+      "name": "down",
+      "pose_to_gpu_complete_ms": 4.9877,
+      "total_with_readback_and_files_ms": 21.1603
+    },
+    {
+      "name": "roll",
+      "pose_to_gpu_complete_ms": 5.2074,
+      "total_with_readback_and_files_ms": 21.9758
+    },
+    {
+      "name": "blink_left",
+      "pose_to_gpu_complete_ms": 5.3568,
+      "total_with_readback_and_files_ms": 22.204
+    },
+    {
+      "name": "blink_right",
+      "pose_to_gpu_complete_ms": 3.2742,
+      "total_with_readback_and_files_ms": 21.6374
+    },
+    {
+      "name": "blink",
+      "pose_to_gpu_complete_ms": 3.3375000000000004,
+      "total_with_readback_and_files_ms": 21.9804
+    },
+    {
+      "name": "mouth",
+      "pose_to_gpu_complete_ms": 3.3892,
+      "total_with_readback_and_files_ms": 21.616799999999998
+    },
+    {
+      "name": "turn_mouth",
+      "pose_to_gpu_complete_ms": 5.6361,
+      "total_with_readback_and_files_ms": 24.7425
+    },
+    {
+      "name": "turn_blink",
+      "pose_to_gpu_complete_ms": 6.2871999999999995,
+      "total_with_readback_and_files_ms": 38.642
+    },
+    {
+      "name": "head_body",
+      "pose_to_gpu_complete_ms": 7.2579,
+      "total_with_readback_and_files_ms": 26.5745
+    },
+    {
+      "name": "extreme",
+      "pose_to_gpu_complete_ms": 7.695600000000001,
+      "total_with_readback_and_files_ms": 29.936799999999998
+    },
+    {
+      "name": "heldout",
+      "pose_to_gpu_complete_ms": 7.212599999999999,
+      "total_with_readback_and_files_ms": 34.4275
+    },
+    {
+      "name": "brows",
+      "pose_to_gpu_complete_ms": 6.5559,
+      "total_with_readback_and_files_ms": 29.5046
+    },
+    {
+      "name": "body_y",
+      "pose_to_gpu_complete_ms": 8.9451,
+      "total_with_readback_and_files_ms": 33.408100000000005
+    },
+    {
+      "name": "body_z",
+      "pose_to_gpu_complete_ms": 10.0441,
+      "total_with_readback_and_files_ms": 29.1627
+    },
+    {
+      "name": "breath",
+      "pose_to_gpu_complete_ms": 6.6872,
+      "total_with_readback_and_files_ms": 24.610300000000002
+    },
+    {
+      "name": "heldout_negative",
+      "pose_to_gpu_complete_ms": 8.093100000000002,
+      "total_with_readback_and_files_ms": 27.5737
+    },
+    {
+      "name": "heldout_head_body",
+      "pose_to_gpu_complete_ms": 8.2445,
+      "total_with_readback_and_files_ms": 27.512700000000002
+    },
+    {
+      "name": "pitch_mouth",
+      "pose_to_gpu_complete_ms": 7.5217,
+      "total_with_readback_and_files_ms": 30.6597
+    },
+    {
+      "name": "gaze_follow",
+      "pose_to_gpu_complete_ms": 5.7256,
+      "total_with_readback_and_files_ms": 27.8693
+    },
+    {
+      "name": "mouth_form",
+      "pose_to_gpu_complete_ms": 12.0436,
+      "total_with_readback_and_files_ms": 45.3231
+    },
+    {
+      "name": "wink_smile",
+      "pose_to_gpu_complete_ms": 4.2833000000000006,
+      "total_with_readback_and_files_ms": 36.7044
+    },
+    {
+      "name": "tilt_breath",
+      "pose_to_gpu_complete_ms": 17.096,
+      "total_with_readback_and_files_ms": 46.5176
+    },
+    {
+      "name": "head_body_pitch",
+      "pose_to_gpu_complete_ms": 16.82,
+      "total_with_readback_and_files_ms": 32.7932
+    },
+    {
+      "name": "all_extreme",
+      "pose_to_gpu_complete_ms": 6.451499999999999,
+      "total_with_readback_and_files_ms": 31.548800000000004
+    }
+  ],
+  "gpu": "NVIDIA GeForce RTX 5080 Laptop GPU",
+  "parameters": [
+    {
+      "default": 0.0,
+      "id": "ParamAngleX",
+      "max": 45.0,
+      "min": -45.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamAngleY",
+      "max": 30.0,
+      "min": -30.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamAngleZ",
+      "max": 30.0,
+      "min": -30.0
+    },
+    {
+      "default": 1.0,
+      "id": "ParamEyeLOpen",
+      "max": 1.0,
+      "min": 0.0
+    },
+    {
+      "default": 1.0,
+      "id": "ParamEyeROpen",
+      "max": 1.0,
+      "min": 0.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamMouthOpenY",
+      "max": 1.0,
+      "min": 0.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamMouthForm",
+      "max": 1.0,
+      "min": 0.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamBrowLForm",
+      "max": 1.0,
+      "min": 0.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamBrowRForm",
+      "max": 1.0,
+      "min": 0.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamBrowLY",
+      "max": 1.0,
+      "min": 0.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamBrowRY",
+      "max": 1.0,
+      "min": 0.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamEyeLSmile",
+      "max": 1.0,
+      "min": 0.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamEyeRSmile",
+      "max": 1.0,
+      "min": 0.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamEyeBallX",
+      "max": 1.0,
+      "min": -1.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamEyeBallY",
+      "max": 1.0,
+      "min": -1.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamBodyAngleX",
+      "max": 15.0,
+      "min": -15.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamBodyAngleY",
+      "max": 15.0,
+      "min": -15.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamBodyAngleZ",
+      "max": 15.0,
+      "min": -15.0
+    },
+    {
+      "default": 0.0,
+      "id": "ParamBreath",
+      "max": 1.0,
+      "min": 0.0
+    }
+  ]
+}

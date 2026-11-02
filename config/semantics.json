@@ -1,0 +1,17 @@
+{
+  "armature": "Armature",
+  "objects": {"gaze": "M_Eye", "hair": "M_Hair"},
+  "bones": {"head": "Head", "body": "Spine2", "eye_left": "Eye_Left", "eye_right": "Eye_Right"},
+  "shape_parameters": {
+    "ParamEyeLOpen": {"object": "M_Face", "shape": "Bs_Eyelid_Close_L", "min": 0, "max": 1, "default": 1, "invert": true},
+    "ParamEyeROpen": {"object": "M_Face", "shape": "Bs_Eyelid_Close_R", "min": 0, "max": 1, "default": 1, "invert": true},
+    "ParamMouthOpenY": {"object": "M_Face", "shape": "Bs_Mouth_A", "min": 0, "max": 1, "default": 0},
+    "ParamMouthForm": {"object": "M_Face", "shape": "Bs_Mouth_Smile", "min": 0, "max": 1, "default": 0},
+    "ParamBrowLForm": {"object": "M_Brow", "shape": "Bs_Brow_Angry_L", "min": 0, "max": 1, "default": 0},
+    "ParamBrowRForm": {"object": "M_Brow", "shape": "Bs_Brow_Angry_R", "min": 0, "max": 1, "default": 0},
+    "ParamBrowLY": {"object": "M_Brow", "shape": "Bs_Brow_Surprise_L", "min": 0, "max": 1, "default": 0},
+    "ParamBrowRY": {"object": "M_Brow", "shape": "Bs_Brow_Surprise_R", "min": 0, "max": 1, "default": 0},
+    "ParamEyeLSmile": {"object": "M_Face", "shape": "Bs_Eyelid_Joy_L", "min": 0, "max": 1, "default": 0},
+    "ParamEyeRSmile": {"object": "M_Face", "shape": "Bs_Eyelid_Joy_R", "min": 0, "max": 1, "default": 0}
+  }
+}
