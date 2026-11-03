@@ -1720,6 +1720,7 @@ checksum = "22686f4785f02a4fcc856d3b3bb19bf6c8160d103f7a99cc258bddd0251dc7f2"
 name = "popy-geometry"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "serde",
  "serde_json",
 ]

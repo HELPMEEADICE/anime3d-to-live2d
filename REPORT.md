@@ -1,5 +1,9 @@
 # POPY 实测交付报告
 
+## 最新面部修复
+
+本轮最新交付为 `output/POPY_face_fixed` / `delivery/POPY_face_fixed.zip`。实现与限制见 [面部修复文档](docs/FACE_CLEARANCE.md)，完整公开数值见 `benchmarks/popy/face_repair/metrics.json`，本地逐姿态图像见 `artifacts/face_repair/report/index.html`。下文衣领、肩颈头发和更早转换结果作为历史基线保留。当前仍有极端复合姿态残差，未宣称全角度零穿模，也未更新或验证编辑器工程。
+
 ## 最新脖子与衣领修复
 
 请使用 `delivery/POPY_neck_fixed.zip`。截图姿态错误露出 314→2，79 姿态合计 5,113→350；误遮挡 573→580。眼/脸/发饰指标保持原值，详见 [本轮报告](docs/COLLAR_CLEARANCE.md)。以下肩颈头发版及原始转换统计作为历史基线保留。

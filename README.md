@@ -10,6 +10,8 @@ Geometry-driven Blender/Python/Rust research converter with a separate GPL Cubis
 
 ## 当前交付位置
 
+**最新面部穿透遮盖修复**见 [实现、实测范围与限制](docs/FACE_CLEARANCE.md)。请加载 `delivery/POPY_face_fixed.zip`；报告为 `artifacts/face_repair/report/index.html`。本轮处理耳边白点、脸颊细缝、面内错误头发覆盖、鼻线及极端张嘴时的牙齿覆盖，并保留既有眼睛、发饰和衣领专项回归。有限姿态验证不证明所有组合零缺陷；极端下颌/毛发差异和较高模型成本仍有记录。已有衣领基线后执行 `python -m popy.face_repair all`。旧 CMO3 不含本轮修复。
+
 **最新脖子/衣领修复**见 [实测与复现流程](docs/COLLAR_CLEARANCE.md)。请加载 `delivery/POPY_neck_fixed.zip`；报告为 `artifacts/neck_repair/report/index.html`。截图姿态错误露出 314→2，79 姿态合计 5,113→350，误遮挡 573→580。眼睛、脸部和发饰专项指标不变。已有肩颈头发基线后执行 `python -m popy.collar_repair all`。本轮仅更新质量 MOC，旧 CMO3 包不含该修复。
 
 **最新肩颈头发修复**见 [实测与限制](docs/HAIR_CLEARANCE.md)。请使用 `delivery/POPY_hair_fixed.zip`、`delivery/POPY_hair_fixed_editable.zip` 和独立的 `delivery/POPY_hair_fixed.blend`；报告位于 `artifacts/hair_repair_report/index.html`。77 姿态中错误露出 71,761 → 11,977，误遮挡 30,301 → 33,611，仍有质量取舍。眼睛和发饰指标保持原值。已有原始转换数据后，可用 `python -m popy.hair_repair all` 重复修复。下列不带 `hair_clearance` 的旧输出作为基线保留。

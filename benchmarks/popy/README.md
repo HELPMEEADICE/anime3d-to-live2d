@@ -2,6 +2,8 @@
 
 这些 JSON 来自本地已完成的 Blender / Ayagami 实测，记录于 2026-11-03（Asia/Shanghai）。公开记录不包含角色图像、纹理、模型或可重建网格的顶点数据。
 
+后续面部修复记录更新于 2026-11-04；各子目录保留当时的基线与实测范围。
+
 - `geometry_quality.json`、`geometry_balanced.json`：28 个独立 Blender 姿态的图像/几何指标、模型统计。
 - `visibility_before.json`、`visibility_after.json`：165 姿态、70 对相邻帧，眼部可见性、同源接缝和时域残差。
 - `runtime_quality.json`、`runtime_balanced.json`：实际 GPU、参数清单与运行耗时。
@@ -24,3 +26,7 @@
 # 后续脖子与衣领修复
 
 `collar_repair/metrics.json` 保存截图角度和完整 79 姿态的同一参考前后比较、77 姿态眼/脸/发饰检查、原生 Glue 验证及模型哈希；`performance.json` 记录实际成功阶段的时间和进程树 RSS。脖子错误露出 5,113→350，误遮挡 573→580，不能解释为每个极端姿态均无穿透。详见 [方法与限制](../../docs/COLLAR_CLEARANCE.md)。本目录不含角色资产或渲染图。
+
+# 后续面部穿透遮盖修复
+
+`face_repair/metrics.json` 记录 218 组 Blender / 原生 MOC 图像对照、60 对连续帧、38 组口腔 ID 对照（主集合子集）、77 组眼/脸/发饰及 79 组衣领回归。几何筛查的 2,835 组不另算图像验收。截图三处错误像素 4/8/7→0；皮肤错误露出 11,651→9,618，头发 12,965→5,775，鼻线缺失 1,456→84。牙齿总错误 1,411→67，但漏出 16→65；头发超过 3px 的缺失也有退步。完整局限和高模型/运行成本见 [方法说明](../../docs/FACE_CLEARANCE.md)。`performance.json` 保留已测阶段，失败原型与最终路径分开标注，删除本机命令和绝对路径。模型和图像仍只保留本地。

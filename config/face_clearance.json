@@ -1,0 +1,13 @@
+{
+  "hair_min_top_z": 1.345,
+  "partition": {"tolerance": 0.0003, "limit": 24, "normal_dot": 0.8},
+  "nose_order_bias": 30,
+  "support_margin": 0.00003,
+  "footprint_margin": 0.0015,
+  "pack_local_sources": false,
+  "teeth_partition": {"tolerance": 0.0003, "limit": 24, "normal_dot": 0.8},
+  "teeth_support_margin": 0.00003,
+  "teeth_expression_keys": [0,0.5,1],
+  "teeth_check_expression_planarity": false,
+  "method": "Source-depth conflict screening across the entire 105-pose head grid selects curved hair patches for native tracked planar subdivision. All source head hair and skin participate in depth masks."
+}

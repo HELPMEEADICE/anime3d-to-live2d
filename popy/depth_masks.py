@@ -14,7 +14,7 @@ from .compile_ir import ROOT, project
 from .visibility import clip_triangle_barycentric, component_labels
 
 
-def plane(points, triangles=None):
+def plane(points, triangles=None, margin=0.0001):
     center = points.mean(0)
     _, _, v = np.linalg.svd(points - center, full_matrices=False)
     normal = v[-1]
@@ -25,7 +25,7 @@ def plane(points, triangles=None):
         inward = np.cross(t[:, 1] - t[:, 0], t[:, 2] - t[:, 0]).sum(0)
     if normal @ inward < 0:
         normal = -normal
-    return normal, float((points @ normal).min() - 0.0001)
+    return normal, float((points @ normal).min() - margin)
 
 
 def clipped_barycentric(values, threshold):
@@ -136,15 +136,6 @@ def protect_linework(ir, samples, semantics, binary_path):
                 m["source"]["triangles"]
             )
         ]
-    manifest = json.loads((samples / "manifest.json").read_text())
-    neutral = next(
-        p
-        for p in manifest["head_poses"]
-        if all(x == 0 for x in p["parameters"].values())
-    )
-    archive = np.load(samples / neutral["file"])
-    rest = {key: archive[key] for key in archive.files}
-    shapes = semantics["shape_parameters"]
     # A projected lash can enter an open mouth or the eyeball volume. Outer
     # skin alone has holes there; the genuine oral/scleral surfaces must also
     # participate. Exclude lash surfaces themselves to avoid self masking.
@@ -165,6 +156,48 @@ def protect_linework(ir, samples, semantics, binary_path):
             )
         )
     ]
+    return build_local_surface_masks(
+        ir, samples, semantics, binary_path, targets, occluders
+    )
+
+
+def build_local_surface_masks(
+    ir,
+    samples,
+    semantics,
+    binary_path,
+    targets,
+    occluders,
+    prefix="",
+    metadata_key="depth_linework",
+    diagnostics_key="linework_depth_masks",
+    merge_masks=False,
+    support_margin=0.0001,
+    include_secondary=False,
+    footprint_margin=0.008,
+    envelope_bounds=False,
+    double_sided_masks=False,
+    expression_keys=None,
+):
+    """Head-local source planes with independent expression-driven clip fields.
+
+    Rigid head/body transforms preserve the signed plane intersections. Real
+    evaluated source masters supply all projected motion; only local morph
+    coefficients are stored in the mask Glue grids.
+    """
+    config = json.loads((ROOT / "config/surface_visibility.json").read_text())
+    face = config["lashes"]["object"]
+    manifest = json.loads((samples / "manifest.json").read_text())
+    neutral = next(
+        p
+        for p in manifest["head_poses"]
+        if all(v == 0 for v in p["parameters"].values())
+    )
+    archive = np.load(samples / neutral["file"])
+    rest = {key: archive[key] for key in archive.files}
+    shapes = semantics["shape_parameters"]
+    def sample_keys(parameter, keys):
+        return sorted(set(keys + [0.5] + (expression_keys or {}).get(parameter, [])))
     # POPY pages are opaque. Alpha cutouts need separate UV-aware clipping.
     for texture in {m["texture"] for m in occluders}:
         page = Image.open(Path(binary_path).parent / ir["textures"][texture]).convert(
@@ -179,7 +212,8 @@ def protect_linework(ir, samples, semantics, binary_path):
     shape_projections = {
         (s["object"], pid): []
         for pid, s in shapes.items()
-        if s["object"] in names and pid not in ["ParamEyeLSmile", "ParamEyeRSmile"]
+        if s["object"] in names
+        and (include_secondary or pid not in ["ParamEyeLSmile", "ParamEyeRSmile"])
     }
     camera_matrix = np.array(ir["camera"]["projection"]) @ np.linalg.inv(
         np.array(ir["camera"]["matrix_world"])
@@ -240,7 +274,16 @@ def protect_linework(ir, samples, semantics, binary_path):
     bounds = {}
     for mesh in targets + occluders:
         p = projected_domain[mesh["source"]["object"]][:, mesh["source"]["vertices"]]
-        bounds[mesh["id"]] = (p.min(1), p.max(1))
+        if envelope_bounds:
+            low, high = p.copy(), p.copy()
+            for (obj, _), delta in shape_projections.items():
+                if obj == mesh["source"]["object"]:
+                    d = delta[:, mesh["source"]["vertices"]]
+                    low += np.minimum(d, 0)
+                    high += np.maximum(d, 0)
+            bounds[mesh["id"]] = (low.min(1), high.max(1))
+        else:
+            bounds[mesh["id"]] = (p.min(1), p.max(1))
     domain_axes = [
         "ParamAngleX",
         "ParamAngleY",
@@ -254,8 +297,11 @@ def protect_linework(ir, samples, semantics, binary_path):
         for p in domain_poses
     ]
     geometry = np.memmap(binary_path, dtype="<f4", mode="r")
+    mesh_lookup = {m["id"]: m for m in ir["meshes"]}
 
     def front_domain(mesh):
+        if mesh.get("face_partition_parent"):
+            mesh = mesh_lookup[mesh["face_partition_parent"]]
         front = np.zeros(tuple(len(k) for k in domain_keys), bool)
         triangles = np.array(mesh["indices"]).reshape(-1, 3)
         n = len(mesh["positions"])
@@ -293,15 +339,24 @@ def protect_linework(ir, samples, semantics, binary_path):
             name = target["source"]["object"]
             vertices = target["source"]["vertices"]
             target_triangles = np.array(target["indices"]).reshape(-1, 3)
-            normal, _ = plane(rest[name][vertices].astype(float), target_triangles)
+            normal, _ = plane(
+                rest[name][vertices].astype(float), target_triangles, support_margin
+            )
             expression_axes = [a for a in target["axes"] if a["parameter"] in shapes]
+            if include_secondary:
+                expression_axes.extend(
+                    {"parameter": b["parameter"], "keys": b["keys"]}
+                    for b in target["blend_shapes"]
+                    if b["parameter"] in shapes
+                    and b["parameter"] not in {a["parameter"] for a in expression_axes}
+                )
             # Only local expression grids; no copied 945-pose geometry tensors.
             expression_axes = [
-                {**a, "keys": sorted(set(a["keys"] + [0.5]))} for a in expression_axes
+                {**a, "keys": sample_keys(a["parameter"], a["keys"])} for a in expression_axes
             ]
             target_sources = []
             target_front = front_domain(target)
-            helper_id = "MaskDepth_" + target["id"]
+            helper_id = "MaskDepth_" + prefix + target["id"]
             helper_positions, indices, provenance = [], [], []
             per_master = []
             for occluder in occluders:
@@ -310,15 +365,28 @@ def protect_linework(ir, samples, semantics, binary_path):
                     continue
                 lo, hi = bounds[target["id"]]
                 a, b = bounds[occluder["id"]]
-                if not np.any(np.all((hi + 0.035 >= a) & (b + 0.035 >= lo), axis=1)):
+                broad_margin = footprint_margin if envelope_bounds else 0.035
+                if not np.any(
+                    np.all((hi + broad_margin >= a) & (b + broad_margin >= lo), axis=1)
+                ):
                     continue
                 axes = list(expression_axes)
                 axes.extend(
-                    {**a, "keys": sorted(set(a["keys"] + [0.5]))}
+                    {**a, "keys": sample_keys(a["parameter"], a["keys"])}
                     for a in occluder["axes"]
                     if a["parameter"] in shapes
                     and a["parameter"] not in {b["parameter"] for b in axes}
                 )
+                if include_secondary:
+                    axes.extend(
+                        {
+                            "parameter": b["parameter"],
+                            "keys": sample_keys(b["parameter"], b["keys"]),
+                        }
+                        for b in occluder["blend_shapes"]
+                        if b["parameter"] in shapes
+                        and b["parameter"] not in {a["parameter"] for a in axes}
+                    )
                 coordinates = list(
                     itertools.product(*(range(len(a["keys"])) for a in axes))
                 )
@@ -329,11 +397,14 @@ def protect_linework(ir, samples, semantics, binary_path):
                 occ_vertices = occluder["source"]["vertices"]
                 points = [world(obj, occ_vertices, p) for p in params]
                 planes = [
-                    plane(world(name, vertices, p), target_triangles) for p in params
+                    plane(world(name, vertices, p), target_triangles, support_margin)
+                    for p in params
                 ]
                 thresholds = [t for n, t in planes]
                 distances = [p @ n for p, (n, t) in zip(points, planes)]
-                if all(d.max() <= t for d, t in zip(distances, thresholds)):
+                if not double_sided_masks and all(
+                    d.max() <= t for d, t in zip(distances, thresholds)
+                ):
                     target_sources.append(occluder["id"])
                     continue
                 triangles = np.array(occluder["indices"]).reshape(-1, 3)
@@ -346,10 +417,18 @@ def protect_linework(ir, samples, semantics, binary_path):
                 projected = projected_domain[obj][:, occ_vertices][:, triangles]
                 low, high = projected.min(2), projected.max(2)
                 overlap = np.all(
-                    (hi[:, None] + 0.035 >= low) & (high + 0.035 >= lo[:, None]), axis=2
+                    (
+                        hi[:, None] + (footprint_margin if envelope_bounds else 0.035)
+                        >= low
+                    )
+                    & (
+                        high + (footprint_margin if envelope_bounds else 0.035)
+                        >= lo[:, None]
+                    ),
+                    axis=2,
                 )
                 overlap &= target_front[:, None]
-                if obj != face:
+                if obj != face and not double_sided_masks:
                     x, y = (
                         projected[:, :, 1] - projected[:, :, 0],
                         projected[:, :, 2] - projected[:, :, 0],
@@ -383,9 +462,19 @@ def protect_linework(ir, samples, semantics, binary_path):
                     area = (
                         u[:, :, 0] * v[:, :, 1] - u[:, :, 1] * v[:, :, 0] > 1e-12
                     ) | (u2[:, :, 0] * v2[:, :, 1] - u2[:, :, 1] * v2[:, :, 0] > 1e-12)
+                    if double_sided_masks:
+                        area = (
+                            np.abs(u[:, :, 0] * v[:, :, 1] - u[:, :, 1] * v[:, :, 0])
+                            > 1e-12
+                        ) | (
+                            np.abs(
+                                u2[:, :, 0] * v2[:, :, 1] - u2[:, :, 1] * v2[:, :, 0]
+                            )
+                            > 1e-12
+                        )
                     overlap = np.all(
-                        (th[:, None] + 0.008 >= q.min(2))
-                        & (q.max(2) + 0.008 >= tl[:, None]),
+                        (th[:, None] + footprint_margin >= q.min(2))
+                        & (q.max(2) + footprint_margin >= tl[:, None]),
                         axis=2,
                     )
                     footprint |= np.any(overlap & area & front[:, None], axis=0)
@@ -450,6 +539,7 @@ def protect_linework(ir, samples, semantics, binary_path):
                     "texture": 0,
                     "mask_only": True,
                     "opacity": 0.0,
+                    "culling": not double_sided_masks,
                     "masked_by": [],
                     "invert_mask": False,
                     "blend_shapes": [],
@@ -492,7 +582,7 @@ def protect_linework(ir, samples, semantics, binary_path):
                             )
                         for values, pairs in groups.items():
                             glue = {
-                                "id": f"G_Depth_{len(glues)}",
+                                "id": f"G_Depth_{prefix}{len(glues)}",
                                 "mesh_a": master_id,
                                 "mesh_b": helper_id,
                                 "pairs": pairs,
@@ -503,7 +593,18 @@ def protect_linework(ir, samples, semantics, binary_path):
                                     axes=axes, intensities=[float(v) for v in values]
                                 )
                             glues.append(glue)
-            target["masked_by"] = target_sources
+            if (
+                merge_masks
+                and target.get("masked_by")
+                and not target.get("invert_mask")
+            ):
+                raise ValueError("Cannot merge normal and inverse depth masks")
+            target["masked_by"] = list(
+                dict.fromkeys(
+                    (target.get("masked_by", []) if merge_masks else [])
+                    + target_sources
+                )
+            )
             target["invert_mask"] = True
             diagnostics.append(
                 {
@@ -513,10 +614,18 @@ def protect_linework(ir, samples, semantics, binary_path):
                     "clipped_vertices": len(helper_positions),
                 }
             )
+            if len(diagnostics) % 20 == 0:
+                print(
+                    prefix + " local depth",
+                    len(diagnostics),
+                    "/",
+                    len(targets),
+                    flush=True,
+                )
     ir["meshes"].extend(helpers)
     ir.setdefault("glues", []).extend(glues)
-    ir["surface_visibility"]["depth_linework"] = diagnostics
-    ir["diagnostics"]["linework_depth_masks"] = {
+    ir["surface_visibility"][metadata_key] = diagnostics
+    ir["diagnostics"][diagnostics_key] = {
         "targets": len(targets),
         "helpers": len(helpers),
         "glues": len(glues),
@@ -525,7 +634,7 @@ def protect_linework(ir, samples, semantics, binary_path):
         "method": "source support planes, barycentric native Glue intensity grids; 3D head/body/expression geometry shared",
         "limitations": "curved target approximated by nearest support plane; clip weights sampled at 0/.5/1; opaque source occluders required; smile-plane offsets approximate",
     }
-    print("Linework depth masks", ir["diagnostics"]["linework_depth_masks"], flush=True)
+    print(prefix + " local depth masks", ir["diagnostics"][diagnostics_key], flush=True)
 
 
 def stabilize_linework_order(ir):

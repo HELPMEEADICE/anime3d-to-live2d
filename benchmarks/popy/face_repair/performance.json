@@ -1,0 +1,323 @@
+{
+  "date": "2026-11-04",
+  "timezone": "Asia/Shanghai",
+  "moc_sha256": "e28631ff00bddaebf88be9d50a2b1b4cc078e7a50727608c1e0f355899386a64",
+  "final_validation_latest_records": [
+    {
+      "stage": "face_id_export_before",
+      "seconds": 8.968332199998258,
+      "peak_process_tree_rss_bytes": 9591353344,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_rgb_before",
+      "seconds": 10.938170699999318,
+      "peak_process_tree_rss_bytes": 573349888,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_id_before",
+      "seconds": 9.43724310000107,
+      "peak_process_tree_rss_bytes": 798482432,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_id_export_after",
+      "seconds": 17.078841100003046,
+      "peak_process_tree_rss_bytes": 13421805568,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_rgb_after",
+      "seconds": 75.39309000000503,
+      "peak_process_tree_rss_bytes": 1500499968,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_id_after",
+      "seconds": 71.58276090000436,
+      "peak_process_tree_rss_bytes": 1831600128,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_native_probes",
+      "seconds": 3.561651600000914,
+      "peak_process_tree_rss_bytes": 1260384256,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_legacy_264",
+      "seconds": 79.89135839999653,
+      "peak_process_tree_rss_bytes": 1617911808,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_features_export",
+      "seconds": 22.893324399999983,
+      "peak_process_tree_rss_bytes": 13674463232,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_features_runtime",
+      "seconds": 18.165758100003586,
+      "peak_process_tree_rss_bytes": 1533857792,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_collar_export",
+      "seconds": 21.996612399998412,
+      "peak_process_tree_rss_bytes": 13431898112,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_collar_runtime",
+      "seconds": 19.933548300003167,
+      "peak_process_tree_rss_bytes": 1516748800,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_exporter_baseline",
+      "seconds": 9.966707999999926,
+      "peak_process_tree_rss_bytes": 9526444032,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_python_tests",
+      "seconds": 4.1828295000013895,
+      "peak_process_tree_rss_bytes": 1015275520,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_rust_tests",
+      "seconds": 1.0200044000011985,
+      "peak_process_tree_rss_bytes": 48455680,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_oral_id_before",
+      "seconds": 2.795558300000266,
+      "peak_process_tree_rss_bytes": 1136975872,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_oral_export_before",
+      "seconds": 8.273295700004383,
+      "peak_process_tree_rss_bytes": 9601265664,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_oral_export_after",
+      "seconds": 21.736001500001294,
+      "peak_process_tree_rss_bytes": 13469122560,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_oral_id_after",
+      "seconds": 7.4155713000000105,
+      "peak_process_tree_rss_bytes": 1313525760,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_rig_reproduction",
+      "seconds": 567.669275100001,
+      "peak_process_tree_rss_bytes": 5057851392,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_reproduced_export",
+      "seconds": 27.970837000000756,
+      "peak_process_tree_rss_bytes": 13407580160,
+      "exit_code": 0
+    }
+  ],
+  "research_and_prototype_latest_records": [
+    {
+      "stage": "face_adaptive_export",
+      "seconds": 13.277339200001734,
+      "peak_process_tree_rss_bytes": 10432139264,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_diagnostic_before_export",
+      "seconds": 8.886633200003416,
+      "peak_process_tree_rss_bytes": 7570956288,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_before_render",
+      "seconds": 12.071996800001216,
+      "peak_process_tree_rss_bytes": 575668224,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_before_surface_render",
+      "seconds": 11.271098900000652,
+      "peak_process_tree_rss_bytes": 839065600,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_sparse_export",
+      "seconds": 11.235921699997562,
+      "peak_process_tree_rss_bytes": 9166659584,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_sparse_render",
+      "seconds": 34.549039400000765,
+      "peak_process_tree_rss_bytes": 1006596096,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_sparse_diagnostic_export",
+      "seconds": 13.97002269999939,
+      "peak_process_tree_rss_bytes": 9265516544,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_sparse_surface_render",
+      "seconds": 36.366270699996676,
+      "peak_process_tree_rss_bytes": 1223761920,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_adaptive_diagnostic_export",
+      "seconds": 12.481576300000597,
+      "peak_process_tree_rss_bytes": 8594907136,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_adaptive_surface_render",
+      "seconds": 48.68801710000116,
+      "peak_process_tree_rss_bytes": 1208963072,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_screen_final",
+      "seconds": 58.347081500003696,
+      "peak_process_tree_rss_bytes": 1700515840,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_rig_final",
+      "seconds": 283.0108465000012,
+      "peak_process_tree_rss_bytes": 3976716288,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_export",
+      "seconds": 21.92990309999732,
+      "peak_process_tree_rss_bytes": 13200539648,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_teeth_export",
+      "seconds": 30.746005000000878,
+      "peak_process_tree_rss_bytes": 11106811904,
+      "exit_code": 3
+    },
+    {
+      "stage": "face_packed_export",
+      "seconds": 120.05498780000198,
+      "peak_process_tree_rss_bytes": 13305929728,
+      "exit_code": 3
+    },
+    {
+      "stage": "face_teeth_memory_export",
+      "seconds": 14.967561799996474,
+      "peak_process_tree_rss_bytes": 13665099776,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_teeth_memory_probe",
+      "seconds": 7.350676800000656,
+      "peak_process_tree_rss_bytes": 1291735040,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_packed_memory_export",
+      "seconds": 18.627022099994065,
+      "peak_process_tree_rss_bytes": 13868621824,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_packed_memory_probe",
+      "seconds": 7.136861300001328,
+      "peak_process_tree_rss_bytes": 1576513536,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_lean_export",
+      "seconds": 23.375321899999108,
+      "peak_process_tree_rss_bytes": 13597876224,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_lean_all",
+      "seconds": 56.34680500000104,
+      "peak_process_tree_rss_bytes": 1493487616,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_oral2_export",
+      "seconds": 77.5323309000014,
+      "peak_process_tree_rss_bytes": 11030638592,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_oral2_probe",
+      "seconds": 9.157318300000043,
+      "peak_process_tree_rss_bytes": 1300688896,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_oral_id_export_before",
+      "seconds": 9.944327400000475,
+      "peak_process_tree_rss_bytes": 9636175872,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_oral_id_export_oral2",
+      "seconds": 23.215609200000472,
+      "peak_process_tree_rss_bytes": 12948295680,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_oral_id_oral2",
+      "seconds": 8.682758700000704,
+      "peak_process_tree_rss_bytes": 1401233408,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_aperture_export",
+      "seconds": 24.175097799998184,
+      "peak_process_tree_rss_bytes": 12871225344,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_aperture_probe",
+      "seconds": 8.324471499996434,
+      "peak_process_tree_rss_bytes": 1302507520,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_oral_id_export_aperture",
+      "seconds": 28.324745600002643,
+      "peak_process_tree_rss_bytes": 13303300096,
+      "exit_code": 0
+    },
+    {
+      "stage": "face_oral_id_aperture",
+      "seconds": 7.889927099997294,
+      "peak_process_tree_rss_bytes": 1405825024,
+      "exit_code": 0
+    }
+  ],
+  "notes": [
+    "Each stage was run independently and often repeatedly; these records are not one clean full conversion benchmark.",
+    "face_rig_reproduction and face_reproduced_export generated the final source-produced rig/model. Earlier face_export and prototype measurements refer to earlier variants.",
+    "Blender 218 reference poses, two raw-source controls and 38 oral source-ID reference passes were rendered in separate background processes without process-tree RSS monitoring; no invented memory or end-to-end total is provided.",
+    "GPU timing includes evaluation, render completion and readback on a non-isolated desktop. Resident applications do not establish their GPU utilization.",
+    "The oral3 high-precision generation prototype was aborted and did not yield a validated/exported model; no successful process measurement is claimed.",
+    "Early face_teeth_export and face_packed_export failed with JVM memory errors; later runtime-only exporter memory changes succeeded."
+  ]
+}

@@ -30,7 +30,7 @@ fun main(args:Array<String>) {
     }
     require(args.size>=2){"Usage: popy-cubism-exporter IR.json OUTPUT_DIR [--no-cmo]"}
     val input=File(args[0]); val base=input.parentFile; val out=File(args[1]); out.mkdirs()
-    val ir=Json.parseToJsonElement(input.readText()).jsonObject
+    var ir=Json.parseToJsonElement(input.readText()).jsonObject
     val absolute=ir["geometry_encoding"]?.jsonPrimitive?.content=="parent_absolute"
     val binary=ByteBuffer.wrap(File(base,ir.s("keyform_data")).readBytes()).order(ByteOrder.LITTLE_ENDIAN)
     fun floats(offset:Int,count:Int):FloatArray=FloatArray(count){binary.getFloat((offset+it)*4)}
@@ -69,9 +69,11 @@ fun main(args:Array<String>) {
         val masks=m["masked_by"]?.jsonArray?.map{DrawableId(it.jsonPrimitive.content)} ?: emptyList()
         val parent=if(m["deformer"]?.jsonPrimitive?.content=="head") headWarpId else m["projection_warp"]?.jsonPrimitive?.content?.let{DeformerId(it)} ?: warpId
         Drawable(DrawableId(m.s("id")),m.s("id"),parent,BlendMode.Normal,masks,DrawableMesh(if(absolute) FloatArray(n) else pos,m.a("uvs").floats(),m.a("indices").ints()),geom,
-            channelGrids=ChannelGrids(mapOf(FormChannel.DRAW_ORDER to order)),drawOrder=500f,opacity=m["opacity"]?.jsonPrimitive?.float ?: 1f,texturePage=m.getValue("texture").jsonPrimitive.int,culling=true,blendShapes=blends,
+            channelGrids=ChannelGrids(mapOf(FormChannel.DRAW_ORDER to order)),drawOrder=500f,opacity=m["opacity"]?.jsonPrimitive?.float ?: 1f,texturePage=m.getValue("texture").jsonPrimitive.int,culling=m["culling"]?.jsonPrimitive?.boolean ?: true,blendShapes=blends,
             invertMask=m["invert_mask"]?.jsonPrimitive?.boolean ?: false,
-            userData=m.getValue("source").toString())
+            // Dense 3D correspondence stays in Rig IR. MOC3 does not serialize
+            // this editor-side string, so don't retain a second copy at runtime export.
+            userData=if(args.contains("--no-cmo")) "" else m.getValue("source").toString())
     }
     val parts=ir.a("parts").map{v->val p=v.jsonObject;Part(PartId(p.s("id")),p.s("id"),p.a("mesh_ids").map{OrgChild.Drawable(DrawableId(it.jsonPrimitive.content))})}
     val glues=ir["glues"]?.jsonArray?.map{v->
@@ -92,13 +94,17 @@ fun main(args:Array<String>) {
         renderRoot=RenderGroup(null,500,drawables.map{RenderDrawable(it.id)}),
         glues=glues,
         canvasWidth=w,canvasHeight=h,worldOriginX=w/2,worldOriginY=-h/2,pixelsPerUnit=w/2,runtimeTarget=RuntimeTarget.Cubism50)
+    val textures=ir.a("textures").map {it.jsonPrimitive.content}
+    // Large geometry/Glue IR trees are no longer needed for runtime-only exports.
+    // Release them before lowering, rather than retaining both representations at
+    // the peak of the binary writer. CMO3 still needs the authored rest positions.
+    if(args.contains("--no-cmo")) ir=JsonObject(emptyMap())
     val lowered=Moc3Export.toMocDocument(puppet)
     val mocBytes=Moc3.write(lowered.document)
     File(out,"POPY.moc3").writeBytes(mocBytes)
     // Independent parser, parameter evaluation and GPU validation run in Ayagami.
     println("MOC3 wrote ${mocBytes.size} bytes, ${drawables.size} meshes, $forms authored keyforms")
     val notices=mutableListOf("MOC3: ${lowered.report}")
-    val textures=ir.a("textures").map {it.jsonPrimitive.content}
     textures.forEach { File(base,it).copyTo(File(out,File(it).name),overwrite=true) }
     val model=buildJsonObject {
         put("Version",3); putJsonObject("FileReferences") {put("Moc","POPY.moc3");putJsonArray("Textures"){textures.forEach{add(File(it).name)}};put("DisplayInfo","POPY.cdi3.json")}

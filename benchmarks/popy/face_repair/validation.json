@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-04",
+  "python_tests": 55,
+  "rust_tests": 7,
+  "python_result": "passed",
+  "rust_result": "passed",
+  "ruff_scoped": "passed",
+  "image_reference_poses": 218,
+  "continuous_frame_pairs": 60,
+  "oral_id_poses_subset": 38,
+  "feature_id_poses": 77,
+  "collar_id_poses": 79,
+  "legacy_render_only_poses": 264,
+  "geometry_screen_poses": 2835,
+  "official_editor_tested": false,
+  "new_cmo3": false,
+  "moc_sha256": "e28631ff00bddaebf88be9d50a2b1b4cc078e7a50727608c1e0f355899386a64",
+  "source_regeneration_verified": true,
+  "original_unique_forms_checked": 1405365
+}

@@ -30,6 +30,9 @@ def check(rig, runtime, destination, case_file=ROOT / "artifacts/surface_cases.j
                 "Native clipping references mismatch: " + mesh["id"]
             )
             assert entry["vertices"] == len(mesh["positions"]) // 2
+            assert entry["culling"] == mesh.get("culling", True), (
+                "Native culling flag mismatch: " + mesh["id"]
+            )
     cases = {
         r["name"]: r["parameters"] for r in json.loads(Path(case_file).read_text())
     }
