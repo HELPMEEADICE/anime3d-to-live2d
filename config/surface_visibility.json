@@ -1,0 +1,10 @@
+{
+  "source": "POPY source connected-component audit, artifacts/feature_components.json; IDs refer to original triangle connectivity",
+  "strategy": "hybrid",
+  "planar_neck": false,
+  "neck_occluder_face": false,
+  "brows": {"object": "M_Brow"},
+  "lashes": {"object": "M_Face", "components": [1,2,3,4,5,6,11,12,13,14,15,16,17,18,20,21,25,26,27,28,29,30,31,32,33,34]},
+  "hair": {"object": "M_Hair"},
+  "neck": {"object": "M_Body", "rest_z": [1.28,1.39], "rest_x": [-0.065,0.065]}
+}

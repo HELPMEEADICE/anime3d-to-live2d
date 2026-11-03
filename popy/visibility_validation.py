@@ -79,6 +79,8 @@ def assess(ir_path, runtime, eye_runtime, destination):
         }
         seam = []
         for g in ir["glues"]:
+            if not g["id"].startswith("G_Source_"):
+                continue
             pairs = np.asarray(g["pairs"])
             seam.extend(
                 np.linalg.norm(

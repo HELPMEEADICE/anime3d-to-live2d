@@ -81,9 +81,12 @@ class VisibilityRuntimeTests(unittest.TestCase):
         roundtrip = json.loads(
             (ROOT / "output/POPY_balanced/cmo_roundtrip.json").read_text()
         )
-        self.assertEqual(roundtrip["glues"], 1677)
-        self.assertEqual(roundtrip["masked_drawables"], 16)
-        self.assertEqual(roundtrip["inverted_masks"], 16)
+        rig=json.loads((ROOT/'artifacts/rig_balanced/POPY.rig.json').read_text())
+        expected=sum(bool(m.get('masked_by')) for m in rig['meshes'])
+        self.assertEqual(roundtrip["glues"], len(rig['glues']))
+        self.assertEqual(roundtrip["masked_drawables"], expected)
+        self.assertEqual(roundtrip["inverted_masks"], expected)
+        self.assertEqual(roundtrip['animated_glues'],sum(bool(g.get('axes')) for g in rig['glues']))
         self.assertFalse(roundtrip["official_editor_verified"])
 
 

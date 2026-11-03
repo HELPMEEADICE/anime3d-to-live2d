@@ -632,6 +632,8 @@ def compile_ir(
     from .visibility import finalize_visibility
 
     finalize_visibility(ir, samples, m["semantics"], out / "keyforms.f32")
+    from .form_storage import compact_forms
+    compact_forms(ir,out/'keyforms.f32')
     ir["parts"] = [
         {
             "id": name,
@@ -658,6 +660,10 @@ def compile_ir(
             not mesh.get("mask_only", False) for mesh in ir["meshes"]
         ),
         mask_artmesh_count=sum(bool(mesh.get("mask_only")) for mesh in ir["meshes"]),
+        glues=len(ir.get('glues',[])),
+        animated_glues=sum(bool(g.get('axes')) for g in ir.get('glues',[])),
+        glue_keyforms=sum(len(g.get('intensities',g.get('cells',[None]))) for g in ir.get('glues',[])),
+        masked_drawables=sum(bool(mesh.get('masked_by')) for mesh in ir['meshes']),
         seconds=time.perf_counter() - start,
         texture_sizes=[[2048, 2048] for _ in ir["textures"]],
         deformers=len(ir["body_warps"]) + 3 if "body_warps" in ir else 4,

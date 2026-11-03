@@ -3,6 +3,7 @@
 import hashlib
 import json
 from collections import defaultdict
+from pathlib import Path
 
 import numpy as np
 from PIL import Image
@@ -352,6 +353,7 @@ def weld_sources(ir, samples):
         for other in unique[1:]:
             if master[0] != other[0]:
                 pairs[(master[0], other[0])].append([master[1], other[1], 0.0, 1.0])
+    depth_glues = [g for g in ir.get("glues", []) if g["id"].startswith("G_Depth_")]
     ir["glues"] = [
         {"id": f"G_Source_{i}", "mesh_a": a, "mesh_b": b, "pairs": pair}
         for i, ((a, b), pair) in enumerate(sorted(pairs.items()))
@@ -363,12 +365,75 @@ def weld_sources(ir, samples):
         "master_weight": 0,
         "copy_weight": 1,
     }
+    ir["glues"].extend(depth_glues)
 
 
 def finalize_visibility(ir, samples, semantics, binary_path):
+    from .linework_partition import partition_linework
+    partition_linework(ir, samples, semantics, binary_path)
     protect_eyes(ir, samples, semantics, binary_path)
+    protect_surfaces(ir, samples, semantics, binary_path)
     weld_sources(ir, samples)
     correct_pitch_chord(ir, samples, semantics)
+
+
+def protect_surfaces(ir, samples, semantics, binary_path):
+    """Protect anatomical linework and rear neck hair with native geometry masks."""
+    config = json.loads((Path(__file__).resolve().parents[1] / "config/surface_visibility.json").read_text())
+    spec = config["lashes"]
+    _, components = component_labels(np.load(samples / f"{spec['object']}_source.npz"))
+    hair_sources = ir["visibility"]["front_hair_sources"]
+    hair_sources = hair_sources + [m['id'] for m in ir['meshes'] if not m.get('mask_only') and m['source']['object'] in ['M_Headwear','M_Decorate']]
+    targets = {"brows": [], "lashes": [], "rear_hair": []}
+    for mesh in ir["meshes"]:
+        if mesh.get("mask_only"):
+            continue
+        source = mesh["source"]
+        kind = None
+        if source["object"] == config["brows"]["object"]:
+            kind = "brows"
+        elif source["object"] == spec["object"] and np.all(np.isin(components[source["triangles"]], spec["components"])):
+            kind = "lashes"
+        if kind:
+            mesh["masked_by"] = hair_sources.copy()
+            mesh["invert_mask"] = True
+            targets[kind].append(mesh["id"])
+    if config.get("strategy") in ['partition','hybrid']:
+        ir["surface_visibility"] = {"strategy":config['strategy'], "targets": targets, "neck_sources": [], "method": "source-planarity/occlusion-error partitioning, pose-local depth constraints and native foreground hair clipping"}
+        if config['strategy']=='hybrid':
+            from .depth_masks import protect_linework, stabilize_linework_order
+            from .neck_masks import protect_neck_depth
+            protect_linework(ir,samples,semantics,binary_path)
+            stabilize_linework_order(ir)
+            protect_neck_depth(ir,samples,semantics,binary_path)
+        return
+    name = config["neck"]["object"]
+    source = np.load(samples / f"{name}_source.npz")
+    neck = [m for m in ir["meshes"] if not m.get("mask_only") and m["source"]["object"] == name]
+    sources = conservative_skin_masks(ir, samples, semantics, neck, binary_path, bound_override=source["positions"][:, 1], threshold_override=0.01, label="Neck")
+    # The high collar and bow cover rear hair below the skin neck. They are
+    # separate source objects, so a skin-only neck mask cannot represent them.
+    for obj in ["M_Top", "M_Bow", "M_Necktie"]:
+        cloth = [m for m in ir["meshes"] if not m.get("mask_only") and m["source"]["object"] == obj]
+        if cloth:
+            cloth_rest = np.load(samples / f"{obj}_source.npz")["positions"]
+            sources += conservative_skin_masks(ir, samples, semantics, cloth, binary_path, bound_override=cloth_rest[:, 1], threshold_override=0.01, label="Neck_" + obj)
+    hair_name = config["hair"]["object"]
+    rest = np.load(samples / f"{hair_name}_source.npz")["positions"]
+    for mesh in ir["meshes"]:
+        if mesh.get("mask_only") or mesh["source"]["object"] != hair_name:
+            continue
+        points = rest[mesh["source"]["vertices"]]
+        if points[:, 1].min() >= 0.01:
+            mesh["masked_by"] = sources.copy()
+            mesh["invert_mask"] = True
+            targets["rear_hair"].append(mesh["id"])
+    ir["surface_visibility"] = {"targets": targets, "neck_sources": sources, "method": "Native inverted foreground hair and front-neck masks; source triangle component semantics"}
+    from .depth_masks import protect_linework, stabilize_linework_order
+    protect_linework(ir, samples, semantics, binary_path)
+    stabilize_linework_order(ir)
+    from .neck_masks import protect_neck_depth
+    protect_neck_depth(ir, samples, semantics, binary_path)
 
 
 def chord_scale(value, keys=(-15.0, 0.0, 15.0)):

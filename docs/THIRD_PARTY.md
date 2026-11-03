@@ -13,6 +13,8 @@
 
 PSD2Live 的 MIT 中立格式模块不等于 MIT 二进制导出器。本实现没有把 GPL 导出代码复制进 MIT 几何模块，`exporter/` 作为明确 GPL 的独立可执行程序保留完整可构建源码。分发它仍须遵守 GPL 及依赖条款；没有把进程隔离当作任意下游闭源组合的许可结论。
 
-唯一上游工作副本补丁：`Moc3RenderOrderLowering.kt` 的 ArtMesh 叶节点 `groupIndex` 从 `0` 改成 `-1`。Ayagami 的公开加载器验证叶节点不得引用一个子绘制组，否则拒绝模型。另一个必要修复在本项目适配器中：显式填充 `renderRoot`，避免模型可求值但无绘制节点。补丁由 `popy/setup_exporter.py` 精确、幂等应用；未向任何上游提交。
+上游工作副本的互操作补丁：`Moc3RenderOrderLowering.kt` 的 ArtMesh 叶节点 `groupIndex` 从 `0` 改成 `-1`。Ayagami 的公开加载器验证叶节点不得引用一个子绘制组，否则拒绝模型。另一个必要修复在本项目适配器中：显式填充 `renderRoot`，避免模型可求值但无绘制节点。补丁由 `popy/setup_exporter.py` 精确、幂等应用；未向任何上游提交。
 
 Ayagami 仓库的 AI 贡献/研究限制已读。按用户明确要求，仅在此独立项目中将未修改的固定版本作为运行时依赖调用，不修改 Ayagami 源码，也不向其上游提交 AI 生成内容。本实现不把 Ayagami 的验证作为 CMO3 工程兼容性验证。
+
+另有两个 GPL CMO3 lowering 文件的性能补丁：按不可变模型/索引快照缓存 Glue 的有序网格对及 ordinal，属性写入阶段直接复用已经解析的源节点，避免几十万个重复全表扫描。UID 顶点表仍实时读取，不改变绑定顺序或权重。完整补丁保存在 `exporter/patches/cmo_glue_lookup.patch`，由同一 setup 脚本精确、幂等应用。它属于独立 GPL 导出进程，不混入 MIT 几何模块；未向上游提交。

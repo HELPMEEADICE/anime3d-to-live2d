@@ -5,10 +5,10 @@
     "eye_leak_total": 467,
     "eye_leak_max": 27,
     "eye_missing_total": 1780,
-    "interior_crack_total": 3705,
-    "source_seam_max_px": 0.0,
-    "false_jump_total": 206598,
-    "false_jump_max": 6212,
+    "interior_crack_total": 3817,
+    "source_seam_max_px": 9.226521776159533e-05,
+    "false_jump_total": 201187,
+    "false_jump_max": 6406,
     "method": "Blender depth-rendered eye-only RGB visibility, 1px boundary allowance; source-identity seam constraints; alpha cracks exclude 3px silhouette border; frame residual subtracts real 3D motion"
   },
   "cases": [
@@ -21,9 +21,9 @@
       "eye_visible_actual": 2058,
       "eye_iou": 0.9739706578324657,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.00617292569950223
+      "mae_foreground": 0.0061139995232224464
     },
     {
       "name": "left",
@@ -36,9 +36,9 @@
       "eye_visible_actual": 1393,
       "eye_iou": 0.9600275671950379,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.008610269986093044
+      "mae_foreground": 0.007463950198143721
     },
     {
       "name": "right",
@@ -51,9 +51,9 @@
       "eye_visible_actual": 1393,
       "eye_iou": 0.9606896551724138,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 5.117953439712043e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011056162416934967
+      "mae_foreground": 0.009205669164657593
     },
     {
       "name": "up",
@@ -66,9 +66,9 @@
       "eye_visible_actual": 1394,
       "eye_iou": 0.9547945205479452,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.0063189356587827206
+      "source_seam_max_px": 3.8384650797840325e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.0060937851667404175
     },
     {
       "name": "down",
@@ -81,9 +81,9 @@
       "eye_visible_actual": 2037,
       "eye_iou": 0.9695383150880533,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.890255687022568e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011578706093132496
+      "mae_foreground": 0.009206176735460758
     },
     {
       "name": "roll",
@@ -96,9 +96,9 @@
       "eye_visible_actual": 2047,
       "eye_iou": 0.9614842649131048,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.009104887954890728
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.006234634201973677
     },
     {
       "name": "blink_left",
@@ -111,9 +111,9 @@
       "eye_visible_actual": 1029,
       "eye_iou": 0.9744318181818182,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 5.117953439712043e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.00606358190998435
+      "mae_foreground": 0.006030810531228781
     },
     {
       "name": "blink_right",
@@ -126,9 +126,9 @@
       "eye_visible_actual": 1029,
       "eye_iou": 0.9735099337748344,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006052585318684578
+      "mae_foreground": 0.006021080072969198
     },
     {
       "name": "blink",
@@ -142,9 +142,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 5.117953439712043e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.005943248048424721
+      "mae_foreground": 0.005937898065894842
     },
     {
       "name": "mouth",
@@ -157,9 +157,9 @@
       "eye_visible_actual": 2058,
       "eye_iou": 0.9739706578324657,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006237454246729612
+      "mae_foreground": 0.006188686471432447
     },
     {
       "name": "turn_mouth",
@@ -173,9 +173,9 @@
       "eye_visible_actual": 1761,
       "eye_iou": 0.9680440771349862,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.473755931273324e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.007604962680488825
+      "mae_foreground": 0.00678228260949254
     },
     {
       "name": "turn_blink",
@@ -190,9 +190,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006783377844840288
+      "mae_foreground": 0.0066108787432312965
     },
     {
       "name": "head_body",
@@ -206,9 +206,9 @@
       "eye_visible_actual": 1389,
       "eye_iou": 0.954639175257732,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 5.117953439712043e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.008279513567686081
+      "mae_foreground": 0.007556926924735308
     },
     {
       "name": "extreme",
@@ -226,9 +226,9 @@
       "eye_visible_actual": 581,
       "eye_iou": 0.9382113821138212,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011085010133683681
+      "source_seam_max_px": 6.162832039414791e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.01077993307262659
     },
     {
       "name": "heldout",
@@ -246,9 +246,9 @@
       "eye_visible_actual": 979,
       "eye_iou": 0.9204545454545454,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014503643848001957
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 1.1444091796875e-05,
+      "mae_foreground": 0.014780115336179733
     },
     {
       "name": "brows",
@@ -262,9 +262,9 @@
       "eye_visible_actual": 2058,
       "eye_iou": 0.9739706578324657,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006287443917244673
+      "mae_foreground": 0.006139686796814203
     },
     {
       "name": "body_y",
@@ -277,9 +277,9 @@
       "eye_visible_actual": 1786,
       "eye_iou": 0.9575497044599678,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006452303379774094
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.006406659726053476
     },
     {
       "name": "body_z",
@@ -291,10 +291,10 @@
       "eye_visible_ref": 2128,
       "eye_visible_actual": 2043,
       "eye_iou": 0.9600563909774437,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006220080889761448
+      "interior_crack_pixels": 1,
+      "source_seam_max_px": 6.866455078125e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.0061637358739972115
     },
     {
       "name": "breath",
@@ -307,9 +307,9 @@
       "eye_visible_actual": 2082,
       "eye_iou": 0.9594470046082949,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.008783647790551186
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.008729015477001667
     },
     {
       "name": "heldout_negative",
@@ -326,9 +326,9 @@
       "eye_visible_actual": 1344,
       "eye_iou": 0.9168399168399168,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014027157798409462
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 1.1444091796875e-05,
+      "mae_foreground": 0.014035799540579319
     },
     {
       "name": "heldout_head_body",
@@ -345,9 +345,9 @@
       "eye_visible_actual": 1604,
       "eye_iou": 0.880249716231555,
       "interior_crack_pixels": 162,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.021346431225538254
+      "source_seam_max_px": 5.7220458984375e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.0208427831530571
     },
     {
       "name": "pitch_mouth",
@@ -361,9 +361,9 @@
       "eye_visible_actual": 2037,
       "eye_iou": 0.9695383150880533,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.890255687022568e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011914660222828388
+      "mae_foreground": 0.00954213086515665
     },
     {
       "name": "gaze_follow",
@@ -378,9 +378,9 @@
       "eye_visible_actual": 1060,
       "eye_iou": 0.9417562724014337,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 5.117953439712043e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011087569408118725
+      "mae_foreground": 0.009237549267709255
     },
     {
       "name": "mouth_form",
@@ -393,9 +393,9 @@
       "eye_visible_actual": 2058,
       "eye_iou": 0.9739706578324657,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006211524363607168
+      "mae_foreground": 0.006152874790132046
     },
     {
       "name": "wink_smile",
@@ -409,9 +409,9 @@
       "eye_visible_actual": 1115,
       "eye_iou": 0.9737991266375546,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006061397027224302
+      "mae_foreground": 0.00603301590308547
     },
     {
       "name": "tilt_breath",
@@ -425,9 +425,9 @@
       "eye_visible_actual": 2089,
       "eye_iou": 0.9675775822139879,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.010808426886796951
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.009826511144638062
     },
     {
       "name": "head_body_pitch",
@@ -442,9 +442,9 @@
       "eye_visible_actual": 1503,
       "eye_iou": 0.9567154678548695,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.57763671875e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006883448921144009
+      "mae_foreground": 0.006687374785542488
     },
     {
       "name": "all_extreme",
@@ -467,9 +467,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.007767666131258011
+      "source_seam_max_px": 6.162832039414791e-05,
+      "source_seam_p95_px": 2.574920654295834e-06,
+      "mae_foreground": 0.00779275456443429
     },
     {
       "name": "eye_-45_-30_open",
@@ -485,9 +485,9 @@
       "eye_visible_actual": 1359,
       "eye_iou": 0.9604240282685512,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.866455078125e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.013227054849267006
+      "mae_foreground": 0.013127288781106472
     },
     {
       "name": "eye_-45_-30_closed",
@@ -503,9 +503,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.872412957838619e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.013104048557579517
+      "mae_foreground": 0.013045423664152622
     },
     {
       "name": "eye_-45_-30_left",
@@ -521,9 +521,9 @@
       "eye_visible_actual": 481,
       "eye_iou": 0.9543650793650794,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.872412957838619e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01314669568091631
+      "mae_foreground": 0.013057718053460121
     },
     {
       "name": "eye_-45_-30_right",
@@ -539,9 +539,9 @@
       "eye_visible_actual": 878,
       "eye_iou": 0.9637760702524698,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.866455078125e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.013184411451220512
+      "mae_foreground": 0.013114997185766697
     },
     {
       "name": "eye_-45_0_open",
@@ -557,9 +557,9 @@
       "eye_visible_actual": 1393,
       "eye_iou": 0.9600275671950379,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.008610269986093044
+      "mae_foreground": 0.007463950198143721
     },
     {
       "name": "eye_-45_0_closed",
@@ -575,9 +575,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.008455104194581509
+      "mae_foreground": 0.007325801998376846
     },
     {
       "name": "eye_-45_0_left",
@@ -593,9 +593,9 @@
       "eye_visible_actual": 515,
       "eye_iou": 0.9554730983302412,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.008524159900844097
+      "mae_foreground": 0.007380420342087746
     },
     {
       "name": "eye_-45_0_right",
@@ -611,9 +611,9 @@
       "eye_visible_actual": 878,
       "eye_iou": 0.9627192982456141,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.57763671875e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.008541216142475605
+      "mae_foreground": 0.007409332785755396
     },
     {
       "name": "eye_-45_30_open",
@@ -629,9 +629,9 @@
       "eye_visible_actual": 931,
       "eye_iou": 0.9461382113821138,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006341197527945042
+      "source_seam_max_px": 4.57763671875e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.006119207479059696
     },
     {
       "name": "eye_-45_30_closed",
@@ -647,9 +647,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.613260888079767e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006212188396602869
+      "mae_foreground": 0.00595435407012701
     },
     {
       "name": "eye_-45_30_left",
@@ -665,9 +665,9 @@
       "eye_visible_actual": 267,
       "eye_iou": 0.9175257731958762,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006248441990464926
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 6.437301635739585e-07,
+      "mae_foreground": 0.006011489778757095
     },
     {
       "name": "eye_-45_30_right",
@@ -683,9 +683,9 @@
       "eye_visible_actual": 664,
       "eye_iou": 0.9581529581529582,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.126225977474963e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006304915528744459
+      "mae_foreground": 0.006060103420168161
     },
     {
       "name": "eye_-30_-30_open",
@@ -701,9 +701,9 @@
       "eye_visible_actual": 1743,
       "eye_iou": 0.962451684152402,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.890255687022568e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011410713195800781
+      "mae_foreground": 0.013470941223204136
     },
     {
       "name": "eye_-30_-30_closed",
@@ -719,9 +719,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.91989133211965e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011254136450588703
+      "mae_foreground": 0.013398795388638973
     },
     {
       "name": "eye_-30_-30_left",
@@ -737,9 +737,9 @@
       "eye_visible_actual": 752,
       "eye_iou": 0.9591836734693877,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.91989133211965e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011310151778161526
+      "mae_foreground": 0.013409178704023361
     },
     {
       "name": "eye_-30_-30_right",
@@ -755,9 +755,9 @@
       "eye_visible_actual": 991,
       "eye_iou": 0.9649464459591042,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.890255687022568e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011354697868227959
+      "mae_foreground": 0.013460556045174599
     },
     {
       "name": "eye_-30_0_open",
@@ -773,9 +773,9 @@
       "eye_visible_actual": 1762,
       "eye_iou": 0.9658965896589659,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.007007061969488859
+      "mae_foreground": 0.006761521566659212
     },
     {
       "name": "eye_-30_0_closed",
@@ -791,9 +791,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006783377844840288
+      "mae_foreground": 0.0066108787432312965
     },
     {
       "name": "eye_-30_0_left",
@@ -809,9 +809,9 @@
       "eye_visible_actual": 754,
       "eye_iou": 0.9666666666666667,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.613260888079767e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006894036661833525
+      "mae_foreground": 0.006677396595478058
     },
     {
       "name": "eye_-30_0_right",
@@ -827,9 +827,9 @@
       "eye_visible_actual": 1008,
       "eye_iou": 0.9653179190751445,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006896431092172861
+      "mae_foreground": 0.006695031188428402
     },
     {
       "name": "eye_-30_30_open",
@@ -845,9 +845,9 @@
       "eye_visible_actual": 1185,
       "eye_iou": 0.947242206235012,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006475861184298992
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.006463949102908373
     },
     {
       "name": "eye_-30_30_closed",
@@ -863,9 +863,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.57763671875e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006351190153509378
+      "mae_foreground": 0.006281252484768629
     },
     {
       "name": "eye_-30_30_left",
@@ -881,9 +881,9 @@
       "eye_visible_actual": 461,
       "eye_iou": 0.9408163265306122,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006381852086633444
+      "mae_foreground": 0.0063554695807397366
     },
     {
       "name": "eye_-30_30_right",
@@ -899,9 +899,9 @@
       "eye_visible_actual": 724,
       "eye_iou": 0.9513797634691196,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006445196457207203
+      "source_seam_max_px": 4.57763671875e-05,
+      "source_seam_p95_px": 7.152557373046875e-07,
+      "mae_foreground": 0.006388608831912279
     },
     {
       "name": "eye_0_-30_open",
@@ -917,9 +917,9 @@
       "eye_visible_actual": 2037,
       "eye_iou": 0.9695383150880533,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.890255687022568e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011578706093132496
+      "mae_foreground": 0.009206176735460758
     },
     {
       "name": "eye_0_-30_closed",
@@ -935,9 +935,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.890255687022568e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011434467509388924
+      "mae_foreground": 0.009106728248298168
     },
     {
       "name": "eye_0_-30_left",
@@ -953,9 +953,9 @@
       "eye_visible_actual": 1018,
       "eye_iou": 0.9686013320647003,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01150643453001976
+      "source_seam_max_px": 6.890255687022568e-05,
+      "source_seam_p95_px": 8.940696716300462e-09,
+      "mae_foreground": 0.009150940924882889
     },
     {
       "name": "eye_0_-30_right",
@@ -971,9 +971,9 @@
       "eye_visible_actual": 1019,
       "eye_iou": 0.9704761904761905,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.867945032591516e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011506708338856697
+      "mae_foreground": 0.009161933325231075
     },
     {
       "name": "eye_0_0_open",
@@ -989,9 +989,9 @@
       "eye_visible_actual": 2058,
       "eye_iou": 0.9739706578324657,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.00617292569950223
+      "mae_foreground": 0.0061139995232224464
     },
     {
       "name": "eye_0_0_closed",
@@ -1007,9 +1007,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 5.117953439712043e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.005943248048424721
+      "mae_foreground": 0.005937898065894842
     },
     {
       "name": "eye_0_0_left",
@@ -1025,9 +1025,9 @@
       "eye_visible_actual": 1029,
       "eye_iou": 0.9744318181818182,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 5.117953439712043e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.00606358190998435
+      "mae_foreground": 0.006030810531228781
     },
     {
       "name": "eye_0_0_right",
@@ -1043,9 +1043,9 @@
       "eye_visible_actual": 1029,
       "eye_iou": 0.9735099337748344,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006052585318684578
+      "mae_foreground": 0.006021080072969198
     },
     {
       "name": "eye_0_30_open",
@@ -1061,9 +1061,9 @@
       "eye_visible_actual": 1394,
       "eye_iou": 0.9547945205479452,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.0063189356587827206
+      "source_seam_max_px": 3.8384650797840325e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.0060937851667404175
     },
     {
       "name": "eye_0_30_closed",
@@ -1079,9 +1079,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 5.117953439712043e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006105608306825161
+      "mae_foreground": 0.00588550791144371
     },
     {
       "name": "eye_0_30_left",
@@ -1097,9 +1097,9 @@
       "eye_visible_actual": 697,
       "eye_iou": 0.9547945205479452,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006218400783836842
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 1.7881393432617188e-07,
+      "mae_foreground": 0.005986621603369713
     },
     {
       "name": "eye_0_30_right",
@@ -1115,9 +1115,9 @@
       "eye_visible_actual": 697,
       "eye_iou": 0.9547945205479452,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.0062061394564807415
+      "source_seam_max_px": 3.8384650797840325e-05,
+      "source_seam_p95_px": 7.152557373046875e-07,
+      "mae_foreground": 0.005992668215185404
     },
     {
       "name": "eye_30_-30_open",
@@ -1133,9 +1133,9 @@
       "eye_visible_actual": 1752,
       "eye_iou": 0.9582188015393073,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.867945032591516e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014498956501483917
+      "mae_foreground": 0.011959299445152283
     },
     {
       "name": "eye_30_-30_closed",
@@ -1151,9 +1151,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.866455078125e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014372564852237701
+      "mae_foreground": 0.011854826472699642
     },
     {
       "name": "eye_30_-30_left",
@@ -1169,9 +1169,9 @@
       "eye_visible_actual": 1000,
       "eye_iou": 0.957487922705314,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.866455078125e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014462941326200962
+      "mae_foreground": 0.011917666532099247
     },
     {
       "name": "eye_30_-30_right",
@@ -1187,9 +1187,9 @@
       "eye_visible_actual": 752,
       "eye_iou": 0.9591836734693877,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.867945032591516e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014408553950488567
+      "mae_foreground": 0.011896434240043163
     },
     {
       "name": "eye_30_0_open",
@@ -1205,9 +1205,9 @@
       "eye_visible_actual": 1761,
       "eye_iou": 0.9680440771349862,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.473755931273324e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.007330555468797684
+      "mae_foreground": 0.006664821412414312
     },
     {
       "name": "eye_30_0_closed",
@@ -1223,9 +1223,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.007131979800760746
+      "mae_foreground": 0.006510395091027021
     },
     {
       "name": "eye_30_0_left",
@@ -1241,9 +1241,9 @@
       "eye_visible_actual": 1002,
       "eye_iou": 0.9718719689621726,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.007250212132930756
+      "mae_foreground": 0.006604022812098265
     },
     {
       "name": "eye_30_0_right",
@@ -1259,9 +1259,9 @@
       "eye_visible_actual": 759,
       "eye_iou": 0.9630102040816326,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.473755931273324e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.0072122542187571526
+      "mae_foreground": 0.006571125239133835
     },
     {
       "name": "eye_30_30_open",
@@ -1277,9 +1277,9 @@
       "eye_visible_actual": 1185,
       "eye_iou": 0.9487590072057646,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.126225977474963e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006492391228675842
+      "mae_foreground": 0.006238788831979036
     },
     {
       "name": "eye_30_30_closed",
@@ -1295,9 +1295,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.57763671875e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006318071857094765
+      "mae_foreground": 0.006067738402634859
     },
     {
       "name": "eye_30_30_left",
@@ -1313,9 +1313,9 @@
       "eye_visible_actual": 724,
       "eye_iou": 0.9538866930171278,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.57763671875e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006459701340645552
+      "mae_foreground": 0.006173526868224144
     },
     {
       "name": "eye_30_30_right",
@@ -1331,9 +1331,9 @@
       "eye_visible_actual": 461,
       "eye_iou": 0.9408163265306122,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.126225977474963e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.0063507650047540665
+      "mae_foreground": 0.006133004557341337
     },
     {
       "name": "eye_45_-30_open",
@@ -1349,9 +1349,9 @@
       "eye_visible_actual": 1359,
       "eye_iou": 0.9604240282685512,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01458919607102871
+      "source_seam_max_px": 6.866455078125e-05,
+      "source_seam_p95_px": 1.6093254089348964e-07,
+      "mae_foreground": 0.012265868484973907
     },
     {
       "name": "eye_45_-30_closed",
@@ -1367,9 +1367,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 7.237879166034804e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014407212845981121
+      "mae_foreground": 0.012141216546297073
     },
     {
       "name": "eye_45_-30_left",
@@ -1385,9 +1385,9 @@
       "eye_visible_actual": 878,
       "eye_iou": 0.9637760702524698,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 7.237879166034804e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014537932351231575
+      "mae_foreground": 0.012233691290020943
     },
     {
       "name": "eye_45_-30_right",
@@ -1403,9 +1403,9 @@
       "eye_visible_actual": 481,
       "eye_iou": 0.9543650793650794,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 6.866455078125e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014458437450230122
+      "mae_foreground": 0.012173357419669628
     },
     {
       "name": "eye_45_0_open",
@@ -1421,9 +1421,9 @@
       "eye_visible_actual": 1393,
       "eye_iou": 0.9606896551724138,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 5.117953439712043e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011056162416934967
+      "mae_foreground": 0.009205669164657593
     },
     {
       "name": "eye_45_0_closed",
@@ -1438,10 +1438,10 @@
       "eye_visible_ref": 0,
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "interior_crack_pixels": 1,
+      "source_seam_max_px": 4.8553169484549924e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.010891757905483246
+      "mae_foreground": 0.009067320264875889
     },
     {
       "name": "eye_45_0_left",
@@ -1457,9 +1457,9 @@
       "eye_visible_actual": 878,
       "eye_iou": 0.9627192982456141,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.57763671875e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.010999752208590508
+      "mae_foreground": 0.009152479469776154
     },
     {
       "name": "eye_45_0_right",
@@ -1475,9 +1475,9 @@
       "eye_visible_actual": 515,
       "eye_iou": 0.9572490706319703,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 5.117953439712043e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01094816904515028
+      "mae_foreground": 0.009119205176830292
     },
     {
       "name": "eye_45_30_open",
@@ -1493,9 +1493,9 @@
       "eye_visible_actual": 925,
       "eye_iou": 0.9477459016393442,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.126225977474963e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006257674656808376
+      "mae_foreground": 0.0061623104847967625
     },
     {
       "name": "eye_45_30_closed",
@@ -1511,9 +1511,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.57763671875e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.0061083585023880005
+      "mae_foreground": 0.00600480567663908
     },
     {
       "name": "eye_45_30_left",
@@ -1529,9 +1529,9 @@
       "eye_visible_actual": 657,
       "eye_iou": 0.9563318777292577,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.57763671875e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.00623856857419014
+      "mae_foreground": 0.006104084197431803
     },
     {
       "name": "eye_45_30_right",
@@ -1547,9 +1547,9 @@
       "eye_visible_actual": 268,
       "eye_iou": 0.9273356401384083,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.126225977474963e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.006127423141151667
+      "mae_foreground": 0.006063349079340696
     },
     {
       "name": "sweep_yaw_000",
@@ -1566,10 +1566,10 @@
       "eye_visible_ref": 577,
       "eye_visible_actual": 519,
       "eye_iou": 0.8544839255499154,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.015172278508543968
+      "interior_crack_pixels": 2,
+      "source_seam_max_px": 6.866455078125e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.014370998367667198
     },
     {
       "name": "sweep_yaw_001",
@@ -1586,10 +1586,10 @@
       "eye_visible_ref": 622,
       "eye_visible_actual": 553,
       "eye_iou": 0.8533123028391167,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.016730282455682755
+      "interior_crack_pixels": 2,
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.016423076391220093
     },
     {
       "name": "sweep_yaw_002",
@@ -1606,10 +1606,10 @@
       "eye_visible_ref": 663,
       "eye_visible_actual": 594,
       "eye_iou": 0.8323615160349854,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.017093805596232414
+      "interior_crack_pixels": 2,
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.01621227338910103
     },
     {
       "name": "sweep_yaw_003",
@@ -1626,10 +1626,10 @@
       "eye_visible_ref": 694,
       "eye_visible_actual": 626,
       "eye_iou": 0.8435754189944135,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.015550262294709682
+      "interior_crack_pixels": 2,
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.014974238350987434
     },
     {
       "name": "sweep_yaw_004",
@@ -1646,10 +1646,10 @@
       "eye_visible_ref": 734,
       "eye_visible_actual": 665,
       "eye_iou": 0.8628495339547271,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.012414278462529182
+      "interior_crack_pixels": 2,
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.011893589049577713
     },
     {
       "name": "sweep_yaw_005",
@@ -1666,10 +1666,10 @@
       "eye_visible_ref": 770,
       "eye_visible_actual": 700,
       "eye_iou": 0.8918918918918919,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.00959110353142023
+      "interior_crack_pixels": 2,
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.009369565173983574
     },
     {
       "name": "sweep_yaw_006",
@@ -1686,10 +1686,10 @@
       "eye_visible_ref": 797,
       "eye_visible_actual": 725,
       "eye_iou": 0.8766954377311961,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011809186078608036
+      "interior_crack_pixels": 3,
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.011606939136981964
     },
     {
       "name": "sweep_yaw_007",
@@ -1706,10 +1706,10 @@
       "eye_visible_ref": 822,
       "eye_visible_actual": 749,
       "eye_iou": 0.8724672228843862,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.012952347286045551
+      "interior_crack_pixels": 5,
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.012911233119666576
     },
     {
       "name": "sweep_yaw_008",
@@ -1726,10 +1726,10 @@
       "eye_visible_ref": 855,
       "eye_visible_actual": 774,
       "eye_iou": 0.8767281105990783,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.012495333328843117
+      "interior_crack_pixels": 5,
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 3.198720899820027e-06,
+      "mae_foreground": 0.012482792139053345
     },
     {
       "name": "sweep_yaw_009",
@@ -1746,10 +1746,10 @@
       "eye_visible_ref": 871,
       "eye_visible_actual": 804,
       "eye_iou": 0.8862612612612613,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011120792478322983
+      "interior_crack_pixels": 5,
+      "source_seam_max_px": 4.57763671875e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.011089744046330452
     },
     {
       "name": "sweep_yaw_010",
@@ -1766,10 +1766,10 @@
       "eye_visible_ref": 890,
       "eye_visible_actual": 826,
       "eye_iou": 0.9151785714285714,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.009075361303985119
+      "interior_crack_pixels": 5,
+      "source_seam_max_px": 7.237879166034804e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.009054464288055897
     },
     {
       "name": "sweep_yaw_011",
@@ -1786,10 +1786,10 @@
       "eye_visible_ref": 910,
       "eye_visible_actual": 837,
       "eye_iou": 0.9092896174863389,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01136026345193386
+      "interior_crack_pixels": 6,
+      "source_seam_max_px": 6.961169277532447e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.011365040205419064
     },
     {
       "name": "sweep_yaw_012",
@@ -1806,10 +1806,10 @@
       "eye_visible_ref": 927,
       "eye_visible_actual": 847,
       "eye_iou": 0.9075268817204301,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01276727020740509
+      "interior_crack_pixels": 6,
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.012745513580739498
     },
     {
       "name": "sweep_yaw_013",
@@ -1826,10 +1826,10 @@
       "eye_visible_ref": 939,
       "eye_visible_actual": 862,
       "eye_iou": 0.8977871443624869,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.012668078765273094
+      "interior_crack_pixels": 8,
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.012625188566744328
     },
     {
       "name": "sweep_yaw_014",
@@ -1846,10 +1846,10 @@
       "eye_visible_ref": 951,
       "eye_visible_actual": 873,
       "eye_iou": 0.9,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011103155091404915
+      "interior_crack_pixels": 7,
+      "source_seam_max_px": 7.327794155997675e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.011075993999838829
     },
     {
       "name": "sweep_yaw_015",
@@ -1866,10 +1866,10 @@
       "eye_visible_ref": 960,
       "eye_visible_actual": 890,
       "eye_iou": 0.9151138716356108,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.009071468375623226
+      "interior_crack_pixels": 6,
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.00902438722550869
     },
     {
       "name": "sweep_yaw_016",
@@ -1886,10 +1886,10 @@
       "eye_visible_ref": 961,
       "eye_visible_actual": 888,
       "eye_iou": 0.9081527347781218,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01137450896203518
+      "interior_crack_pixels": 5,
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 4.0460974570458275e-06,
+      "mae_foreground": 0.011206021532416344
     },
     {
       "name": "sweep_yaw_017",
@@ -1906,10 +1906,10 @@
       "eye_visible_ref": 963,
       "eye_visible_actual": 893,
       "eye_iou": 0.9016393442622951,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01292297150939703
+      "interior_crack_pixels": 5,
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.01272586826235056
     },
     {
       "name": "sweep_yaw_018",
@@ -1926,10 +1926,10 @@
       "eye_visible_ref": 960,
       "eye_visible_actual": 891,
       "eye_iou": 0.9062821833161689,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.013062653131783009
+      "interior_crack_pixels": 5,
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.012855164706707
     },
     {
       "name": "sweep_yaw_019",
@@ -1946,10 +1946,10 @@
       "eye_visible_ref": 959,
       "eye_visible_actual": 889,
       "eye_iou": 0.9071207430340558,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011843552812933922
+      "interior_crack_pixels": 4,
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.01153489574790001
     },
     {
       "name": "sweep_yaw_020",
@@ -1966,10 +1966,10 @@
       "eye_visible_ref": 952,
       "eye_visible_actual": 891,
       "eye_iou": 0.9197916666666667,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.010490017011761665
+      "interior_crack_pixels": 4,
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.009514754638075829
     },
     {
       "name": "sweep_yaw_021",
@@ -1986,10 +1986,10 @@
       "eye_visible_ref": 938,
       "eye_visible_actual": 878,
       "eye_iou": 0.907563025210084,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.013007260859012604
+      "interior_crack_pixels": 6,
+      "source_seam_max_px": 4.57763671875e-05,
+      "source_seam_p95_px": 2.9314645532326976e-06,
+      "mae_foreground": 0.011670053005218506
     },
     {
       "name": "sweep_yaw_022",
@@ -2006,10 +2006,10 @@
       "eye_visible_ref": 932,
       "eye_visible_actual": 869,
       "eye_iou": 0.8878406708595388,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014942958019673824
+      "interior_crack_pixels": 6,
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.013366402126848698
     },
     {
       "name": "sweep_yaw_023",
@@ -2026,10 +2026,10 @@
       "eye_visible_ref": 919,
       "eye_visible_actual": 855,
       "eye_iou": 0.8832271762208068,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01413825061172247
+      "interior_crack_pixels": 3,
+      "source_seam_max_px": 4.586568701328678e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.014179463498294353
     },
     {
       "name": "sweep_yaw_024",
@@ -2046,10 +2046,10 @@
       "eye_visible_ref": 896,
       "eye_visible_actual": 842,
       "eye_iou": 0.8932461873638344,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.012635640799999237
+      "interior_crack_pixels": 2,
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.01231834851205349
     },
     {
       "name": "sweep_yaw_025",
@@ -2066,10 +2066,10 @@
       "eye_visible_ref": 877,
       "eye_visible_actual": 829,
       "eye_iou": 0.9040178571428571,
-      "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.010551315732300282
+      "interior_crack_pixels": 1,
+      "source_seam_max_px": 6.866455078125e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.01039910688996315
     },
     {
       "name": "sweep_yaw_026",
@@ -2087,9 +2087,9 @@
       "eye_visible_actual": 803,
       "eye_iou": 0.8822197055492639,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014153829775750637
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.012758128345012665
     },
     {
       "name": "sweep_yaw_027",
@@ -2107,9 +2107,9 @@
       "eye_visible_actual": 780,
       "eye_iou": 0.8723897911832946,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.016596699133515358
+      "source_seam_max_px": 6.866455078125e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.016016153618693352
     },
     {
       "name": "sweep_yaw_028",
@@ -2127,9 +2127,9 @@
       "eye_visible_actual": 757,
       "eye_iou": 0.8610451306413301,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.019508009776473045
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.017750250175595284
     },
     {
       "name": "sweep_yaw_029",
@@ -2147,9 +2147,9 @@
       "eye_visible_actual": 732,
       "eye_iou": 0.8620689655172413,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01736864261329174
+      "source_seam_max_px": 4.57763671875e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.016373787075281143
     },
     {
       "name": "sweep_yaw_030",
@@ -2167,9 +2167,9 @@
       "eye_visible_actual": 710,
       "eye_iou": 0.8681177976952625,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014079028740525246
+      "source_seam_max_px": 7.327794155997675e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.013316868804395199
     },
     {
       "name": "sweep_pitch_000",
@@ -2186,9 +2186,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.015743495896458626
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 7.152557373046875e-07,
+      "mae_foreground": 0.01447018701583147
     },
     {
       "name": "sweep_pitch_001",
@@ -2205,9 +2205,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 2,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.018866274505853653
+      "source_seam_max_px": 6.890255687022568e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.016597718000411987
     },
     {
       "name": "sweep_pitch_002",
@@ -2224,9 +2224,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.0202760212123394
+      "source_seam_max_px": 9.226521776159533e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.019668901339173317
     },
     {
       "name": "sweep_pitch_003",
@@ -2243,9 +2243,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.019654791802167892
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.019393105059862137
     },
     {
       "name": "sweep_pitch_004",
@@ -2262,9 +2262,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.016936790198087692
+      "source_seam_max_px": 6.866455078125e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.016498057171702385
     },
     {
       "name": "sweep_pitch_005",
@@ -2281,9 +2281,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014480567537248135
+      "source_seam_max_px": 6.866455078125e-05,
+      "source_seam_p95_px": 7.152557373046875e-07,
+      "mae_foreground": 0.013347126543521881
     },
     {
       "name": "sweep_pitch_006",
@@ -2300,9 +2300,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.015510627999901772
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.014213629066944122
     },
     {
       "name": "sweep_pitch_007",
@@ -2319,9 +2319,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01537043321877718
+      "source_seam_max_px": 6.866455078125e-05,
+      "source_seam_p95_px": 7.152557373046875e-07,
+      "mae_foreground": 0.014518819749355316
     },
     {
       "name": "sweep_pitch_008",
@@ -2338,9 +2338,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014538300223648548
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.013643793761730194
     },
     {
       "name": "sweep_pitch_009",
@@ -2357,9 +2357,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.013414319604635239
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.011802013032138348
     },
     {
       "name": "sweep_pitch_010",
@@ -2376,9 +2376,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.010556967929005623
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 1.7881393432617188e-07,
+      "mae_foreground": 0.009908569045364857
     },
     {
       "name": "sweep_pitch_011",
@@ -2395,9 +2395,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.013036074116826057
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 2.86102294921875e-06,
+      "mae_foreground": 0.012599054723978043
     },
     {
       "name": "sweep_pitch_012",
@@ -2414,9 +2414,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 1,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.014259938150644302
+      "source_seam_max_px": 7.237879166034804e-05,
+      "source_seam_p95_px": 3.5762786865234375e-07,
+      "mae_foreground": 0.014018243178725243
     },
     {
       "name": "sweep_pitch_013",
@@ -2433,9 +2433,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 2,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01439792662858963
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.014117034152150154
     },
     {
       "name": "sweep_pitch_014",
@@ -2452,9 +2452,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01294691488146782
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 7.152557373046875e-07,
+      "mae_foreground": 0.012524420395493507
     },
     {
       "name": "sweep_pitch_015",
@@ -2471,9 +2471,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.010747435502707958
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 4.470348358154297e-08,
+      "mae_foreground": 0.010135075077414513
     },
     {
       "name": "sweep_pitch_016",
@@ -2490,9 +2490,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 1,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.0125683369114995
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.012037847191095352
     },
     {
       "name": "sweep_pitch_017",
@@ -2509,9 +2509,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 6,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.013089731335639954
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 7.152557373046875e-07,
+      "mae_foreground": 0.013049688190221786
     },
     {
       "name": "sweep_pitch_018",
@@ -2528,9 +2528,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.013095253147184849
+      "source_seam_max_px": 9.1552734375e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.013061074540019035
     },
     {
       "name": "sweep_pitch_019",
@@ -2547,9 +2547,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.01162512693554163
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 1.430511474609375e-06,
+      "mae_foreground": 0.011643101461231709
     },
     {
       "name": "sweep_pitch_020",
@@ -2566,9 +2566,9 @@
       "eye_visible_actual": 0,
       "eye_iou": 0.0,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.009172514081001282
+      "mae_foreground": 0.00899285264313221
     },
     {
       "name": "sweep_roll_000",
@@ -2586,9 +2586,9 @@
       "eye_visible_actual": 1526,
       "eye_iou": 0.8967587034813925,
       "interior_crack_pixels": 101,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.021820638328790665
+      "source_seam_max_px": 4.888918158712881e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.022017167881131172
     },
     {
       "name": "sweep_roll_001",
@@ -2606,9 +2606,9 @@
       "eye_visible_actual": 1537,
       "eye_iou": 0.8863905325443787,
       "interior_crack_pixels": 113,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.02226770855486393
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.02258494310081005
     },
     {
       "name": "sweep_roll_002",
@@ -2626,9 +2626,9 @@
       "eye_visible_actual": 1555,
       "eye_iou": 0.880187025131502,
       "interior_crack_pixels": 127,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.022395169362425804
+      "source_seam_max_px": 5.835364738761274e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.022748246788978577
     },
     {
       "name": "sweep_roll_003",
@@ -2646,9 +2646,9 @@
       "eye_visible_actual": 1570,
       "eye_iou": 0.8759420289855072,
       "interior_crack_pixels": 148,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.022799771279096603
+      "source_seam_max_px": 4.586568701328678e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.023113347589969635
     },
     {
       "name": "sweep_roll_004",
@@ -2666,9 +2666,9 @@
       "eye_visible_actual": 1572,
       "eye_iou": 0.8718390804597701,
       "interior_crack_pixels": 160,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.022862626239657402
+      "source_seam_max_px": 4.57763671875e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.02273496240377426
     },
     {
       "name": "sweep_roll_005",
@@ -2686,9 +2686,9 @@
       "eye_visible_actual": 1595,
       "eye_iou": 0.8693923906871096,
       "interior_crack_pixels": 169,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.022537820041179657
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.02184160053730011
     },
     {
       "name": "sweep_roll_006",
@@ -2706,9 +2706,9 @@
       "eye_visible_actual": 1598,
       "eye_iou": 0.8601909039865244,
       "interior_crack_pixels": 142,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.021919377148151398
+      "source_seam_max_px": 4.613260888079767e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.021290838718414307
     },
     {
       "name": "sweep_roll_007",
@@ -2726,9 +2726,9 @@
       "eye_visible_actual": 1612,
       "eye_iou": 0.8664058133035215,
       "interior_crack_pixels": 124,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.021081162616610527
+      "source_seam_max_px": 4.57763671875e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.020748592913150787
     },
     {
       "name": "sweep_roll_008",
@@ -2746,9 +2746,9 @@
       "eye_visible_actual": 1635,
       "eye_iou": 0.8666297731045932,
       "interior_crack_pixels": 122,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.020503055304288864
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.0204473789781332
     },
     {
       "name": "sweep_roll_009",
@@ -2766,9 +2766,9 @@
       "eye_visible_actual": 1634,
       "eye_iou": 0.8806218767351471,
       "interior_crack_pixels": 123,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.020366787910461426
+      "source_seam_max_px": 4.586568701328678e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.020356429740786552
     },
     {
       "name": "sweep_roll_010",
@@ -2786,9 +2786,9 @@
       "eye_visible_actual": 1651,
       "eye_iou": 0.886677722498618,
       "interior_crack_pixels": 148,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.020569436252117157
+      "source_seam_max_px": 6.961169277532447e-05,
+      "source_seam_p95_px": 3.80908255547955e-06,
+      "mae_foreground": 0.02039203606545925
     },
     {
       "name": "sweep_roll_011",
@@ -2806,9 +2806,9 @@
       "eye_visible_actual": 1669,
       "eye_iou": 0.8828680897646415,
       "interior_crack_pixels": 171,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.02123318798840046
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.020991165190935135
     },
     {
       "name": "sweep_roll_012",
@@ -2826,9 +2826,9 @@
       "eye_visible_actual": 1677,
       "eye_iou": 0.8674568965517241,
       "interior_crack_pixels": 197,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.022011136636137962
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.021752217784523964
     },
     {
       "name": "sweep_roll_013",
@@ -2846,9 +2846,9 @@
       "eye_visible_actual": 1690,
       "eye_iou": 0.864,
       "interior_crack_pixels": 203,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.02260339818894863
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.02237100899219513
     },
     {
       "name": "sweep_roll_014",
@@ -2866,9 +2866,9 @@
       "eye_visible_actual": 1703,
       "eye_iou": 0.854957805907173,
       "interior_crack_pixels": 208,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.023033112287521362
+      "source_seam_max_px": 3.618939583017402e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.022801145911216736
     },
     {
       "name": "sweep_roll_015",
@@ -2886,9 +2886,9 @@
       "eye_visible_actual": 1717,
       "eye_iou": 0.8598425196850393,
       "interior_crack_pixels": 221,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.02374015562236309
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.02352130599319935
     },
     {
       "name": "sweep_roll_016",
@@ -2906,9 +2906,9 @@
       "eye_visible_actual": 1732,
       "eye_iou": 0.859375,
       "interior_crack_pixels": 232,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.024091634899377823
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.023851072415709496
     },
     {
       "name": "sweep_roll_017",
@@ -2926,9 +2926,9 @@
       "eye_visible_actual": 1728,
       "eye_iou": 0.8595127008812856,
       "interior_crack_pixels": 212,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.024100584909319878
+      "source_seam_max_px": 5.117953439712043e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.02386130392551422
     },
     {
       "name": "sweep_roll_018",
@@ -2946,9 +2946,9 @@
       "eye_visible_actual": 1747,
       "eye_iou": 0.8643630737493554,
       "interior_crack_pixels": 201,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.02394452877342701
+      "source_seam_max_px": 4.718519926778023e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.02356589213013649
     },
     {
       "name": "sweep_roll_019",
@@ -2966,9 +2966,9 @@
       "eye_visible_actual": 1757,
       "eye_iou": 0.8799793067770305,
       "interior_crack_pixels": 198,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.023505793884396553
+      "source_seam_max_px": 4.57763671875e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.023263823240995407
     },
     {
       "name": "sweep_roll_020",
@@ -2985,10 +2985,10 @@
       "eye_visible_ref": 1887,
       "eye_visible_actual": 1764,
       "eye_iou": 0.8877973112719751,
-      "interior_crack_pixels": 211,
-      "source_seam_max_px": 0.0,
-      "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.023067185655236244
+      "interior_crack_pixels": 212,
+      "source_seam_max_px": 6.890255687022568e-05,
+      "source_seam_p95_px": 5.7220458984375e-06,
+      "mae_foreground": 0.022841714322566986
     },
     {
       "name": "gaze_side_-45_-1",
@@ -3003,9 +3003,9 @@
       "eye_visible_actual": 1081,
       "eye_iou": 0.9235500878734623,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.00865095853805542
+      "mae_foreground": 0.007505031768232584
     },
     {
       "name": "gaze_side_-45_1",
@@ -3020,9 +3020,9 @@
       "eye_visible_actual": 1099,
       "eye_iou": 0.9425385934819898,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 4.718519926778023e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.008567096665501595
+      "mae_foreground": 0.007420663721859455
     },
     {
       "name": "gaze_side_45_-1",
@@ -3037,9 +3037,9 @@
       "eye_visible_actual": 1101,
       "eye_iou": 0.9434447300771208,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 5.117953439712043e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011014658957719803
+      "mae_foreground": 0.009164165705442429
     },
     {
       "name": "gaze_side_45_1",
@@ -3054,9 +3054,9 @@
       "eye_visible_actual": 1060,
       "eye_iou": 0.9417562724014337,
       "interior_crack_pixels": 0,
-      "source_seam_max_px": 0.0,
+      "source_seam_max_px": 5.117953439712043e-05,
       "source_seam_p95_px": 0.0,
-      "mae_foreground": 0.011087569408118725
+      "mae_foreground": 0.009237549267709255
     }
   ],
   "transitions": [
@@ -3064,491 +3064,491 @@
       "sequence": "yaw",
       "from": "sweep_yaw_000",
       "to": "sweep_yaw_001",
-      "false_jump_pixels": 1292,
-      "temporal_residual_mae": 0.005817091092467308
+      "false_jump_pixels": 1198,
+      "temporal_residual_mae": 0.005733592435717583
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_001",
       "to": "sweep_yaw_002",
-      "false_jump_pixels": 2054,
-      "temporal_residual_mae": 0.006308314856141806
+      "false_jump_pixels": 2019,
+      "temporal_residual_mae": 0.006209826562553644
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_002",
       "to": "sweep_yaw_003",
-      "false_jump_pixels": 1861,
-      "temporal_residual_mae": 0.00620124489068985
+      "false_jump_pixels": 1972,
+      "temporal_residual_mae": 0.0062651243060827255
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_003",
       "to": "sweep_yaw_004",
-      "false_jump_pixels": 1820,
-      "temporal_residual_mae": 0.006052635610103607
+      "false_jump_pixels": 1653,
+      "temporal_residual_mae": 0.0058834608644247055
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_004",
       "to": "sweep_yaw_005",
-      "false_jump_pixels": 1449,
-      "temporal_residual_mae": 0.0049062431789934635
+      "false_jump_pixels": 1340,
+      "temporal_residual_mae": 0.004746845457702875
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_005",
       "to": "sweep_yaw_006",
-      "false_jump_pixels": 1799,
-      "temporal_residual_mae": 0.004962765146046877
+      "false_jump_pixels": 1558,
+      "temporal_residual_mae": 0.004804583732038736
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_006",
       "to": "sweep_yaw_007",
-      "false_jump_pixels": 1747,
-      "temporal_residual_mae": 0.005427765194326639
+      "false_jump_pixels": 1838,
+      "temporal_residual_mae": 0.005506521090865135
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_007",
       "to": "sweep_yaw_008",
-      "false_jump_pixels": 1938,
-      "temporal_residual_mae": 0.0060364562086761
+      "false_jump_pixels": 1974,
+      "temporal_residual_mae": 0.006093916948884726
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_008",
       "to": "sweep_yaw_009",
-      "false_jump_pixels": 1595,
-      "temporal_residual_mae": 0.005800062324851751
+      "false_jump_pixels": 1543,
+      "temporal_residual_mae": 0.005825962871313095
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_009",
       "to": "sweep_yaw_010",
-      "false_jump_pixels": 543,
-      "temporal_residual_mae": 0.004853535909205675
+      "false_jump_pixels": 549,
+      "temporal_residual_mae": 0.004857528489083052
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_010",
       "to": "sweep_yaw_011",
-      "false_jump_pixels": 1221,
-      "temporal_residual_mae": 0.005196757614612579
+      "false_jump_pixels": 1212,
+      "temporal_residual_mae": 0.005197846796363592
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_011",
       "to": "sweep_yaw_012",
-      "false_jump_pixels": 1896,
-      "temporal_residual_mae": 0.006801437586545944
+      "false_jump_pixels": 1879,
+      "temporal_residual_mae": 0.006802667398005724
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_012",
       "to": "sweep_yaw_013",
-      "false_jump_pixels": 2077,
-      "temporal_residual_mae": 0.00747037073597312
+      "false_jump_pixels": 2013,
+      "temporal_residual_mae": 0.007441351190209389
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_013",
       "to": "sweep_yaw_014",
-      "false_jump_pixels": 1620,
-      "temporal_residual_mae": 0.006816823035478592
+      "false_jump_pixels": 1563,
+      "temporal_residual_mae": 0.006807561963796616
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_014",
       "to": "sweep_yaw_015",
-      "false_jump_pixels": 882,
-      "temporal_residual_mae": 0.0052685365080833435
+      "false_jump_pixels": 812,
+      "temporal_residual_mae": 0.005255418363958597
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_015",
       "to": "sweep_yaw_016",
-      "false_jump_pixels": 981,
-      "temporal_residual_mae": 0.005418082699179649
+      "false_jump_pixels": 888,
+      "temporal_residual_mae": 0.005360182840377092
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_016",
       "to": "sweep_yaw_017",
-      "false_jump_pixels": 1701,
-      "temporal_residual_mae": 0.0070641436614096165
+      "false_jump_pixels": 1589,
+      "temporal_residual_mae": 0.006976884324103594
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_017",
       "to": "sweep_yaw_018",
-      "false_jump_pixels": 2210,
-      "temporal_residual_mae": 0.007771339267492294
+      "false_jump_pixels": 2177,
+      "temporal_residual_mae": 0.007678912486881018
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_018",
       "to": "sweep_yaw_019",
-      "false_jump_pixels": 2094,
-      "temporal_residual_mae": 0.007187436800450087
+      "false_jump_pixels": 1943,
+      "temporal_residual_mae": 0.007056194823235273
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_019",
       "to": "sweep_yaw_020",
-      "false_jump_pixels": 1706,
-      "temporal_residual_mae": 0.005974015220999718
+      "false_jump_pixels": 1284,
+      "temporal_residual_mae": 0.0055786543525755405
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_020",
       "to": "sweep_yaw_021",
-      "false_jump_pixels": 993,
-      "temporal_residual_mae": 0.005705088842660189
+      "false_jump_pixels": 705,
+      "temporal_residual_mae": 0.005456326529383659
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_021",
       "to": "sweep_yaw_022",
-      "false_jump_pixels": 1900,
-      "temporal_residual_mae": 0.006743378937244415
+      "false_jump_pixels": 1575,
+      "temporal_residual_mae": 0.006457507144659758
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_022",
       "to": "sweep_yaw_023",
-      "false_jump_pixels": 2421,
-      "temporal_residual_mae": 0.007218020036816597
+      "false_jump_pixels": 2290,
+      "temporal_residual_mae": 0.006956337485462427
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_023",
       "to": "sweep_yaw_024",
-      "false_jump_pixels": 1888,
-      "temporal_residual_mae": 0.006392850074917078
+      "false_jump_pixels": 2009,
+      "temporal_residual_mae": 0.0064702644012868404
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_024",
       "to": "sweep_yaw_025",
-      "false_jump_pixels": 1568,
-      "temporal_residual_mae": 0.005662929266691208
+      "false_jump_pixels": 1562,
+      "temporal_residual_mae": 0.005641517695039511
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_025",
       "to": "sweep_yaw_026",
-      "false_jump_pixels": 2449,
-      "temporal_residual_mae": 0.00656667398288846
+      "false_jump_pixels": 1838,
+      "temporal_residual_mae": 0.006014503538608551
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_026",
       "to": "sweep_yaw_027",
-      "false_jump_pixels": 2425,
-      "temporal_residual_mae": 0.007214991841465235
+      "false_jump_pixels": 2661,
+      "temporal_residual_mae": 0.007405553013086319
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_027",
       "to": "sweep_yaw_028",
-      "false_jump_pixels": 3331,
-      "temporal_residual_mae": 0.008337519131600857
+      "false_jump_pixels": 3383,
+      "temporal_residual_mae": 0.008384221233427525
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_028",
       "to": "sweep_yaw_029",
-      "false_jump_pixels": 2349,
-      "temporal_residual_mae": 0.007579823490232229
+      "false_jump_pixels": 1883,
+      "temporal_residual_mae": 0.00714687816798687
     },
     {
       "sequence": "yaw",
       "from": "sweep_yaw_029",
       "to": "sweep_yaw_030",
-      "false_jump_pixels": 1415,
-      "temporal_residual_mae": 0.007214630488306284
+      "false_jump_pixels": 1461,
+      "temporal_residual_mae": 0.007170898839831352
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_000",
       "to": "sweep_pitch_001",
-      "false_jump_pixels": 3053,
-      "temporal_residual_mae": 0.009241788648068905
+      "false_jump_pixels": 2308,
+      "temporal_residual_mae": 0.008287496864795685
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_001",
       "to": "sweep_pitch_002",
-      "false_jump_pixels": 2950,
-      "temporal_residual_mae": 0.010432553477585316
+      "false_jump_pixels": 3354,
+      "temporal_residual_mae": 0.010519159026443958
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_002",
       "to": "sweep_pitch_003",
-      "false_jump_pixels": 3665,
-      "temporal_residual_mae": 0.011203859932720661
+      "false_jump_pixels": 3545,
+      "temporal_residual_mae": 0.011085125617682934
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_003",
       "to": "sweep_pitch_004",
-      "false_jump_pixels": 3910,
-      "temporal_residual_mae": 0.010795734822750092
+      "false_jump_pixels": 3765,
+      "temporal_residual_mae": 0.010491076856851578
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_004",
       "to": "sweep_pitch_005",
-      "false_jump_pixels": 2652,
-      "temporal_residual_mae": 0.0083761690184474
+      "false_jump_pixels": 3819,
+      "temporal_residual_mae": 0.009313806891441345
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_005",
       "to": "sweep_pitch_006",
-      "false_jump_pixels": 2469,
-      "temporal_residual_mae": 0.00816600676625967
+      "false_jump_pixels": 2357,
+      "temporal_residual_mae": 0.00805977825075388
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_006",
       "to": "sweep_pitch_007",
-      "false_jump_pixels": 3132,
-      "temporal_residual_mae": 0.009160632267594337
+      "false_jump_pixels": 2806,
+      "temporal_residual_mae": 0.008827953599393368
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_007",
       "to": "sweep_pitch_008",
-      "false_jump_pixels": 3289,
-      "temporal_residual_mae": 0.009222661145031452
+      "false_jump_pixels": 2881,
+      "temporal_residual_mae": 0.008863018825650215
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_008",
       "to": "sweep_pitch_009",
-      "false_jump_pixels": 3278,
-      "temporal_residual_mae": 0.008613296784460545
+      "false_jump_pixels": 2441,
+      "temporal_residual_mae": 0.007936263456940651
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_009",
       "to": "sweep_pitch_010",
-      "false_jump_pixels": 2646,
-      "temporal_residual_mae": 0.007319899741560221
+      "false_jump_pixels": 1758,
+      "temporal_residual_mae": 0.006591809447854757
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_010",
       "to": "sweep_pitch_011",
-      "false_jump_pixels": 1727,
-      "temporal_residual_mae": 0.006911662872880697
+      "false_jump_pixels": 1780,
+      "temporal_residual_mae": 0.006881506647914648
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_011",
       "to": "sweep_pitch_012",
-      "false_jump_pixels": 2701,
-      "temporal_residual_mae": 0.008392688818275928
+      "false_jump_pixels": 2514,
+      "temporal_residual_mae": 0.008239896968007088
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_012",
       "to": "sweep_pitch_013",
-      "false_jump_pixels": 2725,
-      "temporal_residual_mae": 0.008806354366242886
+      "false_jump_pixels": 2691,
+      "temporal_residual_mae": 0.008799726143479347
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_013",
       "to": "sweep_pitch_014",
-      "false_jump_pixels": 2341,
-      "temporal_residual_mae": 0.00849217176437378
+      "false_jump_pixels": 2296,
+      "temporal_residual_mae": 0.008447808213531971
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_014",
       "to": "sweep_pitch_015",
-      "false_jump_pixels": 1790,
-      "temporal_residual_mae": 0.007306322455406189
+      "false_jump_pixels": 1802,
+      "temporal_residual_mae": 0.007205198984593153
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_015",
       "to": "sweep_pitch_016",
-      "false_jump_pixels": 1731,
-      "temporal_residual_mae": 0.007162023801356554
+      "false_jump_pixels": 1776,
+      "temporal_residual_mae": 0.006936888676136732
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_016",
       "to": "sweep_pitch_017",
-      "false_jump_pixels": 2402,
-      "temporal_residual_mae": 0.008081922307610512
+      "false_jump_pixels": 2393,
+      "temporal_residual_mae": 0.00790761224925518
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_017",
       "to": "sweep_pitch_018",
-      "false_jump_pixels": 2660,
-      "temporal_residual_mae": 0.008257917128503323
+      "false_jump_pixels": 2653,
+      "temporal_residual_mae": 0.008246384561061859
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_018",
       "to": "sweep_pitch_019",
-      "false_jump_pixels": 2519,
-      "temporal_residual_mae": 0.007765008602291346
+      "false_jump_pixels": 2465,
+      "temporal_residual_mae": 0.007738810498267412
     },
     {
       "sequence": "pitch",
       "from": "sweep_pitch_019",
       "to": "sweep_pitch_020",
-      "false_jump_pixels": 1812,
-      "temporal_residual_mae": 0.006350453477352858
+      "false_jump_pixels": 1768,
+      "temporal_residual_mae": 0.006288554053753614
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_000",
       "to": "sweep_roll_001",
-      "false_jump_pixels": 5083,
-      "temporal_residual_mae": 0.011568383313715458
+      "false_jump_pixels": 5309,
+      "temporal_residual_mae": 0.011739835143089294
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_001",
       "to": "sweep_roll_002",
-      "false_jump_pixels": 5309,
-      "temporal_residual_mae": 0.011858408339321613
+      "false_jump_pixels": 5851,
+      "temporal_residual_mae": 0.012264150194823742
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_002",
       "to": "sweep_roll_003",
-      "false_jump_pixels": 5724,
-      "temporal_residual_mae": 0.012270593084394932
+      "false_jump_pixels": 6365,
+      "temporal_residual_mae": 0.012736953794956207
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_003",
       "to": "sweep_roll_004",
-      "false_jump_pixels": 6073,
-      "temporal_residual_mae": 0.012682582251727581
+      "false_jump_pixels": 6406,
+      "temporal_residual_mae": 0.01291618775576353
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_004",
       "to": "sweep_roll_005",
-      "false_jump_pixels": 6212,
-      "temporal_residual_mae": 0.012864322401583195
+      "false_jump_pixels": 5812,
+      "temporal_residual_mae": 0.012532222084701061
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_005",
       "to": "sweep_roll_006",
-      "false_jump_pixels": 5693,
-      "temporal_residual_mae": 0.012642492540180683
+      "false_jump_pixels": 4925,
+      "temporal_residual_mae": 0.012008092366158962
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_006",
       "to": "sweep_roll_007",
-      "false_jump_pixels": 4862,
-      "temporal_residual_mae": 0.012081271968781948
+      "false_jump_pixels": 4261,
+      "temporal_residual_mae": 0.011593107134103775
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_007",
       "to": "sweep_roll_008",
-      "false_jump_pixels": 4227,
-      "temporal_residual_mae": 0.0115051893517375
+      "false_jump_pixels": 3938,
+      "temporal_residual_mae": 0.011305411346256733
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_008",
       "to": "sweep_roll_009",
-      "false_jump_pixels": 3966,
-      "temporal_residual_mae": 0.011296059004962444
+      "false_jump_pixels": 3922,
+      "temporal_residual_mae": 0.0112687973305583
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_009",
       "to": "sweep_roll_010",
-      "false_jump_pixels": 4095,
-      "temporal_residual_mae": 0.011368311941623688
+      "false_jump_pixels": 4006,
+      "temporal_residual_mae": 0.011312468908727169
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_010",
       "to": "sweep_roll_011",
-      "false_jump_pixels": 3937,
-      "temporal_residual_mae": 0.011619210243225098
+      "false_jump_pixels": 3892,
+      "temporal_residual_mae": 0.011586387641727924
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_011",
       "to": "sweep_roll_012",
-      "false_jump_pixels": 4170,
-      "temporal_residual_mae": 0.01226819958537817
+      "false_jump_pixels": 4155,
+      "temporal_residual_mae": 0.01225574966520071
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_012",
       "to": "sweep_roll_013",
-      "false_jump_pixels": 4445,
-      "temporal_residual_mae": 0.012903784401714802
+      "false_jump_pixels": 4466,
+      "temporal_residual_mae": 0.012923049740493298
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_013",
       "to": "sweep_roll_014",
-      "false_jump_pixels": 4678,
-      "temporal_residual_mae": 0.013436231762170792
+      "false_jump_pixels": 4701,
+      "temporal_residual_mae": 0.013468212448060513
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_014",
       "to": "sweep_roll_015",
-      "false_jump_pixels": 4926,
-      "temporal_residual_mae": 0.014001775532960892
+      "false_jump_pixels": 4964,
+      "temporal_residual_mae": 0.014048987068235874
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_015",
       "to": "sweep_roll_016",
-      "false_jump_pixels": 5217,
-      "temporal_residual_mae": 0.014581806026399136
+      "false_jump_pixels": 5243,
+      "temporal_residual_mae": 0.014607671648263931
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_016",
       "to": "sweep_roll_017",
-      "false_jump_pixels": 5252,
-      "temporal_residual_mae": 0.014804312027990818
+      "false_jump_pixels": 5284,
+      "temporal_residual_mae": 0.014845280908048153
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_017",
       "to": "sweep_roll_018",
-      "false_jump_pixels": 5318,
-      "temporal_residual_mae": 0.014899153262376785
+      "false_jump_pixels": 5401,
+      "temporal_residual_mae": 0.01497731078416109
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_018",
       "to": "sweep_roll_019",
-      "false_jump_pixels": 5470,
-      "temporal_residual_mae": 0.014945418573915958
+      "false_jump_pixels": 5409,
+      "temporal_residual_mae": 0.014873545616865158
     },
     {
       "sequence": "roll",
       "from": "sweep_roll_019",
       "to": "sweep_roll_020",
-      "false_jump_pixels": 5264,
-      "temporal_residual_mae": 0.014607008546590805
+      "false_jump_pixels": 5334,
+      "temporal_residual_mae": 0.014638413675129414
     }
   ]
 }

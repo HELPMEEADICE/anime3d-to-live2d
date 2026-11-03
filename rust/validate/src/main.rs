@@ -36,6 +36,14 @@ async fn run() -> Result<()> {
     let model = Arc::new(file::ParsedModel::load(&mut File::open(
         base.join(manifest["FileReferences"]["Moc"].as_str().unwrap()),
     )?)?);
+    let inventory: Vec<Value> = model.artmeshes().into_iter().map(|mesh| {
+        let range=mesh.index_range();
+        json!({"id":mesh.id(),"vertices":mesh.vertex_count(),"culling":mesh.culling(),"invert_mask":mesh.invert_mask(),"texture":mesh.texture(),"clips":mesh.clips().into_iter().map(|m|m.id().to_string()).collect::<Vec<_>>(),"indices":model.index_buffer().unwrap()[range.start as usize..range.end as usize].to_vec()})
+    }).collect();
+    fs::write(
+        out.join("model_inventory.json"),
+        serde_json::to_vec(&inventory)?,
+    )?;
     anyhow::ensure!(
         model.root_draw_group().is_some(),
         "MOC3 has no root draw group"

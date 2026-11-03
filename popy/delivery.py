@@ -3,9 +3,12 @@
 import csv
 import hashlib
 import json
+import re
 import statistics
 import zipfile
+
 from PIL import Image
+
 from .compile_ir import ROOT
 
 
@@ -26,12 +29,14 @@ def main():
     visibility_text = (ROOT / "artifacts/visibility/REPORT.md").read_text(
         encoding="utf8"
     )
+    surfaces = read("artifacts/surfaces/assessment/metrics.json")
+    surface_text = (ROOT / "artifacts/surfaces/REPORT.md").read_text(encoding="utf8")
     performance = read("artifacts/performance.json")
     audit = read("artifacts/scene_audit_repeat.json")
     qrows = {r["name"]: r for r in quality["cases"]}
     brows = {r["name"]: r for r in balanced["cases"]}
     tests = (ROOT / "artifacts/logs/regression.log").read_text(encoding="utf8")
-    if "\nOK\n" not in tests and not tests.rstrip().endswith("OK"):
+    if not re.search(r"\nOK(?: \(skipped=\d+\))?\s*$", tests):
         raise RuntimeError("Do not package a failed regression run")
     destination = ROOT / "delivery"
     destination.mkdir(exist_ok=True)
@@ -44,11 +49,21 @@ def main():
         timings = [c["pose_to_gpu_complete_ms"] for c in rt["cases"]]
         cmo = out / "POPY.cmo3"
         moc = out / "POPY.moc3"
+        rig = read(
+            "artifacts/rig/POPY.rig.json"
+            if profile == "quality"
+            else "artifacts/rig_balanced/POPY.rig.json"
+        )
         if cmo.exists():
             roundtrip = json.loads((out / "cmo_roundtrip.json").read_text())
             assert roundtrip["drawables"] == report["statistics"]["artmesh_count"]
-            assert roundtrip["glues"] == report["statistics"]["seam_welds"]["glues"]
-            assert roundtrip["inverted_masks"] == 16
+            assert roundtrip["glues"] == len(rig["glues"])
+            assert roundtrip["masked_drawables"] == sum(
+                bool(m.get("masked_by")) for m in rig["meshes"]
+            )
+            assert roundtrip["animated_glues"] == sum(
+                bool(g.get("axes")) for g in rig["glues"]
+            )
         info = {
             "profile": profile,
             "target": "Cubism 5.0 / moc3 v5",
@@ -57,7 +72,7 @@ def main():
             "cmo3_bytes": cmo.stat().st_size if cmo.exists() else None,
             "moc3_validation": "Pinned Ayagami parser, driver and GPU renderer; 28 independent Blender geometry/image comparisons"
             + (
-                "; 165 depth-visible eye/seam cases and 70 adjacent transitions"
+                "; 165 eye/seam cases, 70 adjacent transitions and 264 anatomical visibility cases (63 continuous-expression holdouts)"
                 if profile == "quality"
                 else ""
             ),
@@ -90,7 +105,7 @@ def main():
                 ).read_bytes()
             ).hexdigest(),
             "upstream": {
-                "psd2live": "bafabab1a360e208671d39adf5087c62f6cae1f2 + documented draw-leaf sentinel patch",
+                "psd2live": "bafabab1a360e208671d39adf5087c62f6cae1f2 + documented draw-leaf sentinel and CMO3 Glue lookup patches",
                 "ayagami": "0d1d7aa3efe57b1b363b72e672e353c52a9c15d6 unmodified",
             },
             "limits": [
@@ -109,6 +124,7 @@ def main():
         }
         if profile == "quality":
             info["visibility_regression"] = visibility["summary"]
+            info["surface_visibility_regression"] = surfaces["summary"]
         (out / "conversion_metadata.json").write_text(
             json.dumps(info, indent=2), encoding="utf8"
         )
@@ -182,6 +198,10 @@ def main():
 
 {visibility_text.replace("# POPY 遮挡、接缝与连续动作修复", "## 本轮遮挡、接缝与连续动作修复")}
 
+{surface_text.replace("# POPY 睫毛、眉毛与颈部头发遮挡回归", "## 本轮睫毛、眉毛与颈部头发修复")}
+
+表面遮挡的普通着色、RGB 深度诊断及全部样本在 `artifacts/surfaces/index.html`。原模型保存在 `artifacts/feature_before/`。新增 63 个连续控制样本未参与误差区域选择；局部支撑平面、身体旋转近似和未采样组合仍有残差。实现与成本取舍见 `docs/SURFACE_VISIBILITY.md`。
+
 新增对比入口：`artifacts/visibility/index.html`；修复前模型与数据保存在 `artifacts/visibility_before/`。质量版已应用本轮全部修复；平衡版应用遮罩、焊接与排序修复，身体俯仰仍采用原有近似。
 
 ## 交付与体积
@@ -194,13 +214,15 @@ def main():
 
 质量版入口：`output/POPY/POPY.model3.json`。平衡版入口及其匹配工程：`output/POPY_balanced/POPY.model3.json`、`POPY.cmo3`。此前约 216 MB MOC3 的密集质量版在尝试 CMO3 时，7/10 GiB Java 堆均 OOM，日志位于 `artifacts/failures/quality_cmo_10g.log`；当前版本关键形更多，沿用分开交付的方案，没有重新声称完成质量版 CMO3，也没有将平衡版工程放进质量版目录冒充一致。平衡版 CMO3 成功写出并读回，但官方 Cubism Editor 的打开/保存/重新导出仍未验证。
 
+本轮平衡版 CMO3 在 16 GiB 最大堆下写入、24 GiB 下独立读回，16 GiB 读回仍会 OOM。默认 CLI 分别配置这两个阶段，内存较小的机器应使用 `export --no-cmo`。局部深度遮罩新增大量动画 Glue，当前质量版运行开销明显偏高，优先优化方向是减少裁剪辅助顶点和重复强度曲线，而不是再增加均匀姿态采样。
+
 ## 已在 POPY 实测完成
 
 - Blender {audit["blender"]}，{len(source_meshes)} Mesh、{vertices:,} 源顶点、{tris:,} 源三角形、{sum(len(a["bones"]) for a in source_bones)} 骨骼；贴图从 packed images 提取，两个 UV 层、原始权重与全部 morph 均保留审计/中间数据。
 - 连续头部三轴（水平 ±45°、俯仰 ±30°、倾斜 ±30°）、左右独立闭眼、眼球 XY、嘴部开合和笑形、四个眉毛控制、笑眼、身体三轴与程序化呼吸。当前为半身、正交、原始 T-pose 配置。
 - 质量版把身体 yaw/pitch 的 3×3 基与头部及局部表情联合投影；实际 Blender 独立渲染 28 个测试，包括非训练值、单眼/双眼、转头张嘴/眨眼、身体与头部运动、全极值。
 - 每个姿态实际加载生成的 MOC3、设置参数、求值网格并由 Ayagami Vulkan 渲染，输出源网格误差、MAE、SSIM、轮廓 IoU/距离、误差热图和逐姿态对比图。Python 与 Rust 回归通过，实际数量及日志见 `artifacts/logs/`。
-- 当前 Blender 仍保持原场景：40 对象、14 Mesh、无相机、Head 基矩阵单位、表情值为 0。独立 source snapshot 转换前后 SHA-256 一致，见 `source_integrity.json` 和 `live_scene_after.json`。
+- 本轮 Blender MCP 未连接到运行实例，使用先前经 MCP 保存的独立快照，在后台副本上生成参考；没有声称再次检查了实时场景。独立 source snapshot 转换前后 SHA-256 一致，见 `source_integrity.json`。
 
 ## 视觉与几何实测
 
@@ -282,7 +304,10 @@ GPU：{runtime["gpu"]} / {runtime["backend"]}。当前质量版参数更新到 G
             "config",
             "ir",
             "docs",
+            "benchmarks/popy",
+            ".github",
             "exporter/src",
+            "exporter/patches",
             "rust/geometry",
             "rust/validate",
         ]:
@@ -291,6 +316,8 @@ GPU：{runtime["gpu"]} / {runtime["backend"]}。当前质量版参数更新到 G
                     archive.write(f, f.relative_to(ROOT))
         for file in [
             "README.md",
+            ".gitignore",
+            ".gitattributes",
             "REPORT.md",
             "LICENSE",
             "requirements.txt",
@@ -302,6 +329,7 @@ GPU：{runtime["gpu"]} / {runtime["backend"]}。当前质量版参数更新到 G
             "exporter/settings.gradle.kts",
             "exporter/gradle.properties",
             "exporter/LICENSE-NOTICE.md",
+            "exporter/LICENSE",
         ]:
             archive.write(ROOT / file, file)
         archive.write(ROOT / "vendor/psd2live/LICENSE", "licenses/psd2live-GPL.txt")
@@ -324,7 +352,8 @@ GPU：{runtime["gpu"]} / {runtime["backend"]}。当前质量版参数更新到 G
             "artifacts/visibility/runtime/runtime_report.json",
             "artifacts/visibility_before/assessment/metrics.json",
         ]:
-            archive.write(ROOT / path, path)
+            if (ROOT / path).exists():
+                archive.write(ROOT / path, path)
         for folder in [
             "artifacts/visibility/runtime",
             "artifacts/visibility/eyes",
@@ -336,6 +365,38 @@ GPU：{runtime["gpu"]} / {runtime["backend"]}。当前质量版参数更新到 G
         archive.writestr(
             "README.txt",
             "Extract the whole archive, then open artifacts/visibility/index.html. Full Blender and runtime source geometry remain in the project. Metrics include finite sampling and interpolation error; they are not a guarantee of perfect ordering for every continuous parameter combination.\n",
+        )
+    with zipfile.ZipFile(
+        destination / "POPY_surface_report.zip",
+        "w",
+        zipfile.ZIP_DEFLATED,
+        compresslevel=5,
+    ) as archive:
+        for path in [
+            "artifacts/surfaces/index.html",
+            "artifacts/surfaces/REPORT.md",
+            "artifacts/surfaces/before_after.jpg",
+            "artifacts/surfaces/provenance.json",
+            "artifacts/surfaces/native_glue.json",
+            "artifacts/surfaces/scalar_compression_delta.json",
+            "artifacts/surfaces/assessment/metrics.json",
+            "artifacts/surfaces/runtime/runtime_report.json",
+            "artifacts/feature_before/assessment/metrics.json",
+        ]:
+            if (ROOT / path).exists():
+                archive.write(ROOT / path, path)
+        for folder in [
+            "artifacts/surfaces/runtime",
+            "artifacts/surfaces/surfaces",
+            "artifacts/surfaces/assessment",
+            "artifacts/surface_reference",
+            "artifacts/feature_before/runtime",
+        ]:
+            for file in (ROOT / folder).glob("*.png"):
+                archive.write(file, file.relative_to(ROOT))
+        archive.writestr(
+            "README.txt",
+            "Extract the whole archive, then open artifacts/surfaces/index.html. RGB metrics include interpolation and alignment errors; finite samples do not prove perfect occlusion for all continuous combinations.\n",
         )
     print("Packaged", destination)
 

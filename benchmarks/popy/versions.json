@@ -15,7 +15,7 @@
     "psd2live": {
       "repository": "https://github.com/tsunehimatoi/psd2live",
       "commit": "bafabab1a360e208671d39adf5087c62f6cae1f2",
-      "patch": "popy/setup_exporter.py: drawable render-order groupIndex sentinel 0 -> -1"
+      "patch": "Draw-leaf groupIndex sentinel 0 -> -1 and exporter/patches/cmo_glue_lookup.patch; applied idempotently by popy/setup_exporter.py"
     },
     "ayagami": {
       "repository": "https://github.com/AyagamiDev/ayagami",

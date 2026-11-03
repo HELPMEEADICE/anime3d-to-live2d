@@ -19,4 +19,4 @@ dependencies {
     implementation("org.lwjgl:lwjgl")
     implementation("org.lwjgl:lwjgl-opengl")
 }
-application { mainClass.set("popy.ExportKt"); applicationDefaultJvmArgs = listOf("-Xmx10g", "-Djava.awt.headless=true") }
+application { mainClass.set("popy.ExportKt"); applicationDefaultJvmArgs = listOf("-Xmx24g", "-Djava.awt.headless=true") }

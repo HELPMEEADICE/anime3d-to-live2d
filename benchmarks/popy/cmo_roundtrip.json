@@ -1,8 +1,9 @@
 {
-  "drawables": 817,
+  "drawables": 1283,
   "parameters": 19,
-  "glues": 1677,
-  "masked_drawables": 16,
-  "inverted_masks": 16,
+  "glues": 90106,
+  "animated_glues": 74039,
+  "masked_drawables": 277,
+  "inverted_masks": 277,
   "official_editor_verified": false
 }

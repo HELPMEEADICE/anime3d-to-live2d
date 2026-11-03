@@ -18,6 +18,7 @@ jobs:
         run: |
           python -m unittest discover -s tests -p test_pipeline.py -k GeometryTests -v
           python -m unittest discover -s tests -p test_visibility.py -k VisibilityGeometryTests -v
+          python -m unittest discover -s tests -p test_surfaces.py -k SurfaceGeometryTests -v
       - name: Fetch unmodified pinned runtime dependency for workspace resolution
         run: |
           git clone https://github.com/AyagamiDev/ayagami vendor/ayagami

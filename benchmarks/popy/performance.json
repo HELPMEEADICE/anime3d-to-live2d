@@ -238,5 +238,557 @@
     "seconds": 24.80727300000217,
     "peak_process_tree_rss_bytes": 290639872,
     "exit_code": 0
+  },
+  {
+    "stage": "feature_export",
+    "seconds": 10.60633729999995,
+    "peak_process_tree_rss_bytes": 5414055936,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_diagnostic_export",
+    "seconds": 10.380801100000099,
+    "peak_process_tree_rss_bytes": 4646088704,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_diagnostic_render",
+    "seconds": 5.274998200000027,
+    "peak_process_tree_rss_bytes": 934465536,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_runtime",
+    "seconds": 7.071368399999983,
+    "peak_process_tree_rss_bytes": 428789760,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_glue_export",
+    "seconds": 8.47285510000006,
+    "peak_process_tree_rss_bytes": 7635546112,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_glue_diagnostic_export",
+    "seconds": 8.81627669999989,
+    "peak_process_tree_rss_bytes": 7606280192,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_glue_diagnostic_render",
+    "seconds": 10.520709399999987,
+    "peak_process_tree_rss_bytes": 1101434880,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_glue_runtime",
+    "seconds": 18.883592500000077,
+    "peak_process_tree_rss_bytes": 532983808,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_glue_assessment",
+    "seconds": 14.793086800000083,
+    "peak_process_tree_rss_bytes": 108503040,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_neck_full_export",
+    "seconds": 8.441737099999955,
+    "peak_process_tree_rss_bytes": 7676899328,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_neck_full_render",
+    "seconds": 10.312238999999863,
+    "peak_process_tree_rss_bytes": 1116557312,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_neck_full_assessment",
+    "seconds": 14.462300099999993,
+    "peak_process_tree_rss_bytes": 108085248,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_planar_export",
+    "seconds": 17.62081020000005,
+    "peak_process_tree_rss_bytes": 7777468416,
+    "exit_code": 3
+  },
+  {
+    "stage": "feature_sparse_export",
+    "seconds": 11.125810099999853,
+    "peak_process_tree_rss_bytes": 10339332096,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_sparse_diagnostic_export",
+    "seconds": 11.157259799999792,
+    "peak_process_tree_rss_bytes": 9763069952,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_sparse_diagnostic_render",
+    "seconds": 29.08588510000027,
+    "peak_process_tree_rss_bytes": 867569664,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_sparse_runtime",
+    "seconds": 28.650888099999975,
+    "peak_process_tree_rss_bytes": 638914560,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_sparse_assessment",
+    "seconds": 14.104752200000348,
+    "peak_process_tree_rss_bytes": 109318144,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_light_occlusion",
+    "seconds": 138.14487329999974,
+    "peak_process_tree_rss_bytes": 1945636864,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_light_export",
+    "seconds": 8.086264000000028,
+    "peak_process_tree_rss_bytes": 5713317888,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_light_diagnostic_export",
+    "seconds": 7.322572200000195,
+    "peak_process_tree_rss_bytes": 5659328512,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_light_diagnostic_render",
+    "seconds": 3.7125175999999556,
+    "peak_process_tree_rss_bytes": 1138925568,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_light_runtime",
+    "seconds": 4.557093800000075,
+    "peak_process_tree_rss_bytes": 451207168,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_light_assessment",
+    "seconds": 21.165249099999983,
+    "peak_process_tree_rss_bytes": 109694976,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_layered_export",
+    "seconds": 6.0205614999995305,
+    "peak_process_tree_rss_bytes": 6501654528,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_layered_diagnostic_export",
+    "seconds": 5.664533299999675,
+    "peak_process_tree_rss_bytes": 6489022464,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_layered_diagnostic_render",
+    "seconds": 3.832488099999864,
+    "peak_process_tree_rss_bytes": 1020764160,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_layered_runtime",
+    "seconds": 4.559404600000562,
+    "peak_process_tree_rss_bytes": 454848512,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_layered_assessment",
+    "seconds": 20.3073729000007,
+    "peak_process_tree_rss_bytes": 111779840,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_footprint_export",
+    "seconds": 8.82006949999959,
+    "peak_process_tree_rss_bytes": 6963585024,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_footprint_diagnostic_export",
+    "seconds": 7.430156200000056,
+    "peak_process_tree_rss_bytes": 6915608576,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_footprint_diagnostic_render",
+    "seconds": 6.99281289999999,
+    "peak_process_tree_rss_bytes": 1025400832,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_footprint_runtime",
+    "seconds": 10.676996600000166,
+    "peak_process_tree_rss_bytes": 524349440,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_footprint_assessment",
+    "seconds": 19.85704160000023,
+    "peak_process_tree_rss_bytes": 110206976,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_neck_planar_export",
+    "seconds": 9.600568400000157,
+    "peak_process_tree_rss_bytes": 7649116160,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_neck_planar_diagnostic_export",
+    "seconds": 10.040045400000054,
+    "peak_process_tree_rss_bytes": 7422005248,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_neck_planar_diagnostic_render",
+    "seconds": 9.390000999999756,
+    "peak_process_tree_rss_bytes": 867950592,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_neck_planar_runtime",
+    "seconds": 14.488998599999832,
+    "peak_process_tree_rss_bytes": 560607232,
+    "exit_code": 0
+  },
+  {
+    "stage": "feature_neck_planar_assessment",
+    "seconds": 19.267547399999785,
+    "peak_process_tree_rss_bytes": 109096960,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_before_native",
+    "seconds": 6.643899900000179,
+    "peak_process_tree_rss_bytes": 425009152,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_before_diagnostic",
+    "seconds": 5.734112399999503,
+    "peak_process_tree_rss_bytes": 1044721664,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_heldout_diagnostic",
+    "seconds": 12.504263499999979,
+    "peak_process_tree_rss_bytes": 970280960,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_before_assessment",
+    "seconds": 55.23709920000056,
+    "peak_process_tree_rss_bytes": 112173056,
+    "exit_code": 0
+  },
+  {
+    "stage": "geometry_ir",
+    "seconds": 251.47990819999995,
+    "peak_process_tree_rss_bytes": 1228247040,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_heldout_assessment",
+    "seconds": 51.13800850000007,
+    "peak_process_tree_rss_bytes": 112087040,
+    "exit_code": 0
+  },
+  {
+    "stage": "occlusion",
+    "seconds": 233.82331729999987,
+    "peak_process_tree_rss_bytes": 2390880256,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_final_export",
+    "seconds": 9.866143300000658,
+    "peak_process_tree_rss_bytes": 7188647936,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_final_native28",
+    "seconds": 4.1019194000000425,
+    "peak_process_tree_rss_bytes": 537628672,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_final_compare28",
+    "seconds": 29.76190940000015,
+    "peak_process_tree_rss_bytes": 1302765568,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_diagnostic_export",
+    "seconds": 11.172663600000305,
+    "peak_process_tree_rss_bytes": 6910504960,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_native",
+    "seconds": 26.679675000000316,
+    "peak_process_tree_rss_bytes": 528678912,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_diagnostic",
+    "seconds": 15.434133300000212,
+    "peak_process_tree_rss_bytes": 1074028544,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_final_regression264",
+    "seconds": 208.1439745000007,
+    "peak_process_tree_rss_bytes": 6994952192,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_runtime",
+    "seconds": 16.393707500000346,
+    "peak_process_tree_rss_bytes": 524374016,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_eye_runtime",
+    "seconds": 9.80113270000038,
+    "peak_process_tree_rss_bytes": 518070272,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_report",
+    "seconds": 0.5665093999996316,
+    "peak_process_tree_rss_bytes": 47587328,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_final_eyes165",
+    "seconds": 146.69974120000006,
+    "peak_process_tree_rss_bytes": 1269809152,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_balanced_export",
+    "seconds": 794.9101461999999,
+    "peak_process_tree_rss_bytes": 7990517760,
+    "exit_code": 3
+  },
+  {
+    "stage": "surface_balanced_export_retry",
+    "seconds": 98.43305060000057,
+    "peak_process_tree_rss_bytes": 6572855296,
+    "exit_code": 4294967295
+  },
+  {
+    "stage": "surface_final2_export",
+    "seconds": 14.231964100001278,
+    "peak_process_tree_rss_bytes": 9350410240,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_final2_native28",
+    "seconds": 5.971612500001356,
+    "peak_process_tree_rss_bytes": 572051456,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_final2_compare28",
+    "seconds": 36.94571290000022,
+    "peak_process_tree_rss_bytes": 1547563008,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_diagnostic_export",
+    "seconds": 16.60890710000058,
+    "peak_process_tree_rss_bytes": 8093364224,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_native",
+    "seconds": 39.90150200000062,
+    "peak_process_tree_rss_bytes": 587902976,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_diagnostic",
+    "seconds": 24.995053999999072,
+    "peak_process_tree_rss_bytes": 1207521280,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_balanced_final_export",
+    "seconds": 277.0175703999994,
+    "peak_process_tree_rss_bytes": 11334459392,
+    "exit_code": 3
+  },
+  {
+    "stage": "surface_final2_regression264",
+    "seconds": 238.994620200001,
+    "peak_process_tree_rss_bytes": 8174514176,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_runtime",
+    "seconds": 14.649642999998832,
+    "peak_process_tree_rss_bytes": 580734976,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_eye_runtime",
+    "seconds": 10.86875019999934,
+    "peak_process_tree_rss_bytes": 559960064,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_report",
+    "seconds": 0.4290197000009357,
+    "peak_process_tree_rss_bytes": 51671040,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_final2_eyes165",
+    "seconds": 152.9885219000007,
+    "peak_process_tree_rss_bytes": 1515302912,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_compressed_export",
+    "seconds": 0.1194117000013648,
+    "peak_process_tree_rss_bytes": 5255168,
+    "exit_code": 1
+  },
+  {
+    "stage": "surface_compressed_export",
+    "seconds": 13.256953300002351,
+    "peak_process_tree_rss_bytes": 7308234752,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_diagnostic_export",
+    "seconds": 13.861606599999504,
+    "peak_process_tree_rss_bytes": 7138283520,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_native",
+    "seconds": 41.8926492999999,
+    "peak_process_tree_rss_bytes": 583499776,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_diagnostic",
+    "seconds": 26.82623749999766,
+    "peak_process_tree_rss_bytes": 1091690496,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_runtime",
+    "seconds": 29.868310400001064,
+    "peak_process_tree_rss_bytes": 582946816,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_eye_runtime",
+    "seconds": 19.75146010000026,
+    "peak_process_tree_rss_bytes": 564367360,
+    "exit_code": 0
+  },
+  {
+    "stage": "visibility_report",
+    "seconds": 2.28214520000256,
+    "peak_process_tree_rss_bytes": 53362688,
+    "exit_code": 0
+  },
+  {
+    "stage": "ayagami",
+    "seconds": 11.724879500001407,
+    "peak_process_tree_rss_bytes": 562028544,
+    "exit_code": 0
+  },
+  {
+    "stage": "comparison",
+    "seconds": 53.89804189999995,
+    "peak_process_tree_rss_bytes": 1541115904,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_balanced_compressed_export",
+    "seconds": 435.51752230000056,
+    "peak_process_tree_rss_bytes": 17520173056,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_balanced_compressed_roundtrip",
+    "seconds": 60.55674319999889,
+    "peak_process_tree_rss_bytes": 17615495168,
+    "exit_code": 3
+  },
+  {
+    "stage": "surface_balanced_native",
+    "seconds": 11.945234200000414,
+    "peak_process_tree_rss_bytes": 358899712,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_balanced_comparison",
+    "seconds": 49.2228589999977,
+    "peak_process_tree_rss_bytes": 1125281792,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_balanced_roundtrip_24g",
+    "seconds": 151.90159499999936,
+    "peak_process_tree_rss_bytes": 20956323840,
+    "exit_code": 0
+  },
+  {
+    "stage": "rust_tests",
+    "seconds": 2.789964100000361,
+    "peak_process_tree_rss_bytes": 50122752,
+    "exit_code": 0
+  },
+  {
+    "stage": "regression",
+    "seconds": 10.506356499998219,
+    "peak_process_tree_rss_bytes": 1017876480,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_reader_build",
+    "seconds": 62.27340449999974,
+    "peak_process_tree_rss_bytes": 1456111616,
+    "exit_code": 0
+  },
+  {
+    "stage": "surface_consuming_read_16g",
+    "seconds": 66.65420319999976,
+    "peak_process_tree_rss_bytes": 17617010688,
+    "exit_code": 3
+  },
+  {
+    "stage": "surface_final_exporter_build",
+    "seconds": 6.82613130000027,
+    "peak_process_tree_rss_bytes": 129425408,
+    "exit_code": 0
+  },
+  {
+    "stage": "delivery",
+    "seconds": 57.11742370000138,
+    "peak_process_tree_rss_bytes": 2218536960,
+    "exit_code": 0
   }
 ]

@@ -14,12 +14,17 @@ Geometry-driven Blender/Python/Rust research converter with a separate GPL Cubis
 - `output/POPY_balanced/POPY.model3.json`：平衡版入口，包含其匹配的 `.moc3/.cmo3`。身体俯仰独立时准确，和头部的大幅组合有明显误差。
 - `artifacts/report/index.html`：逐姿态 Blender / Ayagami / 误差图、各项指标。
 - `artifacts/visibility/index.html`：本轮眼部遮挡、接缝和连续动作修复的 165 姿态 / 70 相邻帧对比，保留修复前基线。
+- `artifacts/surfaces/index.html`：睫毛、眉毛与颈部头发的 264 姿态可见性回归，包含 63 个独立连续表情样本。
 - `REPORT.md`：最终实测统计、阶段改进与未解决问题。
 - `artifacts/rig/POPY.rig.json` 和 `keyforms.f32`：独立中间表示与真实关键形。
 - `artifacts/samples/`：原始三角形、loop UV、骨骼、权重、全部 Shape Key 差分、105 组头部三轴投影来源。
 - `artifacts/reference/`、`artifacts/ayagami/`：参考与实际运行时图像、运行时求值顶点。
 - `artifacts/original_mtoon/`：保留原 MToon 材质的独立高分辨率审阅图。
 - `artifacts/POPY_source.blend`：从当前 Blender 通过 MCP 保存的独立快照，转换不覆盖它。
+
+本轮使用源三角形的局部平面分片、真实重心裁剪及原生参数化 Glue 遮罩，修复多层睫毛、眉毛与领口附近头发的错误覆盖。264 姿态中，睫毛超过 3px 边界容差的漏出面积从 433 降至 93 像素，颈部头发 1px 容差的漏出从 54,609 降至 26,133；颈部误遮挡从 5,821 增至 6,050，仍有退步。有限测试不证明所有连续姿态均无错误，运行成本也明显增加。公开数值记录位于 `benchmarks/popy/`，实现和限制见 [表面遮挡修复](docs/SURFACE_VISIBILITY.md)。
+
+新增遮罩后的平衡版工程已实际写入并读回，分别需要 16 / 24 GiB 最大 JVM 堆；读回通过不等于官方 Editor 兼容。CLI 分阶段设置内存，较小机器可用 `python -m popy.cli export --no-cmo` 只生成运行时模型。
 
 ## 重复运行
 
@@ -50,12 +55,13 @@ JDK 可通过 `JAVA_HOME` 设置，源快照默认在 `artifacts/POPY_source.ble
 ```powershell
 python -m unittest discover -s tests -p test_pipeline.py -k GeometryTests -v
 python -m unittest discover -s tests -p test_visibility.py -k VisibilityGeometryTests -v
+python -m unittest discover -s tests -p test_surfaces.py -k SurfaceGeometryTests -v
 cargo test --manifest-path rust/Cargo.toml -p popy-geometry --locked
 ```
 
-上述测试只检查几何算法，不代替实机图像验证。完整的 16 项 Python 回归依赖本地生成的模型、图像和报告；仓库不带这些角色资产，直接执行完整回归会提示缺少数据。
+上述测试只检查几何算法，不代替实机图像验证。完整 Python 回归依赖本地生成的模型、图像和报告；仓库不带这些角色资产，直接执行完整回归会提示缺少数据。
 
-单独重跑：`python -m popy.cli sample|rig|export|validate|report|test`。`export --no-cmo` 只输出质量版 MOC3，适合调试。默认完整流程还会独立构建、导出并渲染验证平衡版工程；两版文件不会混放。`export --full-cmo` 可再次尝试完整质量版 CMO3，但本轮已实测其超过 10 GiB Java 堆，不作为默认可完成路径。
+单独重跑：`python -m popy.cli sample|rig|export|validate|report|visibility|surfaces|test`。`export --no-cmo` 只输出质量版 MOC3，适合调试。默认完整流程还会独立构建、导出并渲染验证平衡版工程；两版文件不会混放。`export --full-cmo` 可再次尝试完整质量版 CMO3，但本轮已实测其超过 10 GiB Java 堆，不作为默认可完成路径。
 
 ## 配置与实现
 
@@ -74,3 +80,5 @@ cargo test --manifest-path rust/Cargo.toml -p popy-geometry --locked
 本轮没有生成 physics3、motion3 或 exp3：没有用空壳文件暗示已完成头发动力学、动作和表情文件求值。静态表情参数可以直接控制，运行时验证不依赖这些附属文件。
 
 研究、格式能力边界、许可与后续优化见 `docs/RESEARCH.md` 和 `docs/THIRD_PARTY.md`。
+
+新增的睫毛、眉毛和颈部方案使用源曲面平面误差细分、逐片三维深度修正、稀疏前景裁剪及参数化原生 Glue，不使用序列帧。`config/surface_visibility.json` 与 `surface_critical.json` 控制语义及误差区域，详见 [表面遮挡实现与限制](docs/SURFACE_VISIBILITY.md)。独立重跑 `python -m popy.cli surfaces`；源和配置未变时可用 `python -m popy.surface_runner --reuse-reference`。

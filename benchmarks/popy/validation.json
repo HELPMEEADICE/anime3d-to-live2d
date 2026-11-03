@@ -1,0 +1,15 @@
+{
+  "recorded_date": "2026-11-03",
+  "timezone": "Asia/Shanghai",
+  "python_tests_passed": 26,
+  "rust_geometry_tests_passed": 5,
+  "quality_comparison_poses": 28,
+  "surface_visibility_poses": 264,
+  "surface_holdouts": 63,
+  "eye_visibility_poses": 165,
+  "adjacent_motion_pairs": 70,
+  "cmo_writer_max_heap_gib": 16,
+  "cmo_reader_verified_max_heap_gib": 24,
+  "official_editor_verified": false,
+  "ayagami_modified": false
+}

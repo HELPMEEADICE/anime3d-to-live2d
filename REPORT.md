@@ -1,7 +1,5 @@
 # POPY 实测交付报告
 
-> 公开版说明：本报告是本地实测的研究记录。artifacts/、output/、delivery/ 及角色图像/模型不随公开仓库发布；可公开的数值证据见 benchmarks/popy/。模型再分发权限未确认，本文不授予角色素材许可。
-
 本次已实现并在用户当前 POPY 上运行真实链路：Blender bpy 数据/姿态 → 3D 源映射与局部 Rig IR → 原生 Warp/Rotation/ArtMesh 参数 → 真正 MOC3 → 固定版本 Ayagami GPU 渲染。没有 PSD 中转、序列帧模型、改扩展名文件或虚构的 Editor 验证。
 
 ## 本轮遮挡、接缝与连续动作修复
@@ -12,9 +10,9 @@
 |---|---:|---:|
 | 眼部漏出像素 | 13978 | 467 |
 | 眼部误遮挡像素 | 5574 | 1780 |
-| 源接缝最大距离 px | 0.02343197008550215 | 0.0 |
-| 内部透明缺口指标 | 43566 | 3705 |
-| 连续动作时域残差像素 | 230034 | 206598 |
+| 源接缝最大距离 px | 0.02343197008550215 | 9.226521776159533e-05 |
+| 内部透明缺口指标 | 43566 | 3817 |
+| 连续动作时域残差像素 | 230034 | 201187 |
 
 透明缺口指标还包含超过 3 px 的轮廓偏差；时域残差也包含几何插值误差，不能直接等同于排序跳变数。零接缝距离只指可由同源位置、完整权重和全部 morph 证明等价的分块顶点，不证明没有其他遮挡洞。
 
@@ -24,18 +22,37 @@
 
 参阅 index.html 和 assessment/metrics.json；红色诊断为漏出，蓝色为误遮挡。
 
+## 本轮睫毛、眉毛与颈部头发修复
+
+独立 Blender 深度诊断与实际 Ayagami GPU 渲染：264 个姿态，包含转头、俯仰、倾斜、单眼/双眼闭合、愤怒/抬眉与身体组合。
+
+| 部位 | 漏出 1px 前→后 | 误遮挡 1px 前→后 | 漏出 3px 前→后 |
+|---|---:|---:|---:|
+| 眉毛 | 772 → 701 | 8,804 → 5,197 | 37 → 13 |
+| 睫毛 | 2,383 → 2,032 | 22,607 → 4,753 | 433 → 93 |
+| 颈部头发 | 54,609 → 26,133 | 5,821 → 6,050 | 45,595 → 20,703 |
+
+这些指标比较表面可见区域，允许 1px 或 3px 边界误差；同时包含姿态插值导致的位置偏差，不能全部解释为穿模。不是所有连续参数组合均已验证。局部三维深度/排序仍属于 Cubism 二维表示的近似。
+
+原始 .blend 与独立源快照均未被覆盖。复杂参数化 Glue 裁剪方案已保留在实验产物中；默认交付只使用通过当前质量与性能回归的策略。
+
+
+表面遮挡的普通着色、RGB 深度诊断及全部样本在 `artifacts/surfaces/index.html`。原模型保存在 `artifacts/feature_before/`。新增 63 个连续控制样本未参与误差区域选择；局部支撑平面、身体旋转近似和未采样组合仍有残差。实现与成本取舍见 `docs/SURFACE_VISIBILITY.md`。
+
 新增对比入口：`artifacts/visibility/index.html`；修复前模型与数据保存在 `artifacts/visibility_before/`。质量版已应用本轮全部修复；平衡版应用遮罩、焊接与排序修复，身体俯仰仍采用原有近似。
 
 ## 交付与体积
 
 | 配置 | MOC3 MB | CMO3 MB | ArtMesh | 作者关键形数 | 参数到 GPU 完成中位 ms |
 |---|---:|---:|---:|---:|---:|
-| quality | 253.85 | 未完成（内存不足） | 817 | 906,177 | 5.41 |
-| balanced | 85.82 | 99.45 | 817 | 302,109 | 6.62 |
+| quality | 323.90 | 未完成（内存不足） | 1283 | 1,405,015 | 62.34 |
+| balanced | 122.43 | 203.38 | 1283 | 468,445 | 69.85 |
 
-以上 MB 按 1,000,000 字节计算。两版均 19 参数、最大层级 3、6 张 2048² 原始 UV 图集；质量版 8 个原生变形器，平衡版 4 个。质量版输出 20,882 个顶点和 22,399 个三角形，包含诊断统计中的不可见遮罩网格。高质量版 253.85 MB 的稠密局部关键形仍偏大，不能将其描述为已经解决轻量化。ZIP 压缩体积不等于运行时内存。
+以上 MB 按 1,000,000 字节计算。两版均 19 参数、最大层级 3、6 张 2048² 原始 UV 图集；质量版 8 个原生变形器，平衡版 4 个。质量版输出 168,764 个顶点和 146,173 个三角形，包含诊断统计中的不可见遮罩网格。高质量版 323.90 MB 的稠密局部关键形仍偏大，不能将其描述为已经解决轻量化。ZIP 压缩体积不等于运行时内存。
 
 质量版入口：`output/POPY/POPY.model3.json`。平衡版入口及其匹配工程：`output/POPY_balanced/POPY.model3.json`、`POPY.cmo3`。此前约 216 MB MOC3 的密集质量版在尝试 CMO3 时，7/10 GiB Java 堆均 OOM，日志位于 `artifacts/failures/quality_cmo_10g.log`；当前版本关键形更多，沿用分开交付的方案，没有重新声称完成质量版 CMO3，也没有将平衡版工程放进质量版目录冒充一致。平衡版 CMO3 成功写出并读回，但官方 Cubism Editor 的打开/保存/重新导出仍未验证。
+
+本轮平衡版 CMO3 在 16 GiB 最大堆下写入、24 GiB 下独立读回，16 GiB 读回仍会 OOM。默认 CLI 分别配置这两个阶段，内存较小的机器应使用 `export --no-cmo`。局部深度遮罩新增大量动画 Glue，当前质量版运行开销明显偏高，优先优化方向是减少裁剪辅助顶点和重复强度曲线，而不是再增加均匀姿态采样。
 
 ## 已在 POPY 实测完成
 
@@ -43,39 +60,39 @@
 - 连续头部三轴（水平 ±45°、俯仰 ±30°、倾斜 ±30°）、左右独立闭眼、眼球 XY、嘴部开合和笑形、四个眉毛控制、笑眼、身体三轴与程序化呼吸。当前为半身、正交、原始 T-pose 配置。
 - 质量版把身体 yaw/pitch 的 3×3 基与头部及局部表情联合投影；实际 Blender 独立渲染 28 个测试，包括非训练值、单眼/双眼、转头张嘴/眨眼、身体与头部运动、全极值。
 - 每个姿态实际加载生成的 MOC3、设置参数、求值网格并由 Ayagami Vulkan 渲染，输出源网格误差、MAE、SSIM、轮廓 IoU/距离、误差热图和逐姿态对比图。Python 与 Rust 回归通过，实际数量及日志见 `artifacts/logs/`。
-- 当前 Blender 仍保持原场景：40 对象、14 Mesh、无相机、Head 基矩阵单位、表情值为 0。独立 source snapshot 转换前后 SHA-256 一致，见 `source_integrity.json` 和 `live_scene_after.json`。
+- 本轮 Blender MCP 未连接到运行实例，使用先前经 MCP 保存的独立快照，在后台副本上生成参考；没有声称再次检查了实时场景。独立 source snapshot 转换前后 SHA-256 一致，见 `source_integrity.json`。
 
 ## 视觉与几何实测
 
 | 姿态 | 前景 MAE | SSIM | alpha IoU | 顶点 RMSE px | 顶点最大误差 px |
 |---|---:|---:|---:|---:|---:|
-| front | 0.00617 | 0.9743 | 0.99989 | 0.0001 | 0.000 |
-| left | 0.00861 | 0.9673 | 0.99987 | 0.0001 | 0.000 |
-| right | 0.01106 | 0.9592 | 0.99990 | 0.0001 | 0.000 |
-| up | 0.00632 | 0.9725 | 0.99982 | 0.0001 | 0.000 |
-| down | 0.01158 | 0.9592 | 0.99986 | 0.0001 | 0.000 |
-| turn_mouth | 0.00760 | 0.9705 | 0.99988 | 0.0001 | 0.000 |
-| turn_blink | 0.00678 | 0.9716 | 0.99992 | 0.0001 | 0.000 |
-| heldout | 0.01450 | 0.9043 | 0.98779 | 1.3052 | 3.925 |
-| heldout_head_body | 0.02135 | 0.8550 | 0.98568 | 2.1935 | 6.655 |
-| head_body_pitch | 0.00688 | 0.9703 | 0.99986 | 0.0001 | 0.001 |
-| all_extreme | 0.00777 | 0.9692 | 0.99983 | 0.0003 | 0.001 |
+| front | 0.00611 | 0.9753 | 0.99989 | 0.0001 | 0.000 |
+| left | 0.00746 | 0.9704 | 0.99987 | 0.0001 | 0.000 |
+| right | 0.00921 | 0.9645 | 0.99990 | 0.0001 | 0.000 |
+| up | 0.00609 | 0.9738 | 0.99982 | 0.0001 | 0.000 |
+| down | 0.00921 | 0.9672 | 0.99986 | 0.0001 | 0.000 |
+| turn_mouth | 0.00678 | 0.9731 | 0.99988 | 0.0001 | 0.000 |
+| turn_blink | 0.00661 | 0.9731 | 0.99992 | 0.0001 | 0.000 |
+| heldout | 0.01478 | 0.9040 | 0.98779 | 1.2842 | 3.925 |
+| heldout_head_body | 0.02084 | 0.8559 | 0.98568 | 2.1532 | 6.655 |
+| head_body_pitch | 0.00669 | 0.9719 | 0.99986 | 0.0001 | 0.001 |
+| all_extreme | 0.00779 | 0.9699 | 0.99983 | 0.0003 | 0.001 |
 
 这里的图像比较统一为 albedo/emission，不保留源 MToon 的动态光照/描边；另有 `artifacts/original_mtoon/` 的 1152×1536 原材质审阅图。几何误差包含隐藏源顶点和 UV 拆点，不能只凭训练点约 0.02 px 的 RMSE 宣称所有连续组合都接近零误差。
 
-当前最差前景 MAE 为 `heldout_head_body`：0.02135，顶点 RMSE 2.193 px。主要来自未采样参数中间值的多轴旋转残差插值和排序近似。全部数据见 `artifacts/report/metrics.json`，图形入口 `artifacts/report/index.html`。
+当前最差前景 MAE 为 `heldout_head_body`：0.02084，顶点 RMSE 2.153 px。主要来自未采样参数中间值的多轴旋转残差插值和排序近似。全部数据见 `artifacts/report/metrics.json`，图形入口 `artifacts/report/index.html`。
 
 ## 迭代证据
 
 - 最初仅平均深度排序：正面 MAE 约 0.052；用几何覆盖约束后约 0.006～0.008。
-- 顶点直接插值 roll 的未见姿态 RMSE 约 6.1 px；原生 Rotation 与几何残差分解后，`heldout` 为 1.305 px。
-- 平衡版 `all_extreme` RMSE 30.431 px、MAE 0.10200；质量版分别为 0.000 px、0.00777。这是增加身体 pitch 耦合的实测收益，代价是更多关键形与内存。
-- 16 三角形小块版本有 1,383 ArtMesh；采用覆盖约束后允许更大的块，当前减少为 817，仍保持可见质量。历史指标和 contact sheets 保留在 `artifacts/baseline/`、`artifacts/iterations/`。
+- 顶点直接插值 roll 的未见姿态 RMSE 约 6.1 px；原生 Rotation 与几何残差分解后，`heldout` 为 1.284 px。
+- 平衡版 `all_extreme` RMSE 30.184 px、MAE 0.10156；质量版分别为 0.000 px、0.00779。这是增加身体 pitch 耦合的实测收益，代价是更多关键形与内存。
+- 16 三角形小块版本有 1,383 ArtMesh；采用覆盖约束后允许更大的块，当前减少为 1283，仍保持可见质量。历史指标和 contact sheets 保留在 `artifacts/baseline/`、`artifacts/iterations/`。
 
 ## 已实现但仍有质量问题
 
 - 质量版未见多参数姿态仍有几何插值误差；本轮减少了缺口和眼部穿透，但没有证明所有连续参数组合都无错误覆盖或跳变。
-- 遮挡约束使用 384×512 栅格，质量版累计删除了 1120960 条循环约束（包含姿态中不活跃的全局连续性弱边），属于近似；Cubism 本身没有每像素 z-buffer。
+- 遮挡约束使用 384×512 栅格，质量版累计删除了 1549472 条循环约束（包含姿态中不活跃的全局连续性弱边），属于近似；Cubism 本身没有每像素 z-buffer。
 - 附加笑眼的头部耦合与呼吸是近似。原始 MToon 高光、阴影和 outline 不属于本轮转换产物。
 - 平衡版身体 pitch 和大角度头部组合不适合当作高质量模型使用；提供它主要是较小的运行时/编辑工程起点。
 
@@ -90,7 +107,7 @@
 
 ## 时耗与内存
 
-GPU：NVIDIA GeForce RTX 5080 Laptop GPU / Vulkan。当前质量版参数更新到 GPU fence 完成中位数 5.41 ms；这是一次参数遍历，包含 CPU 准备和 render target 分配，不是长时 FPS 保证。另记录截图/文件写入耗时。
+GPU：NVIDIA GeForce RTX 5080 Laptop GPU / Vulkan。当前质量版参数更新到 GPU fence 完成中位数 62.34 ms；这是一次参数遍历，包含 CPU 准备和 render target 分配，不是长时 FPS 保证。另记录截图/文件写入耗时。
 
 | 阶段 | 秒 | 进程树峰值 RSS MiB | exit |
 |---|---:|---:|---:|
@@ -133,13 +150,106 @@ GPU：NVIDIA GeForce RTX 5080 Laptop GPU / Vulkan。当前质量版参数更新�
 | rust_tests | 0.33 | 45.7 | 0 |
 | regression | 0.99 | 303.2 | 0 |
 | delivery | 12.45 | 277.2 | 0 |
+| delivery | 24.81 | 277.2 | 0 |
+| feature_export | 10.61 | 5163.2 | 0 |
+| feature_diagnostic_export | 10.38 | 4430.9 | 0 |
+| feature_diagnostic_render | 5.27 | 891.2 | 0 |
+| feature_runtime | 7.07 | 408.9 | 0 |
+| feature_glue_export | 8.47 | 7281.8 | 0 |
+| feature_glue_diagnostic_export | 8.82 | 7253.9 | 0 |
+| feature_glue_diagnostic_render | 10.52 | 1050.4 | 0 |
+| feature_glue_runtime | 18.88 | 508.3 | 0 |
+| feature_glue_assessment | 14.79 | 103.5 | 0 |
+| feature_neck_full_export | 8.44 | 7321.3 | 0 |
+| feature_neck_full_render | 10.31 | 1064.8 | 0 |
+| feature_neck_full_assessment | 14.46 | 103.1 | 0 |
+| feature_planar_export | 17.62 | 7417.2 | 3 |
+| feature_sparse_export | 11.13 | 9860.4 | 0 |
+| feature_sparse_diagnostic_export | 11.16 | 9310.8 | 0 |
+| feature_sparse_diagnostic_render | 29.09 | 827.4 | 0 |
+| feature_sparse_runtime | 28.65 | 609.3 | 0 |
+| feature_sparse_assessment | 14.10 | 104.3 | 0 |
+| feature_light_occlusion | 138.14 | 1855.5 | 0 |
+| feature_light_export | 8.09 | 5448.6 | 0 |
+| feature_light_diagnostic_export | 7.32 | 5397.2 | 0 |
+| feature_light_diagnostic_render | 3.71 | 1086.2 | 0 |
+| feature_light_runtime | 4.56 | 430.3 | 0 |
+| feature_light_assessment | 21.17 | 104.6 | 0 |
+| feature_layered_export | 6.02 | 6200.5 | 0 |
+| feature_layered_diagnostic_export | 5.66 | 6188.4 | 0 |
+| feature_layered_diagnostic_render | 3.83 | 973.5 | 0 |
+| feature_layered_runtime | 4.56 | 433.8 | 0 |
+| feature_layered_assessment | 20.31 | 106.6 | 0 |
+| feature_footprint_export | 8.82 | 6641.0 | 0 |
+| feature_footprint_diagnostic_export | 7.43 | 6595.2 | 0 |
+| feature_footprint_diagnostic_render | 6.99 | 977.9 | 0 |
+| feature_footprint_runtime | 10.68 | 500.1 | 0 |
+| feature_footprint_assessment | 19.86 | 105.1 | 0 |
+| feature_neck_planar_export | 9.60 | 7294.8 | 0 |
+| feature_neck_planar_diagnostic_export | 10.04 | 7078.2 | 0 |
+| feature_neck_planar_diagnostic_render | 9.39 | 827.7 | 0 |
+| feature_neck_planar_runtime | 14.49 | 534.6 | 0 |
+| feature_neck_planar_assessment | 19.27 | 104.0 | 0 |
+| surface_before_native | 6.64 | 405.3 | 0 |
+| surface_before_diagnostic | 5.73 | 996.3 | 0 |
+| surface_heldout_diagnostic | 12.50 | 925.3 | 0 |
+| surface_before_assessment | 55.24 | 107.0 | 0 |
+| geometry_ir | 251.48 | 1171.3 | 0 |
+| surface_heldout_assessment | 51.14 | 106.9 | 0 |
+| occlusion | 233.82 | 2280.1 | 0 |
+| surface_final_export | 9.87 | 6855.6 | 0 |
+| surface_final_native28 | 4.10 | 512.7 | 0 |
+| surface_final_compare28 | 29.76 | 1242.4 | 0 |
+| surface_diagnostic_export | 11.17 | 6590.4 | 0 |
+| surface_native | 26.68 | 504.2 | 0 |
+| surface_diagnostic | 15.43 | 1024.3 | 0 |
+| surface_final_regression264 | 208.14 | 6670.9 | 0 |
+| visibility_runtime | 16.39 | 500.1 | 0 |
+| visibility_eye_runtime | 9.80 | 494.1 | 0 |
+| visibility_report | 0.57 | 45.4 | 0 |
+| surface_final_eyes165 | 146.70 | 1211.0 | 0 |
+| surface_balanced_export | 794.91 | 7620.4 | 3 |
+| surface_balanced_export_retry | 98.43 | 6268.4 | 4294967295 |
+| surface_final2_export | 14.23 | 8917.2 | 0 |
+| surface_final2_native28 | 5.97 | 545.6 | 0 |
+| surface_final2_compare28 | 36.95 | 1475.9 | 0 |
+| surface_diagnostic_export | 16.61 | 7718.4 | 0 |
+| surface_native | 39.90 | 560.7 | 0 |
+| surface_diagnostic | 25.00 | 1151.6 | 0 |
+| surface_balanced_final_export | 277.02 | 10809.4 | 3 |
+| surface_final2_regression264 | 238.99 | 7795.8 | 0 |
+| visibility_runtime | 14.65 | 553.8 | 0 |
+| visibility_eye_runtime | 10.87 | 534.0 | 0 |
+| visibility_report | 0.43 | 49.3 | 0 |
+| surface_final2_eyes165 | 152.99 | 1445.1 | 0 |
+| surface_compressed_export | 0.12 | 5.0 | 1 |
+| surface_compressed_export | 13.26 | 6969.7 | 0 |
+| surface_diagnostic_export | 13.86 | 6807.6 | 0 |
+| surface_native | 41.89 | 556.5 | 0 |
+| surface_diagnostic | 26.83 | 1041.1 | 0 |
+| visibility_runtime | 29.87 | 555.9 | 0 |
+| visibility_eye_runtime | 19.75 | 538.2 | 0 |
+| visibility_report | 2.28 | 50.9 | 0 |
+| ayagami | 11.72 | 536.0 | 0 |
+| comparison | 53.90 | 1469.7 | 0 |
+| surface_balanced_compressed_export | 435.52 | 16708.5 | 0 |
+| surface_balanced_compressed_roundtrip | 60.56 | 16799.4 | 3 |
+| surface_balanced_native | 11.95 | 342.3 | 0 |
+| surface_balanced_comparison | 49.22 | 1073.2 | 0 |
+| surface_balanced_roundtrip_24g | 151.90 | 19985.5 | 0 |
+| rust_tests | 2.79 | 47.8 | 0 |
+| regression | 10.51 | 970.7 | 0 |
+| surface_reader_build | 62.27 | 1388.7 | 0 |
+| surface_consuming_read_16g | 66.65 | 16800.9 | 3 |
+| surface_final_exporter_build | 6.83 | 123.4 | 0 |
+| delivery | 57.12 | 2115.8 | 0 |
 
 峰值以 100 ms 周期采样进程树，已存在的 Gradle/Kotlin 常驻 daemon 不包含在内。该表累计初始转换与本轮受监测命令，并非一次从零重建的性能基准；未经过监测 wrapper 的手工实验没有峰值记录。没有把 Python 阶段、Java 导出和 GPU 渲染混成一个耗时。打包时间不包含在此表。
 
 ## 重复执行
 
 ```powershell
-.\run.ps1
+& C:\oss\MODELS\popy-live2d\run.ps1
 ```
 
 这会从独立源快照重建两版、渲染并验证，输出清晰分开的质量版运行时与平衡版编辑工程。详细依赖/配置见 README，GPL 导出器边界与上游限制见 `docs/THIRD_PARTY.md`。

@@ -66,6 +66,7 @@ def main():
             "export",
             "validate",
             "visibility",
+            "surfaces",
             "report",
             "test",
             "audit",
@@ -95,6 +96,7 @@ def main():
             "validate",
             "report",
             "visibility",
+            "surfaces",
             "test",
             "package",
         ]
@@ -103,7 +105,7 @@ def main():
     )
     env = os.environ.copy()
     env.setdefault("JAVA_HOME", r"C:\lib\java")
-    env.setdefault("JAVA_OPTS", "-Xmx7g -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError")
+    env.setdefault("JAVA_OPTS", "-Xmx16g -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError")
     if args.stage == "all":
         (ROOT / "artifacts/performance.json").write_text("[]")
     if args.source.exists():
@@ -222,6 +224,11 @@ def main():
                     ],
                     env,
                 )
+                verify_env = env.copy()
+                verify_env["JAVA_OPTS"] = os.environ.get(
+                    "POPY_CMO_VERIFY_JAVA_OPTS",
+                    "-Xmx24g -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError",
+                )
                 run(
                     "editor_roundtrip",
                     [
@@ -230,7 +237,7 @@ def main():
                         "--verify-cmo",
                         "output/POPY_balanced/POPY.cmo3",
                     ],
-                    env,
+                    verify_env,
                 )
                 run(
                     "editor_ayagami",
@@ -280,6 +287,19 @@ def main():
             )
         elif stage == "report":
             run("comparison", [sys.executable, "-m", "popy.compare"])
+        elif stage == "surfaces":
+            run(
+                "surface_regression",
+                [
+                    sys.executable,
+                    "-m",
+                    "popy.surface_runner",
+                    "--source",
+                    args.source,
+                    "--blender",
+                    args.blender,
+                ],
+            )
         elif stage == "package":
             if not args.no_cmo:
                 run("delivery", [sys.executable, "-m", "popy.delivery"])

@@ -1,0 +1,35 @@
+{
+  "moc_sha256": "23840c56a2b96f7932f628ec23638df664db0ad22eb4fff6a591ab8216b67e47",
+  "rig_sha256": "75dd5e25b585e9e0ada4e709fa784688f75b8e63c407c0f160e1866ffdc81344",
+  "source_sha256": "b4d94421c820d52db5d66da08302062328035a27af4fac378b818072faacbaed",
+  "cases_sha256": "0c63441dfa9c5310cfaa6209fffc22cc403bdecea21f9c6a69e009c8b520a646",
+  "labels_sha256": "dd5136e093828782cdf120371f27472e136db04069b39d7d82d1c7e4e14f0445",
+  "reference_reused": true,
+  "source_unchanged": true,
+  "summary": {
+    "brows": {
+      "leak": 701,
+      "missing": 5197,
+      "leak_far": 13,
+      "missing_far": 681,
+      "reference": 56504,
+      "runtime": 40543
+    },
+    "lashes": {
+      "leak": 2032,
+      "missing": 4753,
+      "leak_far": 93,
+      "missing_far": 112,
+      "reference": 282072,
+      "runtime": 251557
+    },
+    "neck_hair": {
+      "leak": 26133,
+      "missing": 6050,
+      "leak_far": 20703,
+      "missing_far": 2541,
+      "reference": 527033,
+      "runtime": 522561
+    }
+  }
+}

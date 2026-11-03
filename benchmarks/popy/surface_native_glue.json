@@ -1,0 +1,28 @@
+{
+  "method": "Independent IR scalar-grid interpolation and ordered barycentric lerps compared with actual pinned Ayagami-evaluated MOC vertices, after original source welds",
+  "cases": [
+    {
+      "name": "front",
+      "max_px": 8.092194914091654e-05,
+      "rmse_px": 6.945374394028173e-06
+    },
+    {
+      "name": "all_extreme",
+      "max_px": 5.4686157058690365e-05,
+      "rmse_px": 6.2163080352891064e-06
+    },
+    {
+      "name": "eye_45_-30_open",
+      "max_px": 6.12091774981396e-05,
+      "rmse_px": 6.372813843611635e-06
+    },
+    {
+      "name": "continuous_blink_-45_013",
+      "max_px": 7.325112763396853e-05,
+      "rmse_px": 7.644336929420619e-06
+    }
+  ],
+  "max_px": 8.092194914091654e-05,
+  "helpers": 85,
+  "native_topology_and_masks_checked": true
+}

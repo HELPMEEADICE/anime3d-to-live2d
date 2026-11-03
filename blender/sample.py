@@ -20,6 +20,7 @@ def arguments():
     p.add_argument("--reference-dir")
     p.add_argument("--case-output")
     p.add_argument("--eye-masks", action="store_true")
+    p.add_argument("--surface-labels", help="Original triangle RGB class IDs for an independent Blender depth pass")
     return p.parse_args(
         sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     )
@@ -353,6 +354,39 @@ def main():
             else:
                 mat.node_tree.links.new(tex.outputs["Color"], emit.inputs["Color"])
 
+    surface_state = []
+    if args.surface_labels:
+        label_map = json.loads(Path(args.surface_labels).read_text())
+        colors = [(0, 0, 0, 1), (1, 0, 0, 1), (0, 1, 0, 1), (0, 0, 1, 1)]
+        for obj in meshes:
+            original_slots = list(obj.data.materials)
+            original_indices = [p.material_index for p in obj.data.polygons]
+            surface_state.append((obj, original_slots, original_indices))
+            diagnostic_slots = {}
+            ids = label_map.get(obj.name, [0] * len(obj.data.loop_triangles))
+            for tri, label in zip(obj.data.loop_triangles, ids):
+                old_index = original_indices[tri.polygon_index]
+                key = (old_index, label)
+                if key not in diagnostic_slots:
+                    mat = original_slots[old_index].copy()
+                    mat.name += f"_Surface_{label}"
+                    emit = next(n for n in mat.node_tree.nodes if n.type == "EMISSION")
+                    for link in list(emit.inputs["Color"].links):
+                        mat.node_tree.links.remove(link)
+                    emit.inputs["Color"].default_value = colors[label]
+                    diagnostic_slots[key] = len(obj.data.materials)
+                    obj.data.materials.append(mat)
+                obj.data.polygons[tri.polygon_index].material_index = diagnostic_slots[key]
+
+    def surface_mode(enabled):
+        for obj, slots, indices in surface_state:
+            # Slots stay installed; per-polygon indices are swapped without touching alpha nodes.
+            obj.data.polygons.foreach_set("material_index", obj["surface_indices"] if enabled else indices)
+
+    for obj, slots, indices in surface_state:
+        obj["surface_indices"] = [p.material_index for p in obj.data.polygons]
+    surface_mode(False)
+
     for case in cases:
         apply(case["parameters"])
         for o in meshes:
@@ -365,6 +399,11 @@ def main():
             material_mode(True)
             scene.render.filepath = str(ref / (case["name"] + "_eyes.png"))
             bpy.ops.render.render(write_still=True)
+        if args.surface_labels:
+            surface_mode(True)
+            scene.render.filepath = str(ref / (case["name"] + "_surfaces.png"))
+            bpy.ops.render.render(write_still=True)
+            surface_mode(False)
         print("RENDER", case["name"], flush=True)
     case_output = (
         Path(args.case_output) if args.case_output else out.parent / "cases.json"

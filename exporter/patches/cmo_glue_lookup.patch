@@ -1,0 +1,74 @@
+diff --git a/umamo/src/main/kotlin/org/umamo/interop/cmo3/Cmo3PropertyLowering.kt b/umamo/src/main/kotlin/org/umamo/interop/cmo3/Cmo3PropertyLowering.kt
+index 3480ef6..fcf1f7f 100644
+--- a/umamo/src/main/kotlin/org/umamo/interop/cmo3/Cmo3PropertyLowering.kt
++++ b/umamo/src/main/kotlin/org/umamo/interop/cmo3/Cmo3PropertyLowering.kt
+@@ -635,7 +635,7 @@ internal class Cmo3PropertyLowering(
+ 						continue
+ 					}
+ 					if (GlueField.PAIRS in diff.fields) {
+-						structure.lowerGluePairsFor(editedGlue)
++						structure.lowerGluePairsFor(editedGlue, glueSource)
+ 					}
+ 					if (GlueField.CHANNELS in diff.fields || GlueField.INTENSITY in diff.fields) {
+ 						keyforms.lowerGlue(glueSource, editedGlue)
+diff --git a/umamo/src/main/kotlin/org/umamo/interop/cmo3/Cmo3StructureLowering.kt b/umamo/src/main/kotlin/org/umamo/interop/cmo3/Cmo3StructureLowering.kt
+index 8a6ac4d..e133d0e 100644
+--- a/umamo/src/main/kotlin/org/umamo/interop/cmo3/Cmo3StructureLowering.kt
++++ b/umamo/src/main/kotlin/org/umamo/interop/cmo3/Cmo3StructureLowering.kt
+@@ -4,6 +4,7 @@ import org.umamo.format.cmo3.Cmo3GraphEditor
+ import org.umamo.format.cmo3.model.custom.CModelSource
+ import org.umamo.format.cmo3.model.custom.GEditableMesh2
+ import org.umamo.format.cmo3.model.gen.CArtMeshSource
++import org.umamo.format.cmo3.model.gen.CGlueSource
+ import org.umamo.format.cmo3.model.gen.CEditableMeshExtension
+ import org.umamo.format.cmo3.model.gen.CMeshGeneratorExtension
+ import org.umamo.format.cmo3.model.gen.CParameterGroup
+@@ -55,6 +56,25 @@ internal class Cmo3StructureLowering(
+ 	private val notices: MutableList<ExportNotice>,
+ 	private val drawableBindings: Map<String, Cmo3DrawableTextureBinding> = emptyMap(),
+ ) {
++	// The model and graph index are immutable membership snapshots for this
++	// lowering pass. UID tables themselves remain live and are never cached.
++	private val glueOrdinals by lazy {
++		val next = HashMap<Pair<String, String>, Int>()
++		java.util.IdentityHashMap<Glue, Int>().apply {
++			for (glue in edited.glues) {
++				val key = glue.meshA.raw to glue.meshB.raw
++				val ordinal = next[key] ?: 0
++				put(glue, ordinal)
++				next[key] = ordinal + 1
++			}
++		}
++	}
++	private val glueSourcesByPair by lazy {
++		index.glueSources.groupBy { source ->
++			index.drawableIdStrByUuid[Cmo3Import.uuidOf(source.targetArtMeshA_guid)] to
++				index.drawableIdStrByUuid[Cmo3Import.uuidOf(source.targetArtMeshB_guid)]
++		}
++	}
+ 	/** True once any deletion ran - the caller prunes the shared pool exactly once at the end. */
+ 	var deletedAnything: Boolean = false
+ 		private set
+@@ -751,15 +771,14 @@ internal class Cmo3StructureLowering(
+ 	 * @param Glue editedGlue The edited glue.
+ 	 * @return Boolean True on success.
+ 	 */
+-	fun lowerGluePairsFor(editedGlue: Glue): Boolean {
++	fun lowerGluePairsFor(editedGlue: Glue, resolvedSource: CGlueSource? = null): Boolean {
+ 		val subject = "${editedGlue.meshA.raw}+${editedGlue.meshB.raw}"
+-		val editedByPair = edited.glues.filter { it.meshA == editedGlue.meshA && it.meshB == editedGlue.meshB }
+-		val ordinal = editedByPair.indexOfFirst { it === editedGlue }.coerceAtLeast(0)
+-		val glueSource =
+-			index.glueSources.filter { candidate ->
+-				index.drawableIdStrByUuid[Cmo3Import.uuidOf(candidate.targetArtMeshA_guid)] == editedGlue.meshA.raw &&
+-					index.drawableIdStrByUuid[Cmo3Import.uuidOf(candidate.targetArtMeshB_guid)] == editedGlue.meshB.raw
+-			}.getOrNull(ordinal)
++		// The property pass has already resolved the ordered pair/ordinal in O(n).
++		// Re-filtering all Glue records for every vertex binding is quadratic.
++		val glueSource = resolvedSource ?: run {
++			val ordinal = glueOrdinals[editedGlue] ?: 0
++			glueSourcesByPair[editedGlue.meshA.raw to editedGlue.meshB.raw]?.getOrNull(ordinal)
++		}
+ 		if (glueSource == null) {
+ 			unsupported(ExportEntityCategory.Glue, subject, ExportNoticeReason.NoMatchingSourceToReconcile)
+ 			return false

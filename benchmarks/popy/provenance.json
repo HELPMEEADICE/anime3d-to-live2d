@@ -1,6 +1,6 @@
 {
-  "moc_sha256": "9221873d4f2702e6a6692a767615c03fa9c640963f61675e81f5f4dd4f9d8d55",
-  "rig_sha256": "3ce75f6b6af3dcae100526026543e1b4274166f3ba4bad79254a8817fcbcdbe1",
+  "moc_sha256": "23840c56a2b96f7932f628ec23638df664db0ad22eb4fff6a591ab8216b67e47",
+  "rig_sha256": "75dd5e25b585e9e0ada4e709fa784688f75b8e63c407c0f160e1866ffdc81344",
   "cases_sha256": "04475424235a4ec7122fb78ff89b27677b5ac5c01d59a737e00bb01c4cd25efd",
   "reference_reused": true,
   "source_sha256": "b4d94421c820d52db5d66da08302062328035a27af4fac378b818072faacbaed",
@@ -10,10 +10,10 @@
     "eye_leak_total": 467,
     "eye_leak_max": 27,
     "eye_missing_total": 1780,
-    "interior_crack_total": 3705,
-    "source_seam_max_px": 0.0,
-    "false_jump_total": 206598,
-    "false_jump_max": 6212,
+    "interior_crack_total": 3817,
+    "source_seam_max_px": 9.226521776159533e-05,
+    "false_jump_total": 201187,
+    "false_jump_max": 6406,
     "method": "Blender depth-rendered eye-only RGB visibility, 1px boundary allowance; source-identity seam constraints; alpha cracks exclude 3px silhouette border; frame residual subtracts real 3D motion"
   }
 }

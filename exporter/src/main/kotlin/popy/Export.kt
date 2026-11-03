@@ -23,7 +23,7 @@ fun main(args:Array<String>) {
     if(args.firstOrNull()=="--verify-cmo") {
         val file=File(args[1])
         val model=Cmo3Import.fromModelSource(Cmo3.read(file.readBytes()).root as org.umamo.format.cmo3.model.custom.CModelSource)
-        val report=buildJsonObject{put("drawables",model.drawables.size);put("parameters",model.parameters.size);put("glues",model.glues.size);put("masked_drawables",model.drawables.count{it.maskedBy.isNotEmpty()});put("inverted_masks",model.drawables.count{it.invertMask});put("official_editor_verified",false)}
+        val report=buildJsonObject{put("drawables",model.drawables.size);put("parameters",model.parameters.size);put("glues",model.glues.size);put("animated_glues",model.glues.count{it.channelGrids.gridsByChannel.isNotEmpty()});put("masked_drawables",model.drawables.count{it.maskedBy.isNotEmpty()});put("inverted_masks",model.drawables.count{it.invertMask});put("official_editor_verified",false)}
         File(file.parentFile,"cmo_roundtrip.json").writeText(report.toString())
         println("CMO3 own-codec roundtrip: $report")
         return
@@ -74,7 +74,20 @@ fun main(args:Array<String>) {
             userData=m.getValue("source").toString())
     }
     val parts=ir.a("parts").map{v->val p=v.jsonObject;Part(PartId(p.s("id")),p.s("id"),p.a("mesh_ids").map{OrgChild.Drawable(DrawableId(it.jsonPrimitive.content))})}
-    val glues=ir["glues"]?.jsonArray?.map{v->val g=v.jsonObject;Glue(DrawableId(g.s("mesh_a")),DrawableId(g.s("mesh_b")),g.a("pairs").map{e->val p=e.jsonArray;GluePair(p[0].jsonPrimitive.int,p[1].jsonPrimitive.int,p[2].jsonPrimitive.float,p[3].jsonPrimitive.float)},id=g.s("id"))} ?: emptyList()
+    val glues=ir["glues"]?.jsonArray?.map{v->
+        val g=v.jsonObject
+        val tracks=if(g.containsKey("axes")) {
+            val ax=axes(g)
+            val forms:List<KeyformCell<ChannelValue>> = if(g.containsKey("intensities")) g.a("intensities").mapIndexed{i,v->
+                var remainder=i
+                val coordinate=IntArray(ax.size)
+                for(j in ax.indices.reversed()){val size=g.a("axes")[j].jsonObject.a("keys").size;coordinate[j]=remainder%size;remainder/=size}
+                KeyformCell(coordinate,ChannelValue.Scalar(v.jsonPrimitive.float))
+            } else g.a("cells").map{e->val c=e.jsonObject;KeyformCell(c.a("coordinate").ints(),ChannelValue.Scalar(c.f("intensity")))}
+            ChannelGrids(mapOf(FormChannel.GLUE_INTENSITY to KeyformGrid(ax,forms)))
+        } else ChannelGrids.Empty
+        Glue(DrawableId(g.s("mesh_a")),DrawableId(g.s("mesh_b")),g.a("pairs").map{e->val p=e.jsonArray;GluePair(p[0].jsonPrimitive.int,p[1].jsonPrimitive.int,p[2].jsonPrimitive.float,p[3].jsonPrimitive.float)},channelGrids=tracks,intensity=g["intensity"]?.jsonPrimitive?.float ?: 1f,id=g.s("id"))
+    } ?: emptyList()
     val puppet=PuppetModel(params,parts,deformers,drawables,parts.map{OrgChild.Part(it.id)},null,
         renderRoot=RenderGroup(null,500,drawables.map{RenderDrawable(it.id)}),
         glues=glues,

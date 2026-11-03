@@ -1,5 +1,5 @@
 {
-  "artmeshes": 817,
+  "artmeshes": 1283,
   "ayagami_commit": "0d1d7aa3efe57b1b363b72e672e353c52a9c15d6",
   "backend": "Vulkan",
   "canvas": [
@@ -9,143 +9,143 @@
   "cases": [
     {
       "name": "front",
-      "pose_to_gpu_complete_ms": 7.8100000000000005,
-      "total_with_readback_and_files_ms": 42.2433
+      "pose_to_gpu_complete_ms": 77.2279,
+      "total_with_readback_and_files_ms": 309.61379999999997
     },
     {
       "name": "left",
-      "pose_to_gpu_complete_ms": 5.381600000000001,
-      "total_with_readback_and_files_ms": 22.1006
+      "pose_to_gpu_complete_ms": 166.1002,
+      "total_with_readback_and_files_ms": 334.9197
     },
     {
       "name": "right",
-      "pose_to_gpu_complete_ms": 5.1881,
-      "total_with_readback_and_files_ms": 22.074900000000003
+      "pose_to_gpu_complete_ms": 159.6545,
+      "total_with_readback_and_files_ms": 322.5778
     },
     {
       "name": "up",
-      "pose_to_gpu_complete_ms": 8.4682,
-      "total_with_readback_and_files_ms": 24.9651
+      "pose_to_gpu_complete_ms": 153.0475,
+      "total_with_readback_and_files_ms": 334.7173
     },
     {
       "name": "down",
-      "pose_to_gpu_complete_ms": 4.9877,
-      "total_with_readback_and_files_ms": 21.1603
+      "pose_to_gpu_complete_ms": 213.9069,
+      "total_with_readback_and_files_ms": 388.71729999999997
     },
     {
       "name": "roll",
-      "pose_to_gpu_complete_ms": 5.2074,
-      "total_with_readback_and_files_ms": 21.9758
+      "pose_to_gpu_complete_ms": 70.8094,
+      "total_with_readback_and_files_ms": 149.8397
     },
     {
       "name": "blink_left",
-      "pose_to_gpu_complete_ms": 5.3568,
-      "total_with_readback_and_files_ms": 22.204
+      "pose_to_gpu_complete_ms": 71.09060000000001,
+      "total_with_readback_and_files_ms": 147.6111
     },
     {
       "name": "blink_right",
-      "pose_to_gpu_complete_ms": 3.2742,
-      "total_with_readback_and_files_ms": 21.6374
+      "pose_to_gpu_complete_ms": 64.6423,
+      "total_with_readback_and_files_ms": 143.5131
     },
     {
       "name": "blink",
-      "pose_to_gpu_complete_ms": 3.3375000000000004,
-      "total_with_readback_and_files_ms": 21.9804
+      "pose_to_gpu_complete_ms": 59.861,
+      "total_with_readback_and_files_ms": 137.8374
     },
     {
       "name": "mouth",
-      "pose_to_gpu_complete_ms": 3.3892,
-      "total_with_readback_and_files_ms": 21.616799999999998
+      "pose_to_gpu_complete_ms": 58.124,
+      "total_with_readback_and_files_ms": 135.40879999999999
     },
     {
       "name": "turn_mouth",
-      "pose_to_gpu_complete_ms": 5.6361,
-      "total_with_readback_and_files_ms": 24.7425
+      "pose_to_gpu_complete_ms": 68.04899999999999,
+      "total_with_readback_and_files_ms": 142.3833
     },
     {
       "name": "turn_blink",
-      "pose_to_gpu_complete_ms": 6.2871999999999995,
-      "total_with_readback_and_files_ms": 38.642
+      "pose_to_gpu_complete_ms": 67.4362,
+      "total_with_readback_and_files_ms": 155.81310000000002
     },
     {
       "name": "head_body",
-      "pose_to_gpu_complete_ms": 7.2579,
-      "total_with_readback_and_files_ms": 26.5745
+      "pose_to_gpu_complete_ms": 70.08409999999999,
+      "total_with_readback_and_files_ms": 142.476
     },
     {
       "name": "extreme",
-      "pose_to_gpu_complete_ms": 7.695600000000001,
-      "total_with_readback_and_files_ms": 29.936799999999998
+      "pose_to_gpu_complete_ms": 66.6987,
+      "total_with_readback_and_files_ms": 138.5351
     },
     {
       "name": "heldout",
-      "pose_to_gpu_complete_ms": 7.212599999999999,
-      "total_with_readback_and_files_ms": 34.4275
+      "pose_to_gpu_complete_ms": 73.6169,
+      "total_with_readback_and_files_ms": 147.66670000000002
     },
     {
       "name": "brows",
-      "pose_to_gpu_complete_ms": 6.5559,
-      "total_with_readback_and_files_ms": 29.5046
+      "pose_to_gpu_complete_ms": 71.6797,
+      "total_with_readback_and_files_ms": 146.5665
     },
     {
       "name": "body_y",
-      "pose_to_gpu_complete_ms": 8.9451,
-      "total_with_readback_and_files_ms": 33.408100000000005
+      "pose_to_gpu_complete_ms": 71.70020000000001,
+      "total_with_readback_and_files_ms": 144.014
     },
     {
       "name": "body_z",
-      "pose_to_gpu_complete_ms": 10.0441,
-      "total_with_readback_and_files_ms": 29.1627
+      "pose_to_gpu_complete_ms": 64.4641,
+      "total_with_readback_and_files_ms": 137.0813
     },
     {
       "name": "breath",
-      "pose_to_gpu_complete_ms": 6.6872,
-      "total_with_readback_and_files_ms": 24.610300000000002
+      "pose_to_gpu_complete_ms": 66.2514,
+      "total_with_readback_and_files_ms": 141.0617
     },
     {
       "name": "heldout_negative",
-      "pose_to_gpu_complete_ms": 8.093100000000002,
-      "total_with_readback_and_files_ms": 27.5737
+      "pose_to_gpu_complete_ms": 72.0567,
+      "total_with_readback_and_files_ms": 150.7585
     },
     {
       "name": "heldout_head_body",
-      "pose_to_gpu_complete_ms": 8.2445,
-      "total_with_readback_and_files_ms": 27.512700000000002
+      "pose_to_gpu_complete_ms": 75.36529999999999,
+      "total_with_readback_and_files_ms": 151.75289999999998
     },
     {
       "name": "pitch_mouth",
-      "pose_to_gpu_complete_ms": 7.5217,
-      "total_with_readback_and_files_ms": 30.6597
+      "pose_to_gpu_complete_ms": 70.63940000000001,
+      "total_with_readback_and_files_ms": 144.0414
     },
     {
       "name": "gaze_follow",
-      "pose_to_gpu_complete_ms": 5.7256,
-      "total_with_readback_and_files_ms": 27.8693
+      "pose_to_gpu_complete_ms": 69.6156,
+      "total_with_readback_and_files_ms": 139.8648
     },
     {
       "name": "mouth_form",
-      "pose_to_gpu_complete_ms": 12.0436,
-      "total_with_readback_and_files_ms": 45.3231
+      "pose_to_gpu_complete_ms": 67.4563,
+      "total_with_readback_and_files_ms": 142.3333
     },
     {
       "name": "wink_smile",
-      "pose_to_gpu_complete_ms": 4.2833000000000006,
-      "total_with_readback_and_files_ms": 36.7044
+      "pose_to_gpu_complete_ms": 57.696400000000004,
+      "total_with_readback_and_files_ms": 134.6022
     },
     {
       "name": "tilt_breath",
-      "pose_to_gpu_complete_ms": 17.096,
-      "total_with_readback_and_files_ms": 46.5176
+      "pose_to_gpu_complete_ms": 60.390699999999995,
+      "total_with_readback_and_files_ms": 128.2083
     },
     {
       "name": "head_body_pitch",
-      "pose_to_gpu_complete_ms": 16.82,
-      "total_with_readback_and_files_ms": 32.7932
+      "pose_to_gpu_complete_ms": 56.3013,
+      "total_with_readback_and_files_ms": 116.7966
     },
     {
       "name": "all_extreme",
-      "pose_to_gpu_complete_ms": 6.451499999999999,
-      "total_with_readback_and_files_ms": 31.548800000000004
+      "pose_to_gpu_complete_ms": 63.199400000000004,
+      "total_with_readback_and_files_ms": 122.496
     }
   ],
   "gpu": "NVIDIA GeForce RTX 5080 Laptop GPU",

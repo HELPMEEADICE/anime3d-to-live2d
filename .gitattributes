@@ -7,3 +7,5 @@
 *.json text eol=lf
 *.toml text eol=lf
 *.ps1 text eol=crlf
+# Unified-diff context starts with a space before the upstream Kotlin tabs.
+exporter/patches/*.patch text eol=lf whitespace=-space-before-tab

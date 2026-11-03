@@ -219,6 +219,8 @@ def optimize(folder=ROOT / "artifacts/rig"):
         "384x512 coverage constraints, shared canonical reference, pose-local depth priority, closest-order projection and parameter-lattice smoothing. Non-eye expression depth residuals retained; mask-protected eye layering remains invariant. Remaining non-orderable patches are recorded for adaptive refinement."
     )
     ir["diagnostics"]["occlusion_optimization"] = diagnostics
+    from .depth_masks import stabilize_linework_order
+    stabilize_linework_order(ir)
     jsonwrite(path, ir)
     jsonwrite(folder / "statistics.json", ir["diagnostics"])
     proposals = []
