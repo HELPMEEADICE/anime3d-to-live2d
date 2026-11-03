@@ -1,5 +1,9 @@
 # POPY 实测交付报告
 
+## 最新肩颈头发修复
+
+2026-11-03 的后续修复同时提供 Blender 独立副本与原生 Live2D 后侧遮挡约束。77 姿态、60 相邻帧和 264 表情组合实测结果及已知退步见 [头发修复报告](docs/HAIR_CLEARANCE.md)，本地可视报告在 `artifacts/hair_repair_report/index.html`。新增文件以 `POPY_hair_fixed` 命名，前侧头发及全部绘制顺序轨道保留；下文为前一阶段的基线统计。
+
 本次已实现并在用户当前 POPY 上运行真实链路：Blender bpy 数据/姿态 → 3D 源映射与局部 Rig IR → 原生 Warp/Rotation/ArtMesh 参数 → 真正 MOC3 → 固定版本 Ayagami GPU 渲染。没有 PSD 中转、序列帧模型、改扩展名文件或虚构的 Editor 验证。
 
 ## 本轮遮挡、接缝与连续动作修复

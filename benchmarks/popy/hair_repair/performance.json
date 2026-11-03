@@ -1,0 +1,50 @@
+[
+  {
+    "stage": "hair_release_quality",
+    "seconds": 8.804620899998554,
+    "peak_process_tree_rss_bytes": 6965653504,
+    "exit_code": 0
+  },
+  {
+    "stage": "hair_release_native77",
+    "seconds": 6.371261600001162,
+    "peak_process_tree_rss_bytes": 572248064,
+    "exit_code": 0
+  },
+  {
+    "stage": "hair_release_native264",
+    "seconds": 23.89371949999986,
+    "peak_process_tree_rss_bytes": 606142464,
+    "exit_code": 0
+  },
+  {
+    "stage": "hair_release_editor_export_final",
+    "seconds": 241.2618837000009,
+    "peak_process_tree_rss_bytes": 17654525952,
+    "exit_code": 0
+  },
+  {
+    "stage": "hair_python_tests",
+    "seconds": 3.63051269999778,
+    "peak_process_tree_rss_bytes": 1015529472,
+    "exit_code": 0
+  },
+  {
+    "stage": "hair_rust_tests",
+    "seconds": 0.5530816999998933,
+    "peak_process_tree_rss_bytes": 50417664,
+    "exit_code": 0
+  },
+  {
+    "stage": "hair_release_editor_readback",
+    "seconds": 51.36902209999971,
+    "peak_process_tree_rss_bytes": 19534491648,
+    "exit_code": 0
+  },
+  {
+    "stage": "hair_release_editor_native77",
+    "seconds": 6.96243719999984,
+    "peak_process_tree_rss_bytes": 364331008,
+    "exit_code": 0
+  }
+]

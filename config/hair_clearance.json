@@ -1,0 +1,10 @@
+{
+  "world_rear_axis": [0, 1, 0],
+  "colliders": ["M_Body", "M_Top", "M_Bow", "M_Necktie"],
+  "outfit_mask_objects": ["M_Body", "M_Top", "M_Bow", "M_Necktie", "M_Skirts", "M_Underpants"],
+  "clearance_m": 0.02,
+  "simple_subdivision": 2,
+  "strand_classification_below_z": 1.50,
+  "lower_patch_min_z": 1.50,
+  "notes": "POPY-specific conservative front/rear collision routing. Evaluated subdivision only; original editable mesh is preserved. Current Live2D policy requires the audited orthographic frontal camera."
+}

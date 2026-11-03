@@ -10,6 +10,8 @@ Geometry-driven Blender/Python/Rust research converter with a separate GPL Cubis
 
 ## 当前交付位置
 
+**最新肩颈头发修复**见 [实测与限制](docs/HAIR_CLEARANCE.md)。请使用 `delivery/POPY_hair_fixed.zip`、`delivery/POPY_hair_fixed_editable.zip` 和独立的 `delivery/POPY_hair_fixed.blend`；报告位于 `artifacts/hair_repair_report/index.html`。77 姿态中错误露出 71,761 → 11,977，误遮挡 30,301 → 33,611，仍有质量取舍。眼睛和发饰指标保持原值。已有原始转换数据后，可用 `python -m popy.hair_repair all` 重复修复。下列不带 `hair_clearance` 的旧输出作为基线保留。
+
 - `output/POPY/POPY.model3.json`：质量版运行时入口，旁边有真实 `.moc3/.cdi3.json` 与纹理，**没有冒充已完成的质量版 CMO3**。
 - `output/POPY_balanced/POPY.model3.json`：平衡版入口，包含其匹配的 `.moc3/.cmo3`。身体俯仰独立时准确，和头部的大幅组合有明显误差。
 - `artifacts/report/index.html`：逐姿态 Blender / Ayagami / 误差图、各项指标。

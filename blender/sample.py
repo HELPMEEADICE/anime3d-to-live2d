@@ -21,6 +21,9 @@ def arguments():
     p.add_argument("--case-output")
     p.add_argument("--eye-masks", action="store_true")
     p.add_argument("--surface-labels", help="Original triangle RGB class IDs for an independent Blender depth pass")
+    p.add_argument("--hair-clearance", action="store_true", help="Install native non-destructive lower-hair/outfit collision modifiers")
+    p.add_argument("--collision-audit", action="store_true", help="Measure actual hair/outfit triangle intersections before/after each reference pose")
+    p.add_argument("--skip-renders", action="store_true", help="Export evaluated geometry/audits without rendering images")
     return p.parse_args(
         sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     )
@@ -42,13 +45,16 @@ def main():
     cfg = json.loads((ROOT / "config/convert.json").read_text())
     sem = json.loads((ROOT / "config/semantics.json").read_text())
     arm = bpy.data.objects[sem["armature"]]
-    meshes = [o for o in bpy.context.scene.objects if o.type == "MESH"]
+    meshes = [o for o in bpy.context.scene.objects if o.type == "MESH" and not o.name.startswith("POPY_Clearance_")]
     gaze_name = sem["objects"]["gaze"]
     for o in meshes:
         # Outline geometry changes vertex correspondence; explicitly excluded and reported.
         for m in list(o.modifiers):
-            if m.type != "ARMATURE":
+            if m.type != "ARMATURE" and not m.name.startswith(("POPY_Clearance_", "POPY_CollisionResolution")):
                 o.modifiers.remove(m)
+    if args.hair_clearance:
+        from blender.hair_collision import install
+        install()
     rest_basis = {p.name: p.matrix_basis.copy() for p in arm.pose.bones}
     shapes = sem["shape_parameters"]
     for pid, s in shapes.items():
@@ -122,7 +128,9 @@ def main():
         ],
     }
     for o in meshes:
-        m = o.data
+        evaluated_source = any(m.name == "POPY_CollisionResolution" for m in o.modifiers)
+        evaluated = o.evaluated_get(bpy.context.evaluated_depsgraph_get()) if evaluated_source else None
+        m = evaluated.to_mesh() if evaluated_source else o.data
         m.calc_loop_triangles()
         assert m.uv_layers.active, f"UV missing: {o.name}"
         tri = np.array([list(t.vertices) for t in m.loop_triangles], np.int32)
@@ -163,7 +171,7 @@ def main():
             fn = out / (primary.name + ".png")
             primary.save_render(str(fn))
             textures.append(fn.name)
-        v = vertices(o)
+        v = np.array([list(evaluated.matrix_world @ v.co) for v in m.vertices], np.float32) if evaluated_source else vertices(o)
         np.savez_compressed(
             out / (o.name + "_source.npz"),
             positions=v,
@@ -187,6 +195,8 @@ def main():
                 "groups": [g.name for g in o.vertex_groups],
             }
         )
+        if evaluated_source:
+            evaluated.to_mesh_clear()
     # Export all bone bind/rest data and morph deltas, including controls not selected for the rig.
     (out / "skeleton.json").write_text(
         json.dumps(
@@ -394,16 +404,21 @@ def main():
             np.save(ref / (case["name"] + "__" + o.name + ".npy"), v)
         material_mode(False)
         scene.render.filepath = str(ref / (case["name"] + ".png"))
-        bpy.ops.render.render(write_still=True)
-        if args.eye_masks:
+        if not args.skip_renders:
+            bpy.ops.render.render(write_still=True)
+        if args.eye_masks and not args.skip_renders:
             material_mode(True)
             scene.render.filepath = str(ref / (case["name"] + "_eyes.png"))
             bpy.ops.render.render(write_still=True)
-        if args.surface_labels:
+        if args.surface_labels and not args.skip_renders:
             surface_mode(True)
             scene.render.filepath = str(ref / (case["name"] + "_surfaces.png"))
             bpy.ops.render.render(write_still=True)
             surface_mode(False)
+        if args.collision_audit:
+            from blender.hair_collision import audit_pose
+            collision = audit_pose(bpy.data.objects[sem["objects"]["hair"]])
+            (ref / (case["name"] + "_collision.json")).write_text(json.dumps(collision, indent=2))
         print("RENDER", case["name"], flush=True)
     case_output = (
         Path(args.case_output) if args.case_output else out.parent / "cases.json"

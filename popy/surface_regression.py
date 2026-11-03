@@ -85,7 +85,7 @@ def cases():
     return rows
 
 
-def diagnostic_rig(rig, destination):
+def diagnostic_rig(rig, destination, class_map=None):
     """A real second MOC with identical geometry, alpha and masks; only texture RGB changes.
 
     Give each class its own texture pages so shared UV regions never relabel another part.
@@ -96,7 +96,7 @@ def diagnostic_rig(rig, destination):
     for stale in destination.glob("*_errors.png"):
         stale.unlink()
     ir = json.loads(rig.read_text())
-    classes = labels()
+    classes = labels() if class_map is None else class_map
     original = ir["textures"][:]
     ir["textures"] = []
     for label, color in enumerate(COLORS):
