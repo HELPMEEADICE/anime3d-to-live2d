@@ -18,3 +18,7 @@ PSD2Live 的 MIT 中立格式模块不等于 MIT 二进制导出器。本实现�
 Ayagami 仓库的 AI 贡献/研究限制已读。按用户明确要求，仅在此独立项目中将未修改的固定版本作为运行时依赖调用，不修改 Ayagami 源码，也不向其上游提交 AI 生成内容。本实现不把 Ayagami 的验证作为 CMO3 工程兼容性验证。
 
 另有两个 GPL CMO3 lowering 文件的性能补丁：按不可变模型/索引快照缓存 Glue 的有序网格对及 ordinal，属性写入阶段直接复用已经解析的源节点，避免几十万个重复全表扫描。UID 顶点表仍实时读取，不改变绑定顺序或权重。完整补丁保存在 `exporter/patches/cmo_glue_lookup.patch`，由同一 setup 脚本精确、幂等应用。它属于独立 GPL 导出进程，不混入 MIT 几何模块；未向上游提交。
+
+全身扩展增加了可选 GPL 位置表去重补丁 `exporter/patches/moc_position_dedup.patch`，覆盖位置值编码、CountInfo 和一个新的辅助文件。仅在 `--deduplicate-positions` 时共享连续、位模式完全相同的位置块，默认导出路径不启用此优化。优化后的模型由未修改的 Ayagami 进行图像和全顶点对照。`exporter/src/main/kotlin/popy/Export.kt` 另支持独立根坐标载体，仍属于 GPL 导出适配器。中立的 `popy/native_skinning.py` 只构建 Rig IR 的矩阵/Glue 运算图，不链接 GPL 格式代码。
+
+工作区 Anon 仅作为控制、动作和表情组织的本地参考，未复制其模型、纹理、绑定、motion3 曲线或 exp3 配方；没有对其资产授予或推定新的再分发许可。

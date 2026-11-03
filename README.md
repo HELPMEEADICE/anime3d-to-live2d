@@ -6,9 +6,11 @@ Geometry-driven Blender/Python/Rust research converter with a separate GPL Cubis
 
 这是一个已在当前 POPY 上运行的几何驱动研发实现。它从 Blender 的真实网格、蒙皮姿态、Shape Keys 和 UV 构建参数模型，生成真正的 MOC3 与 CMO3，并调用 Ayagami 在无窗口 GPU 环境中渲染和回归。内部不经过 PSD，也不将姿势作为序列帧贴图。
 
-**当前仍不是“任意模型一键得到商业级 Live2D”的成品。** 当前交付是 POPY 原始 T-pose 的半身配置，笑眼的姿态耦合、复杂遮挡、头发物理和模型成本仍有限制。质量版已联合拟合身体俯仰；完整参数极值经过实际回归。质量版 CMO3 在 7/10 GiB 堆下均遇到导出器内存不足，因此另交付与其自身 MOC3 匹配的平衡版 CMO3。它通过自身格式库重新读取，但没有在官方 Cubism Editor 中验证，不能宣称编辑器兼容。
+**当前仍不是“任意模型一键得到商业级 Live2D”的成品。** 最新版本提供 POPY 全身取景、四肢与手指控制及动作/表情资源，模型成本仍然很高，复杂遮挡、布料碰撞、足底约束和头发物理仍有限制。历史平衡版 CMO3 通过自身格式库重新读取，但没有在官方 Cubism Editor 中验证，且不包含最新四肢功能。
 
 ## 当前交付位置
+
+**最新全身、四肢动作与表情**见 [实现与操作说明](docs/FULLBODY.md)。运行时加载 `delivery/POPY_fullbody.zip` 内的 `POPY.model3.json`；独立三维动画工程为 `delivery/POPY_fullbody.blend`。保留原 19 个参数，新增左右独立肩/肘/腕/手势和髋/膝/踝共 18 个控制，附带 15 个 motion3 和 16 个 exp3。报告位于 `artifacts/fullbody/report/index.html`。已有面部修复基线后执行 `python -m popy.fullbody all`；动作预览用 `python -m popy.fullbody frames --motion wave_L --expression smile --fps 15`。角色资源保留本地，公开数值记录位于 `benchmarks/popy/fullbody/`。
 
 **最新面部穿透遮盖修复**见 [实现、实测范围与限制](docs/FACE_CLEARANCE.md)。请加载 `delivery/POPY_face_fixed.zip`；报告为 `artifacts/face_repair/report/index.html`。本轮处理耳边白点、脸颊细缝、面内错误头发覆盖、鼻线及极端张嘴时的牙齿覆盖，并保留既有眼睛、发饰和衣领专项回归。有限姿态验证不证明所有组合零缺陷；极端下颌/毛发差异和较高模型成本仍有记录。已有衣领基线后执行 `python -m popy.face_repair all`。旧 CMO3 不含本轮修复。
 
@@ -83,7 +85,7 @@ cargo test --manifest-path rust/Cargo.toml -p popy-geometry --locked
 
 单独重跑新增回归：`python -m popy.cli visibility`。若源快照、参考姿态和渲染配置均未变化，可执行 `python -m popy.visibility_regression --reuse-reference`，复用已经独立渲染的 Blender 参考图。完整 `run.ps1` 会重新生成参考并验证，不默认沿用缓存。
 
-本轮没有生成 physics3、motion3 或 exp3：没有用空壳文件暗示已完成头发动力学、动作和表情文件求值。静态表情参数可以直接控制，运行时验证不依赖这些附属文件。
+早期半身版本没有生成 physics3、motion3 或 exp3。最新全身版本已补充实际 motion3/exp3 及离线时间轴求值，见 [全身说明](docs/FULLBODY.md)；头发 physics3 仍未实现。
 
 研究、格式能力边界、许可与后续优化见 `docs/RESEARCH.md` 和 `docs/THIRD_PARTY.md`。
 

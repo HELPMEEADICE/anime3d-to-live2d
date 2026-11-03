@@ -1,0 +1,580 @@
+{
+  "canvas": [
+    768,
+    1024
+  ],
+  "camera": {
+    "center": [
+      0,
+      0,
+      0.82
+    ],
+    "ortho_scale": 1.85
+  },
+  "source": "artifacts/POPY_source.blend",
+  "baseline": "artifacts/face_repair/final_rig/POPY.rig.json",
+  "patch_triangles": 32,
+  "max_grid_cells": 16000,
+  "controls": [
+    {
+      "id": "ParamArmLRaise",
+      "name": "Left upper arm raise",
+      "keys": [
+        -80,
+        -65,
+        -45,
+        -25,
+        0,
+        25,
+        50
+      ],
+      "min": -80,
+      "max": 50,
+      "default": -65,
+      "drives": [
+        {
+          "bone": "Arm_Left",
+          "axis": "X",
+          "factor": 1
+        }
+      ]
+    },
+    {
+      "id": "ParamArmLDepth",
+      "name": "Left upper arm forward",
+      "keys": [
+        -30,
+        0,
+        30
+      ],
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "Arm_Left",
+          "axis": "Z",
+          "factor": -1
+        }
+      ]
+    },
+    {
+      "id": "ParamElbowL",
+      "name": "Left elbow bend",
+      "keys": [
+        0,
+        30,
+        60,
+        90,
+        120
+      ],
+      "min": 0,
+      "max": 120,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "ForeArm_Left",
+          "axis": "X",
+          "factor": 1
+        }
+      ]
+    },
+    {
+      "id": "ParamWristL",
+      "name": "Left wrist bend",
+      "keys": [
+        -35,
+        0,
+        35
+      ],
+      "min": -35,
+      "max": 35,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "Hand_Left",
+          "axis": "X",
+          "factor": 1
+        }
+      ]
+    },
+    {
+      "id": "ParamHandLPose",
+      "name": "Left hand: point / open / fist",
+      "keys": [
+        -1,
+        -0.5,
+        0,
+        0.5,
+        1
+      ],
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "IndexFinger1_Left",
+          "axis": "X",
+          "factor": -65,
+          "negative_factor": 0
+        },
+        {
+          "bone": "IndexFinger2_Left",
+          "axis": "X",
+          "factor": -75,
+          "negative_factor": 0
+        },
+        {
+          "bone": "IndexFinger3_Left",
+          "axis": "X",
+          "factor": -45,
+          "negative_factor": 0
+        },
+        {
+          "bone": "MiddleFinger1_Left",
+          "axis": "X",
+          "factor": -65,
+          "negative_factor": 65
+        },
+        {
+          "bone": "MiddleFinger2_Left",
+          "axis": "X",
+          "factor": -75,
+          "negative_factor": 75
+        },
+        {
+          "bone": "MiddleFinger3_Left",
+          "axis": "X",
+          "factor": -45,
+          "negative_factor": 45
+        },
+        {
+          "bone": "RingFinger1_Left",
+          "axis": "X",
+          "factor": -65,
+          "negative_factor": 65
+        },
+        {
+          "bone": "RingFinger2_Left",
+          "axis": "X",
+          "factor": -75,
+          "negative_factor": 75
+        },
+        {
+          "bone": "RingFinger3_Left",
+          "axis": "X",
+          "factor": -45,
+          "negative_factor": 45
+        },
+        {
+          "bone": "PinkyFinger1_Left",
+          "axis": "X",
+          "factor": -65,
+          "negative_factor": 65
+        },
+        {
+          "bone": "PinkyFinger2_Left",
+          "axis": "X",
+          "factor": -75,
+          "negative_factor": 75
+        },
+        {
+          "bone": "PinkyFinger3_Left",
+          "axis": "X",
+          "factor": -45,
+          "negative_factor": 45
+        },
+        {
+          "bone": "ThumbFinger0_Left",
+          "axis": "Z",
+          "factor": 25,
+          "negative_factor": -25
+        },
+        {
+          "bone": "ThumbFinger1_Left",
+          "axis": "X",
+          "factor": -25,
+          "negative_factor": 25
+        },
+        {
+          "bone": "ThumbFinger2_Left",
+          "axis": "X",
+          "factor": -25,
+          "negative_factor": 25
+        }
+      ]
+    },
+    {
+      "id": "ParamLegLSwing",
+      "name": "Left hip forward/back",
+      "keys": [
+        -25,
+        -12.5,
+        0,
+        12.5,
+        25
+      ],
+      "min": -25,
+      "max": 25,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "UpLeg_Left",
+          "axis": "X",
+          "factor": -1
+        }
+      ]
+    },
+    {
+      "id": "ParamLegLSpread",
+      "name": "Left hip outward",
+      "keys": [
+        0,
+        15
+      ],
+      "min": 0,
+      "max": 15,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "UpLeg_Left",
+          "axis": "Z",
+          "factor": -1
+        }
+      ]
+    },
+    {
+      "id": "ParamKneeL",
+      "name": "Left knee flexion",
+      "keys": [
+        0,
+        15,
+        30,
+        45,
+        60
+      ],
+      "min": 0,
+      "max": 60,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "Leg_Left",
+          "axis": "X",
+          "factor": 1
+        }
+      ]
+    },
+    {
+      "id": "ParamAnkleL",
+      "name": "Left ankle pitch",
+      "keys": [
+        -20,
+        0,
+        20
+      ],
+      "min": -20,
+      "max": 20,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "Foot_Left",
+          "axis": "X",
+          "factor": 1
+        }
+      ]
+    },
+    {
+      "id": "ParamArmRRaise",
+      "name": "Right upper arm raise",
+      "keys": [
+        -80,
+        -65,
+        -45,
+        -25,
+        0,
+        25,
+        50
+      ],
+      "min": -80,
+      "max": 50,
+      "default": -65,
+      "drives": [
+        {
+          "bone": "Arm_Right",
+          "axis": "X",
+          "factor": 1
+        }
+      ]
+    },
+    {
+      "id": "ParamArmRDepth",
+      "name": "Right upper arm forward",
+      "keys": [
+        -30,
+        0,
+        30
+      ],
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "Arm_Right",
+          "axis": "Z",
+          "factor": 1
+        }
+      ]
+    },
+    {
+      "id": "ParamElbowR",
+      "name": "Right elbow bend",
+      "keys": [
+        0,
+        30,
+        60,
+        90,
+        120
+      ],
+      "min": 0,
+      "max": 120,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "ForeArm_Right",
+          "axis": "X",
+          "factor": 1
+        }
+      ]
+    },
+    {
+      "id": "ParamWristR",
+      "name": "Right wrist bend",
+      "keys": [
+        -35,
+        0,
+        35
+      ],
+      "min": -35,
+      "max": 35,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "Hand_Right",
+          "axis": "X",
+          "factor": 1
+        }
+      ]
+    },
+    {
+      "id": "ParamHandRPose",
+      "name": "Right hand: point / open / fist",
+      "keys": [
+        -1,
+        -0.5,
+        0,
+        0.5,
+        1
+      ],
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "IndexFinger1_Right",
+          "axis": "X",
+          "factor": -65,
+          "negative_factor": 0
+        },
+        {
+          "bone": "IndexFinger2_Right",
+          "axis": "X",
+          "factor": -75,
+          "negative_factor": 0
+        },
+        {
+          "bone": "IndexFinger3_Right",
+          "axis": "X",
+          "factor": -45,
+          "negative_factor": 0
+        },
+        {
+          "bone": "MiddleFinger1_Right",
+          "axis": "X",
+          "factor": -65,
+          "negative_factor": 65
+        },
+        {
+          "bone": "MiddleFinger2_Right",
+          "axis": "X",
+          "factor": -75,
+          "negative_factor": 75
+        },
+        {
+          "bone": "MiddleFinger3_Right",
+          "axis": "X",
+          "factor": -45,
+          "negative_factor": 45
+        },
+        {
+          "bone": "RingFinger1_Right",
+          "axis": "X",
+          "factor": -65,
+          "negative_factor": 65
+        },
+        {
+          "bone": "RingFinger2_Right",
+          "axis": "X",
+          "factor": -75,
+          "negative_factor": 75
+        },
+        {
+          "bone": "RingFinger3_Right",
+          "axis": "X",
+          "factor": -45,
+          "negative_factor": 45
+        },
+        {
+          "bone": "PinkyFinger1_Right",
+          "axis": "X",
+          "factor": -65,
+          "negative_factor": 65
+        },
+        {
+          "bone": "PinkyFinger2_Right",
+          "axis": "X",
+          "factor": -75,
+          "negative_factor": 75
+        },
+        {
+          "bone": "PinkyFinger3_Right",
+          "axis": "X",
+          "factor": -45,
+          "negative_factor": 45
+        },
+        {
+          "bone": "ThumbFinger0_Right",
+          "axis": "Z",
+          "factor": -25,
+          "negative_factor": 25
+        },
+        {
+          "bone": "ThumbFinger1_Right",
+          "axis": "X",
+          "factor": -25,
+          "negative_factor": 25
+        },
+        {
+          "bone": "ThumbFinger2_Right",
+          "axis": "X",
+          "factor": -25,
+          "negative_factor": 25
+        }
+      ]
+    },
+    {
+      "id": "ParamLegRSwing",
+      "name": "Right hip forward/back",
+      "keys": [
+        -25,
+        -12.5,
+        0,
+        12.5,
+        25
+      ],
+      "min": -25,
+      "max": 25,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "UpLeg_Right",
+          "axis": "X",
+          "factor": -1
+        }
+      ]
+    },
+    {
+      "id": "ParamLegRSpread",
+      "name": "Right hip outward",
+      "keys": [
+        0,
+        15
+      ],
+      "min": 0,
+      "max": 15,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "UpLeg_Right",
+          "axis": "Z",
+          "factor": 1
+        }
+      ]
+    },
+    {
+      "id": "ParamKneeR",
+      "name": "Right knee flexion",
+      "keys": [
+        0,
+        15,
+        30,
+        45,
+        60
+      ],
+      "min": 0,
+      "max": 60,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "Leg_Right",
+          "axis": "X",
+          "factor": 1
+        }
+      ]
+    },
+    {
+      "id": "ParamAnkleR",
+      "name": "Right ankle pitch",
+      "keys": [
+        -20,
+        0,
+        20
+      ],
+      "min": -20,
+      "max": 20,
+      "default": 0,
+      "drives": [
+        {
+          "bone": "Foot_Right",
+          "axis": "X",
+          "factor": 1
+        }
+      ]
+    }
+  ],
+  "hand_simplification_error_m": 0.0015,
+  "native_skinning": true,
+  "runtime_culling": {
+    "M_Body": true,
+    "M_Top": true,
+    "M_Shoes": true,
+    "M_Skirts": true,
+    "M_Underpants": true,
+    "M_Bow": true,
+    "M_Necktie": true,
+    "M_Bracelet": false,
+    "M_Decorate": false
+  },
+  "preserve_hair_clearance": true,
+  "runtime_order_bias": {
+    "M_Shoes": 80,
+    "M_Underpants": 20
+  },
+  "runtime_inner_caps": {
+    "M_Shoes": {
+      "rest_min_z": 0.36,
+      "rest_max_z": 0.39,
+      "min_abs_normal_z": 0.9,
+      "bias": 0
+    }
+  }
+}

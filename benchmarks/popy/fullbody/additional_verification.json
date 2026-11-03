@@ -1,0 +1,33 @@
+{
+  "moc_sha256": "76c830726519c8012716cbd2421c52ad8a37d124b946e63b0c4d8228ad39d4bf",
+  "full_python_suite": {
+    "tests": 75,
+    "passed": true,
+    "command": "python -m unittest discover -s tests -v"
+  },
+  "rust_geometry_tests": {
+    "tests": 7,
+    "passed": true,
+    "command": "cargo test --manifest-path rust/Cargo.toml -p popy-geometry --locked"
+  },
+  "new_fullbody_tests": 20,
+  "fresh_exporter_patch_forward_reverse_check": true,
+  "legacy_default_export": {
+    "bytes": 572064000,
+    "sha256": "e28631ff00bddaebf88be9d50a2b1b4cc078e7a50727608c1e0f355899386a64",
+    "bit_identical_to_existing_face_model": true,
+    "deduplicate_positions": false
+  },
+  "source_snapshot_sha256": "b4d94421c820d52db5d66da08302062328035a27af4fac378b818072faacbaed",
+  "ayagami_revision": "0d1d7aa3efe57b1b363b72e672e353c52a9c15d6",
+  "ayagami_checkout_unmodified": true,
+  "runtime_complexity": {
+    "deformers": 10,
+    "max_deformer_parent_depth": 3,
+    "glues": 394065,
+    "textures": 6,
+    "texture_width": 2048,
+    "texture_height": 2048
+  },
+  "official_cubism_verified": false
+}

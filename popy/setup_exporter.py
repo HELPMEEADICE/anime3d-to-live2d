@@ -17,7 +17,7 @@ elif new not in text:
     raise RuntimeError("Unknown exporter source revision: refusing a broad patch")
 print("Audited draw-leaf sentinel correction is present")
 repo = ROOT / "vendor/psd2live"
-for name in ["cmo_glue_lookup.patch"]:
+for name in ["cmo_glue_lookup.patch", "moc_position_dedup.patch"]:
     patch = ROOT / "exporter/patches" / name
     reverse = subprocess.run(
         ["git", "-C", str(repo), "apply", "--reverse", "--check", str(patch)],
@@ -31,6 +31,8 @@ for name in ["cmo_glue_lookup.patch"]:
             check=False,
         )
         if forward.returncode:
-            raise RuntimeError("Unknown CMO3 source revision; refusing patch " + name)
+            raise RuntimeError(
+                "Unknown Cubism format source revision; refusing patch " + name
+            )
         subprocess.run(["git", "-C", str(repo), "apply", str(patch)], check=True)
     print("Audited correction is present: " + name)

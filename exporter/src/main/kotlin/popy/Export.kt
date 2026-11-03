@@ -20,6 +20,7 @@ private fun JsonArray.floats()=map{it.jsonPrimitive.float}.toFloatArray()
 private fun JsonArray.ints()=map{it.jsonPrimitive.int}.toIntArray()
 
 fun main(args:Array<String>) {
+    if(args.contains("--deduplicate-positions")) System.setProperty("popy.moc3.deduplicatePositions","true")
     if(args.firstOrNull()=="--verify-cmo") {
         val file=File(args[1])
         val model=Cmo3Import.fromModelSource(Cmo3.read(file.readBytes()).root as org.umamo.format.cmo3.model.custom.CModelSource)
@@ -50,7 +51,10 @@ fun main(args:Array<String>) {
     val headRotGrid=KeyformGrid(axes(headRotation),headRotation.a("cells").map{v->val c=v.jsonObject;val p=c.a("origin").floats();KeyformCell(c.a("coordinate").ints(),RotationPivotForm(p[0],p[1],c.f("angle"),1f))})
     val headWarp=ir.getValue("head_warp").jsonObject
     val headWarpGrid=KeyformGrid(axes(headWarp),headWarp.a("cells").map{v->val c=v.jsonObject;KeyformCell(c.a("coordinate").ints(),WarpLatticeForm(c.a("points").floats()))})
-    val bodyWarps=ir["body_warps"]?.jsonArray?.map{v->val node=v.jsonObject;Deformer.Warp(DeformerId(node.s("id")),"Skin-weighted pitch correction ${node.f("strength")}",bodyRotationId,null,1,1,true,
+    val bodyWarps=ir["body_warps"]?.jsonArray?.map{v->val node=v.jsonObject
+        if(node["kind"]?.jsonPrimitive?.content=="rotation") Deformer.Rotation(DeformerId(node.s("id")),"Native skeleton coordinate carrier",null,null,0f,
+            KeyformGrid(emptyList(),listOf(KeyformCell(intArrayOf(),RotationPivotForm(0f,0f,0f,1f)))))
+        else Deformer.Warp(DeformerId(node.s("id")),"Skin-weighted pitch correction ${node.f("strength")}",if(node["root"]?.jsonPrimitive?.boolean==true) null else bodyRotationId,null,1,1,true,
         KeyformGrid(axes(node),node.a("cells").map{c->val cell=c.jsonObject;KeyformCell(cell.a("coordinate").ints(),WarpLatticeForm(cell.a("points").floats()))}))} ?: listOf(Deformer.Warp(warpId,"Body projection / breath",bodyRotationId,null,1,1,true,warpGrid))
     val deformers=listOf(
         Deformer.Rotation(bodyRotationId,"Body roll (exact angle)",null,null,0f,bodyRotGrid),

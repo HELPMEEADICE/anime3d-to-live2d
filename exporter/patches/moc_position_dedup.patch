@@ -1,0 +1,124 @@
+diff --git a/umamo/src/main/kotlin/org/umamo/format/moc3/encode/MocCountInfo.kt b/umamo/src/main/kotlin/org/umamo/format/moc3/encode/MocCountInfo.kt
+index 5779aed..01f3ee5 100644
+--- a/umamo/src/main/kotlin/org/umamo/format/moc3/encode/MocCountInfo.kt
++++ b/umamo/src/main/kotlin/org/umamo/format/moc3/encode/MocCountInfo.kt
+@@ -32,7 +32,7 @@ internal fun countInfoSection(context: MocLoweringContext): ByteArray {
+ 	 * @return Int The delta-row total.
+ 	 */
+ 	fun deltaRowsOf(records: List<BlendShape>?): Int = records?.sumOf { it.keyPositions.size } ?: 0
+-	val positionFloatCount =
++	val positionFloatCount = if(positionDedupEnabled()) deduplicatedPositionFloatCount(context) else
+ 		warps.sumOf { warp -> warp.keyforms.sumOf { padded(it.controlPoints.size) } } +
+ 			doc.artMeshes.sumOf { mesh -> mesh.keyforms.sumOf { padded(it.vertexPositions.size) } } +
+ 			(
+diff --git a/umamo/src/main/kotlin/org/umamo/format/moc3/encode/MocValueLowering.kt b/umamo/src/main/kotlin/org/umamo/format/moc3/encode/MocValueLowering.kt
+index ab6ef1c..44e48b4 100644
+--- a/umamo/src/main/kotlin/org/umamo/format/moc3/encode/MocValueLowering.kt
++++ b/umamo/src/main/kotlin/org/umamo/format/moc3/encode/MocValueLowering.kt
+@@ -26,19 +26,28 @@ internal fun valueTableSections(context: MocLoweringContext): Map<Int, ByteArray
+ 	val blendLayout = context.blendLayout.takeIf { context.hasBlendShapes }
+ 	// Sized exactly up front: the table runs to megabytes on a keyed rig, and growing it by doubling copies it
+ 	// several times over.
+-	val positionValues = LittleEndianWriter(4 * positionValueFloats(warps.flatMap { it.keyforms.map { k -> k.controlPoints.size } } +
++	val positionValues = LittleEndianWriter(4 * (if(positionDedupEnabled()) deduplicatedPositionFloatCount(context) else positionValueFloats(warps.flatMap { it.keyforms.map { k -> k.controlPoints.size } } +
+ 		doc.artMeshes.flatMap { it.keyforms.map { k -> k.vertexPositions.size } } +
+ 		blendLayout?.warpRecords.orEmpty().flatMap { r -> r.keyforms.mapNotNull { (it as? BlendShapeKeyform.Warp)?.form?.controlPoints?.size } } +
+-		blendLayout?.meshRecords.orEmpty().flatMap { r -> r.keyforms.mapNotNull { (it as? BlendShapeKeyform.Mesh)?.form?.vertexPositions?.size } }))
++		blendLayout?.meshRecords.orEmpty().flatMap { r -> r.keyforms.mapNotNull { (it as? BlendShapeKeyform.Mesh)?.form?.vertexPositions?.size } })))
++	var previousPositions: FloatArray? = null
++	var previousPositionOffset = 0
++	fun writePositions(values: FloatArray): Int {
++		if(positionDedupEnabled() && samePositionBits(previousPositions, values)) return previousPositionOffset
++		val offset = positionValues.position / 4
++		positionValues.writeFloats(values)
++		padTo16Floats(positionValues, values.size)
++		previousPositions = values
++		previousPositionOffset = offset
++		return offset
++	}
+ 	val warpPositionIndex = ArrayList<Int>()
+ 	val warpKeyformBase = IntArray(warps.size)
+ 	val warpOpacity = ArrayList<Float>()
+ 	for ((warpIndex, warp) in warps.withIndex()) {
+ 		warpKeyformBase[warpIndex] = warpPositionIndex.size
+ 		for (keyform in warp.keyforms) {
+-			warpPositionIndex.add(positionValues.position / 4)
+-			positionValues.writeFloats(keyform.controlPoints)
+-			padTo16Floats(positionValues, keyform.controlPoints.size)
++			warpPositionIndex.add(writePositions(keyform.controlPoints))
+ 			warpOpacity.add(keyform.opacity)
+ 		}
+ 	}
+@@ -49,9 +58,7 @@ internal fun valueTableSections(context: MocLoweringContext): Map<Int, ByteArray
+ 	for ((meshIndex, mesh) in doc.artMeshes.withIndex()) {
+ 		meshKeyformBase[meshIndex] = meshPositionIndex.size
+ 		for (keyform in mesh.keyforms) {
+-			meshPositionIndex.add(positionValues.position / 4)
+-			positionValues.writeFloats(keyform.vertexPositions)
+-			padTo16Floats(positionValues, keyform.vertexPositions.size)
++			meshPositionIndex.add(writePositions(keyform.vertexPositions))
+ 			meshOpacity.add(keyform.opacity.coerceIn(0f, 1f))
+ 			meshDrawOrder.add(keyform.drawOrder.coerceIn(0f, 1000f))
+ 		}
+@@ -65,18 +72,14 @@ internal fun valueTableSections(context: MocLoweringContext): Map<Int, ByteArray
+ 		for (record in blendLayout.warpRecords) {
+ 			for (keyform in record.keyforms) {
+ 				val warpDelta = (keyform as? BlendShapeKeyform.Warp)?.form ?: continue
+-				warpPositionIndex.add(positionValues.position / 4)
+-				positionValues.writeFloats(warpDelta.controlPoints)
+-				padTo16Floats(positionValues, warpDelta.controlPoints.size)
++				warpPositionIndex.add(writePositions(warpDelta.controlPoints))
+ 				warpOpacity.add(warpDelta.opacity)
+ 			}
+ 		}
+ 		for (record in blendLayout.meshRecords) {
+ 			for (keyform in record.keyforms) {
+ 				val meshDelta = (keyform as? BlendShapeKeyform.Mesh)?.form ?: continue
+-				meshPositionIndex.add(positionValues.position / 4)
+-				positionValues.writeFloats(meshDelta.vertexPositions)
+-				padTo16Floats(positionValues, meshDelta.vertexPositions.size)
++				meshPositionIndex.add(writePositions(meshDelta.vertexPositions))
+ 				meshOpacity.add(meshDelta.opacity)
+ 				meshDrawOrder.add(meshDelta.drawOrder)
+ 			}
+diff --git a/umamo/src/main/kotlin/org/umamo/format/moc3/encode/MocPositionDedup.kt b/umamo/src/main/kotlin/org/umamo/format/moc3/encode/MocPositionDedup.kt
+new file mode 100644
+--- /dev/null
++++ b/umamo/src/main/kotlin/org/umamo/format/moc3/encode/MocPositionDedup.kt
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: GPL-3.0-or-later
++package org.umamo.format.moc3.encode
++
++import org.umamo.format.moc3.model.BlendShapeKeyform
++
++// Opt-in lossless packing. Preserve every keyform row and scalar channel;
++// only byte-identical, consecutive position blocks share their existing index.
++internal fun positionDedupEnabled(): Boolean =
++    java.lang.Boolean.getBoolean("popy.moc3.deduplicatePositions")
++
++internal fun samePositionBits(a: FloatArray?, b: FloatArray): Boolean {
++    if(a == null || a.size != b.size) return false
++    if(a === b) return true
++    for(i in b.indices) if(a[i].toRawBits() != b[i].toRawBits()) return false
++    return true
++}
++
++internal fun deduplicatedPositionFloatCount(context: MocLoweringContext): Int {
++    var previous: FloatArray? = null
++    var count = 0
++    fun add(values: FloatArray) {
++        if(!samePositionBits(previous, values)) count += (values.size + 15) / 16 * 16
++        previous = values
++    }
++    for(warp in context.warps) for(form in warp.keyforms) add(form.controlPoints)
++    for(mesh in context.doc.artMeshes) for(form in mesh.keyforms) add(form.vertexPositions)
++    if(context.hasBlendShapes) {
++        for(record in context.blendLayout.warpRecords) for(form in record.keyforms) {
++            if(form is BlendShapeKeyform.Warp) add(form.form.controlPoints)
++        }
++        for(record in context.blendLayout.meshRecords) for(form in record.keyforms) {
++            if(form is BlendShapeKeyform.Mesh) add(form.form.vertexPositions)
++        }
++    }
++    return count
++}
