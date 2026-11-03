@@ -1,0 +1,7 @@
+{
+  "target_object": "M_Body",
+  "target_rest_z": [1.30, 1.38],
+  "target_rest_abs_x": 0.065,
+  "occluder_objects": ["M_Top", "M_Skirts", "M_Bow", "M_Necktie"],
+  "occluder_min_rest_z": 1.28
+}

@@ -59,6 +59,36 @@ def protect_neck_depth(ir, samples, semantics, binary_path):
         if p["parameters"]["ParamAngleX"] in [-45, -30, 0, 30, 45]
         and p["parameters"]["ParamAngleY"] in [-30, 0, 30]
     ]
+    return build_depth_masks(
+        ir,
+        samples,
+        targets,
+        occluders,
+        binary_path,
+        poses,
+        "Neck",
+        "neck_depth",
+        "neck_depth_masks",
+    )
+
+
+def build_depth_masks(
+    ir,
+    samples,
+    targets,
+    occluders,
+    binary_path,
+    poses,
+    prefix,
+    metadata_key,
+    diagnostics_key,
+    merge_masks=False,
+):
+    """Clip foreground source surfaces using native barycentric Glue tracks.
+
+    Targets must already have suitably small, approximately planar patches.
+    All original draw-order and visible vertex tracks remain untouched.
+    """
     names = {m["source"]["object"] for m in targets + occluders}
     world = {n: [] for n in names}
     for p in poses:
@@ -93,7 +123,8 @@ def protect_neck_depth(ir, samples, semantics, binary_path):
     diagnostics = []
     with Path(binary_path).open("ab") as stream:
         for target in targets:
-            points = world[hair][:, target["source"]["vertices"]]
+            target_object = target["source"]["object"]
+            points = world[target_object][:, target["source"]["vertices"]]
             planes = [plane(p) for p in points]
             normals = np.array([n for n, t in planes])
             thresholds = np.array([t for n, t in planes])
@@ -103,7 +134,7 @@ def protect_neck_depth(ir, samples, semantics, binary_path):
             indices = []
             masters = []
             provenance = []
-            helper_id = "MaskNeckDepth_" + target["id"]
+            helper_id = "Mask" + prefix + "Depth_" + target["id"]
             for occ in occluders:
                 name = occ["source"]["object"]
                 a, b = bounds[occ["id"]]
@@ -133,7 +164,7 @@ def protect_neck_depth(ir, samples, semantics, binary_path):
                 q = np.einsum(
                     "ptvi,ptic->ptvc", bary, screen[name][:, vertices][:, tri]
                 )
-                target_screen = screen[hair][:, target["source"]["vertices"]]
+                target_screen = screen[target_object][:, target["source"]["vertices"]]
                 target_tri = np.array(target["indices"]).reshape(-1, 3)
                 t = target_screen[:, target_tri]
                 u, v = t[:, :, 1] - t[:, :, 0], t[:, :, 2] - t[:, :, 0]
@@ -211,7 +242,7 @@ def protect_neck_depth(ir, samples, semantics, binary_path):
                     "invert_mask": False,
                     "blend_shapes": [],
                     "source": {
-                        "object": hair,
+                        "object": target_object,
                         "vertices": [target["source"]["vertices"][0]] * len(positions),
                         "triangles": [target["source"]["triangles"][0]]
                         * (len(indices) // 3),
@@ -240,7 +271,7 @@ def protect_neck_depth(ir, samples, semantics, binary_path):
                             )
                         for values, pairs in groups.items():
                             g = {
-                                "id": f"G_Depth_Neck_{len(glues)}",
+                                "id": f"G_Depth_{prefix}_{len(glues)}",
                                 "mesh_a": master_id,
                                 "mesh_b": helper_id,
                                 "pairs": pairs,
@@ -252,7 +283,19 @@ def protect_neck_depth(ir, samples, semantics, binary_path):
                                     array[tuple(c)] = v
                                 g.update(axes=axes, intensities=array.ravel().tolist())
                             glues.append(g)
-            target["masked_by"] = sources
+            if (
+                merge_masks
+                and target.get("masked_by")
+                and not target.get("invert_mask")
+            ):
+                raise ValueError(
+                    "Cannot union a normal mask with an inverted depth mask"
+                )
+            target["masked_by"] = list(
+                dict.fromkeys(
+                    (target.get("masked_by", []) if merge_masks else []) + sources
+                )
+            )
             target["invert_mask"] = True
             diagnostics.append(
                 {
@@ -271,15 +314,16 @@ def protect_neck_depth(ir, samples, semantics, binary_path):
                 )
     ir["meshes"].extend(helpers)
     ir.setdefault("glues", []).extend(glues)
-    ir["surface_visibility"]["neck_depth"] = diagnostics
-    ir["diagnostics"]["neck_depth_masks"] = {
+    ir["surface_visibility"][metadata_key] = diagnostics
+    ir["diagnostics"][diagnostics_key] = {
         "targets": len(targets),
         "helpers": len(helpers),
         "glues": len(glues),
         "vertices": sum(len(m["positions"]) // 2 for m in helpers),
         "added_geometry_bytes": (cursor - start_cursor) * 4,
         "pose_clip_samples": len(poses),
-        "method": "source cloth/skin clipped against per-hair-patch 3D support planes; barycentric native Glue keyed by relative head XYZ",
+        "method": "source occluders clipped against per-target 3D support planes; barycentric native Glue keyed by relative head XYZ",
         "limitations": "curved target support-plane approximation; finite head-grid interpolation; clip coefficients assume common rigid body rotation while original source masters retain actual skinning",
     }
-    print("Neck depth masks", ir["diagnostics"]["neck_depth_masks"], flush=True)
+    print(prefix + " depth masks", ir["diagnostics"][diagnostics_key], flush=True)
+    return diagnostics

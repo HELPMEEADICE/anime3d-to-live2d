@@ -1,0 +1,125 @@
+{
+  "records": [
+    {
+      "stage": "collar_export",
+      "seconds": 24.70572870000251,
+      "peak_process_tree_rss_bytes": 6874701824,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_repro",
+      "seconds": 4.102966700000252,
+      "peak_process_tree_rss_bytes": 558391296,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_diagnostic_export_before",
+      "seconds": 22.02544610000041,
+      "peak_process_tree_rss_bytes": 6557478912,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_diagnostic_runtime_before",
+      "seconds": 12.960239000000001,
+      "peak_process_tree_rss_bytes": 1103089664,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_diagnostic_export_after",
+      "seconds": 26.760438299999805,
+      "peak_process_tree_rss_bytes": 7043141632,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_legacy_264",
+      "seconds": 62.97257539999919,
+      "peak_process_tree_rss_bytes": 654422016,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_diagnostic_runtime_after",
+      "seconds": 13.355367000000115,
+      "peak_process_tree_rss_bytes": 954753024,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_runtime_before",
+      "seconds": 11.107818100001168,
+      "peak_process_tree_rss_bytes": 610836480,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_legacy_77",
+      "seconds": 13.923594100000628,
+      "peak_process_tree_rss_bytes": 609251328,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_runtime_after",
+      "seconds": 14.886799800002336,
+      "peak_process_tree_rss_bytes": 570486784,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_python_tests",
+      "seconds": 4.11165389999951,
+      "peak_process_tree_rss_bytes": 1015181312,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_rust_tests",
+      "seconds": 0.9784466000019165,
+      "peak_process_tree_rss_bytes": 51314688,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_feature_export",
+      "seconds": 8.750597000002017,
+      "peak_process_tree_rss_bytes": 7427284992,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_feature_runtime",
+      "seconds": 4.88075359999857,
+      "peak_process_tree_rss_bytes": 971644928,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_timing_before",
+      "seconds": 4.0974685000001045,
+      "peak_process_tree_rss_bytes": 528474112,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_timing_after",
+      "seconds": 3.98940660000153,
+      "peak_process_tree_rss_bytes": 540258304,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_python_tests",
+      "seconds": 3.623927000000549,
+      "peak_process_tree_rss_bytes": 1015427072,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_rust_tests",
+      "seconds": 0.22166950000246288,
+      "peak_process_tree_rss_bytes": 22528000,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_python_tests",
+      "seconds": 3.6210400000018126,
+      "peak_process_tree_rss_bytes": 1016229888,
+      "exit_code": 0
+    },
+    {
+      "stage": "collar_rust_tests",
+      "seconds": 0.22092350000093575,
+      "peak_process_tree_rss_bytes": 24702976,
+      "exit_code": 0
+    }
+  ],
+  "note": "Some diagnostic exports and renders overlapped the independent Blender reference process. timing_before/after were sequential after reference completion. Original reference render was launched directly; process-tree peak memory was not recorded for that stage."
+}

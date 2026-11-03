@@ -1,6 +1,10 @@
 # POPY 实测交付报告
 
-## 最新肩颈头发修复
+## 最新脖子与衣领修复
+
+请使用 `delivery/POPY_neck_fixed.zip`。截图姿态错误露出 314→2，79 姿态合计 5,113→350；误遮挡 573→580。眼/脸/发饰指标保持原值，详见 [本轮报告](docs/COLLAR_CLEARANCE.md)。以下肩颈头发版及原始转换统计作为历史基线保留。
+
+## 上一轮肩颈头发修复
 
 2026-11-03 的后续修复同时提供 Blender 独立副本与原生 Live2D 后侧遮挡约束。77 姿态、60 相邻帧和 264 表情组合实测结果及已知退步见 [头发修复报告](docs/HAIR_CLEARANCE.md)，本地可视报告在 `artifacts/hair_repair_report/index.html`。新增文件以 `POPY_hair_fixed` 命名，前侧头发及全部绘制顺序轨道保留；下文为前一阶段的基线统计。
 
@@ -257,3 +261,6 @@ GPU：NVIDIA GeForce RTX 5080 Laptop GPU / Vulkan。当前质量版参数更新�
 ```
 
 这会从独立源快照重建两版、渲染并验证，输出清晰分开的质量版运行时与平衡版编辑工程。详细依赖/配置见 README，GPL 导出器边界与上游限制见 `docs/THIRD_PARTY.md`。
+# 本轮脖子/衣领修复
+
+最新质量模型为 `output/POPY_neck_fixed`，打包为 `delivery/POPY_neck_fixed.zip`。79 姿态颈部错误露出 5,113→350，误遮挡 573→580；截图姿态 314→2、误遮挡均为 0。40 相邻帧额外变化 1,296→399。此前 341 姿态重新求值渲染，77 姿态眼/脸/发饰指标完全保持原值。42 项 Python、2 项 Rust 几何测试通过。详细方法、性能代价、复现命令和极值残差见 [COLLAR_CLEARANCE.md](docs/COLLAR_CLEARANCE.md)。本轮仅更新质量 MOC，旧 CMO3 未包含此修复。
