@@ -10,6 +10,8 @@ Geometry-driven Blender/Python/Rust research converter with a separate GPL Cubis
 
 ## 当前交付位置
 
+**遮罩预算与空间 Warp 实验**：默认模型仍有 1,490 组遮罩组合，不适合直接当作兼容 36/64 组预算的模型交付。新增真实 MOC 的 5/32 组遮罩候选均出现错误覆盖；5 个局部投影已拟合为父子 Warp 并通过 362 姿态评估，但有 97 个光栅像素差，未替换默认版。详见 [结果与复现](docs/SPATIAL_FIT_AND_MASKS.md)。可用 `python -m popy.mask_context --audit-only --limit 36` 做只读兼容性预检，超过预算返回非零。没有宣称整体 Glue/遮罩问题已解决。
+
 **最新无损通道/存储版（默认）**见 [实现、性能及复现](docs/REPRESENTATION_OPTIMIZATION.md)。加载 `delivery/POPY_fullbody_channelpacked.zip` 中的 `POPY/POPY.model3.json`，或本地 `output/POPY_channelpacked/POPY.model3.json`。MOC3 为 318,960,192 字节，较上轮减少约 43.43%；ArtMesh 主关键形 5,439,788→1,438,609，进程树 RSS 中位约 1,973→1,752 MiB。全部顶点、UV、纹理、39 参数、58 动作、24 表情及 Glue 程序保留。1,803 姿态逐位和 362 RGBA 渲染一致；116 项 Python / 7 项 Rust 测试通过。`python -m popy.representation_review all` 可复现。
 
 另有已完成相同质量验收的 `delivery/POPY_fullbody_factored.zip` 旋转载体候选。纯 CPU 对照平均改善约 5.9%，同设备交替整帧约改善 2.7%，但独立进程整帧退步，故未替换默认包。**Glue 卡顿尚未解决，未达到约 5 MB，也没有新 CMO3。** 数值见 `benchmarks/popy/fullbody/representation*.json`；默认图像报告为 `artifacts/representation_final/report/index.html`，候选为 `artifacts/representation_fast/report/index.html`。角色资源仍只在本地保留。
