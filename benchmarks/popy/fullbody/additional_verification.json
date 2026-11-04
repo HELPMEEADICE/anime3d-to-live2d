@@ -1,7 +1,7 @@
 {
-  "moc_sha256": "76c830726519c8012716cbd2421c52ad8a37d124b946e63b0c4d8228ad39d4bf",
+  "moc_sha256": "b48a2002f2bbf7b3e3a9c2ad049e6d3a282d1247bc956fdc54465292978bb538",
   "full_python_suite": {
-    "tests": 75,
+    "tests": 78,
     "passed": true,
     "command": "python -m unittest discover -s tests -v"
   },
@@ -10,7 +10,7 @@
     "passed": true,
     "command": "cargo test --manifest-path rust/Cargo.toml -p popy-geometry --locked"
   },
-  "new_fullbody_tests": 20,
+  "new_fullbody_tests": 23,
   "fresh_exporter_patch_forward_reverse_check": true,
   "legacy_default_export": {
     "bytes": 572064000,
@@ -24,10 +24,11 @@
   "runtime_complexity": {
     "deformers": 10,
     "max_deformer_parent_depth": 3,
-    "glues": 394065,
+    "glues": 394221,
     "textures": 6,
     "texture_width": 2048,
     "texture_height": 2048
   },
-  "official_cubism_verified": false
+  "official_cubism_verified": false,
+  "motion_revision": 2
 }

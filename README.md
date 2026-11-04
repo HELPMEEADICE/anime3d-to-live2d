@@ -10,7 +10,7 @@ Geometry-driven Blender/Python/Rust research converter with a separate GPL Cubis
 
 ## 当前交付位置
 
-**最新全身、四肢动作与表情**见 [实现与操作说明](docs/FULLBODY.md)。运行时加载 `delivery/POPY_fullbody.zip` 内的 `POPY.model3.json`；独立三维动画工程为 `delivery/POPY_fullbody.blend`。保留原 19 个参数，新增左右独立肩/肘/腕/手势和髋/膝/踝共 18 个控制，附带 15 个 motion3 和 16 个 exp3。报告位于 `artifacts/fullbody/report/index.html`。已有面部修复基线后执行 `python -m popy.fullbody all`；动作预览用 `python -m popy.fullbody frames --motion wave_L --expression smile --fps 15`。角色资源保留本地，公开数值记录位于 `benchmarks/popy/fullbody/`。
+**最新全身、四肢动作与表情**见 [实现与操作说明](docs/FULLBODY.md)。运行时加载 `delivery/POPY_fullbody.zip` 内的 `POPY.model3.json`；独立三维动画工程为 `delivery/POPY_fullbody.blend`。现为 39 个连续参数、22 个 motion3 和 16 个 exp3。动作细化版增加独立前臂翻掌，将腿部侧摆扩展到 −25～35°，并重做挥手、点指和步行的衔接；见 [翻掌与侧摆说明](docs/MOTION_REFINEMENT.md)。报告位于 `artifacts/fullbody/report/index.html`。已有面部修复基线后执行 `python -m popy.fullbody all`；动作预览用 `python -m popy.fullbody frames --motion wave_L --expression smile --fps 15`。角色资源保留本地，公开数值记录位于 `benchmarks/popy/fullbody/`。
 
 **最新面部穿透遮盖修复**见 [实现、实测范围与限制](docs/FACE_CLEARANCE.md)。请加载 `delivery/POPY_face_fixed.zip`；报告为 `artifacts/face_repair/report/index.html`。本轮处理耳边白点、脸颊细缝、面内错误头发覆盖、鼻线及极端张嘴时的牙齿覆盖，并保留既有眼睛、发饰和衣领专项回归。有限姿态验证不证明所有组合零缺陷；极端下颌/毛发差异和较高模型成本仍有记录。已有衣领基线后执行 `python -m popy.face_repair all`。旧 CMO3 不含本轮修复。
 

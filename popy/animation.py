@@ -109,10 +109,20 @@ def motion_asset(tracks, duration, loop=False):
         if keys[0][0] != 0 or keys[-1][0] != duration:
             raise ValueError("Every authored track must cover its full duration")
         data = list(keys[0])
-        for a, b in itertools.pairwise(keys):
+        slopes = motion_tangents(keys, loop)
+        for i, (a, b) in enumerate(itertools.pairwise(keys)):
             dt = (b[0] - a[0]) / 3
-            # Smooth ease, with monotonic Bezier time. Cubism supports these natively.
-            data += [1, a[0] + dt, a[1], b[0] - dt, b[1], b[0], b[1]]
+            # C1 monotone Hermite -> restricted Cubism Bezier. Intermediate
+            # monotone keys retain velocity instead of stopping at every key.
+            data += [
+                1,
+                a[0] + dt,
+                a[1] + slopes[i] * dt,
+                b[0] - dt,
+                b[1] - slopes[i + 1] * dt,
+                b[0],
+                b[1],
+            ]
             count += 1
             points += 3
         points += 1
@@ -134,6 +144,31 @@ def motion_asset(tracks, duration, loop=False):
         },
         "Curves": curves,
     }
+
+
+def motion_tangents(keys, loop=False):
+    """Weighted harmonic tangents: no overshoot, shared speed at joins/seams."""
+    if len(keys) < 2:
+        raise ValueError("A motion track needs at least two keys")
+    h = [b[0] - a[0] for a, b in itertools.pairwise(keys)]
+    if any(v <= 0 for v in h):
+        raise ValueError("Motion key times must increase")
+    d = [(b[1] - a[1]) / t for (a, b), t in zip(itertools.pairwise(keys), h)]
+
+    def blend(a, b, left, right):
+        if a * b <= 0:
+            return 0.0
+        w1, w2 = 2 * right + left, right + 2 * left
+        return (w1 + w2) / (w1 / a + w2 / b)
+
+    slopes = (
+        [0.0]
+        + [blend(d[i - 1], d[i], h[i - 1], h[i]) for i in range(1, len(keys) - 1)]
+        + [0.0]
+    )
+    if loop and keys[0][1] == keys[-1][1]:
+        slopes[0] = slopes[-1] = blend(d[-1], d[0], h[-1], h[0])
+    return slopes
 
 
 def expression_presets():
@@ -216,6 +251,10 @@ def author_assets(directory, parameters):
         # Explicit reset curves make offline playback deterministic across actions.
         full = {p: [[0, v], [duration, v]] for p, v in defaults.items()}
         full.update(tracks)
+        # Preserve the reusable motion codec independently of POPY choreography.
+        from .motion_design import refine_tracks
+
+        full = refine_tracks(name, duration, full, loop)
         asset = motion_asset(full, duration, loop)
         path = "motions/" + name + ".motion3.json"
         (directory / path).write_text(json.dumps(asset, indent=2))
@@ -354,4 +393,8 @@ def author_assets(directory, parameters):
         },
         True,
     )
+    for side in ["L", "R"]:
+        for action in ["palm_show", "leg_side", "side_step"]:
+            save(action + "_" + side, 4, {})
+    save("side_sway", 4, {}, True)
     return motions, expressions

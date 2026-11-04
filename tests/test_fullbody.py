@@ -18,6 +18,24 @@ from popy.source_simplify import endpoint_collapse
 
 
 class BodyGeometryTests(unittest.TestCase):
+    def test_monotone_motion_keeps_velocity_and_loop_seam_is_c1(self):
+        m = motion_asset({"A": [[0, 0], [1, 0.4], [2, 1]]}, 2)
+        c = m["Curves"][0]
+        h = 1e-4
+        left = (curve_value(c, 1) - curve_value(c, 1 - h)) / h
+        right = (curve_value(c, 1 + h) - curve_value(c, 1)) / h
+        self.assertGreater(left, 0.3)
+        self.assertAlmostEqual(left, right, delta=0.001)
+        values = [curve_value(c, float(t)) for t in np.linspace(0, 2, 200)]
+        self.assertTrue(np.all(np.diff(values) >= 0))
+        m = motion_asset({"A": [[0, 0], [1, 1], [2, -1], [3, 0]]}, 3, True)
+        c = m["Curves"][0]
+        self.assertAlmostEqual(
+            (curve_value(c, h) - curve_value(c, 0)) / h,
+            (curve_value(c, 3) - curve_value(c, 3 - h)) / h,
+            delta=0.001,
+        )
+
     def test_shell_precedence_excludes_horizontal_inner_cap(self):
         source = {
             "positions": np.array(
@@ -257,6 +275,9 @@ class BodyGeometryTests(unittest.TestCase):
     def test_authored_assets_have_valid_cubism_counts_and_loop_ends(self):
         cfg = json.loads((ROOT / "config/fullbody.json").read_text())
         ids = {
+            "ParamBodyAngleX": 0,
+            "ParamBodyAngleY": 0,
+            "ParamBodyAngleZ": 0,
             "ParamAngleX": 0,
             "ParamAngleY": 0,
             "ParamAngleZ": 0,
@@ -279,7 +300,7 @@ class BodyGeometryTests(unittest.TestCase):
         ] + cfg["controls"]
         with tempfile.TemporaryDirectory() as d:
             motions, expressions = author_assets(d, p)
-            self.assertEqual((len(motions), len(expressions)), (15, 16))
+            self.assertEqual((len(motions), len(expressions)), (22, 16))
             for refs in motions.values():
                 m = json.loads((Path(d) / refs[0]["File"]).read_text())
                 sg = pt = 0
@@ -300,6 +321,55 @@ class BodyGeometryTests(unittest.TestCase):
 
 
 class FullBodyAssetTests(unittest.TestCase):
+    def test_palm_facing_and_lateral_hips_use_real_source_bones(self):
+        from popy.motion_review import palm
+
+        cfg = json.loads((ROOT / "config/fullbody.json").read_text())
+        skeleton = Skeleton(ROOT / "artifacts/samples", cfg)
+        parameters = json.loads((self.base / "parameters.json").read_text())
+        camera = json.loads((self.base / "reference/camera.json").read_text())
+        for side, sign in [("L", 1), ("R", -1)]:
+            wave = json.loads(
+                (
+                    self.model / "motions" / ("wave_" + side + ".motion3.json")
+                ).read_text()
+            )
+            for t in [1.25, 1.6, 2, 2.4, 2.8]:
+                values = evaluate(parameters, wave, t)
+                facing = palm(skeleton, side, values, camera)
+                edge = palm(
+                    skeleton,
+                    side,
+                    {**values, "ParamForearm" + side + "Turn": 0},
+                    camera,
+                )
+                self.assertGreater(facing["front_alignment"], 0.8, (side, t))
+                self.assertGreater(
+                    facing["projected_area_px2"],
+                    edge["projected_area_px2"] * 2,
+                    (side, t),
+                )
+            i = skeleton.index["Foot_" + ("Left" if side == "L" else "Right")]
+            rest = np.r_[skeleton.bind[i, :3, 3], 1]
+            for angle in [-25, 25]:
+                matrix = skeleton.skin_matrices({"ParamLeg" + side + "Spread": angle})[
+                    i
+                ]
+                dx = (matrix @ rest)[0] - rest[0]
+                self.assertGreater(dx * sign * np.sign(angle), 0.3)
+
+    def test_authored_motion_bezier_joins_retain_continuous_velocity(self):
+        from popy.motion_review import join_velocities
+
+        moving = 0
+        for path in (self.model / "motions").glob("*.motion3.json"):
+            for j in join_velocities(json.loads(path.read_text())):
+                self.assertAlmostEqual(
+                    j["left_velocity"], j["right_velocity"], delta=1e-7
+                )
+                moving += j["monotone_through_key"] and abs(j["left_velocity"]) > 1e-8
+        self.assertGreater(moving, 100)
+
     def test_stocking_front_surface_covers_leg_skin(self):
         cases = {c["name"]: c for c in self.report["cases"]}
         for name in [
@@ -332,14 +402,14 @@ class FullBodyAssetTests(unittest.TestCase):
 
     def test_native_model_parameters_and_real_asset_references(self):
         runtime = json.loads((self.base / "runtime/runtime_report.json").read_text())
-        self.assertEqual(len(runtime["parameters"]), 37)
+        self.assertEqual(len(runtime["parameters"]), 39)
         defs = {p["id"] for p in runtime["parameters"]}
         config = json.loads((ROOT / "config/fullbody.json").read_text())
         self.assertTrue({c["id"] for c in config["controls"]} <= defs)
         with (self.model / "POPY.moc3").open("rb") as f:
             self.assertEqual(f.read(4), b"MOC3")
         manifest = json.loads((self.model / "POPY.model3.json").read_text())
-        self.assertEqual(len(manifest["FileReferences"]["Motions"]), 15)
+        self.assertEqual(len(manifest["FileReferences"]["Motions"]), 22)
         self.assertEqual(len(manifest["FileReferences"]["Expressions"]), 16)
         for refs in manifest["FileReferences"]["Motions"].values():
             for ref in refs:
@@ -374,9 +444,9 @@ class FullBodyAssetTests(unittest.TestCase):
                     name,
                 )
         actual = json.loads((self.base / "blender_verification.json").read_text())
-        self.assertEqual(actual["clips"], 31)
+        self.assertEqual(actual["clips"], 38)
         self.assertEqual(actual["driven_bones"], 46)
-        self.assertEqual(len(actual["evaluated_checks"]), 8)
+        self.assertEqual(len(actual["evaluated_checks"]), 12)
         self.assertLess(max(c["max_error_m"] for c in actual["evaluated_checks"]), 2e-6)
 
     def test_head_baseline_and_source_simplification_preserved(self):

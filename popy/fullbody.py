@@ -86,7 +86,7 @@ def assets():
         k = p["id"]
         group = (
             "Arms"
-            if any(s in k for s in ["Arm", "Elbow", "Wrist", "Hand"])
+            if any(s in k for s in ["Arm", "Forearm", "Elbow", "Wrist", "Hand"])
             else "Legs"
             if any(s in k for s in ["Leg", "Knee", "Ankle"])
             else "Body"
@@ -279,6 +279,18 @@ def assets():
             },
         }
     )
+    for side in ["L", "R"]:
+        for label, turn in [("edge", 0), ("front", 90)]:
+            cases.append(
+                {
+                    "name": "palm_" + label + "_" + side,
+                    "parameters": {
+                        "ParamArm" + side + "Raise": -5,
+                        "ParamElbow" + side: 100,
+                        "ParamForearm" + side + "Turn": turn,
+                    },
+                }
+            )
     jsonwrite(BASE / "cases.json", cases)
     probe_names = {
         "natural",
@@ -304,6 +316,24 @@ def assets():
     )
     probe_names.update(
         ["motion_idle_middle", "stress_arm_L", "stress_arm_R", "stress_all"]
+    )
+    probe_names.update(
+        "palm_" + view + "_" + side for view in ["edge", "front"] for side in ["L", "R"]
+    )
+    probe_names.update(
+        "ParamLeg" + side + "Spread_" + limit
+        for side in ["L", "R"]
+        for limit in ["min", "max"]
+    )
+    probe_names.update(
+        "ParamForearm" + side + "Turn_" + limit
+        for side in ["L", "R"]
+        for limit in ["min", "max", "heldout"]
+    )
+    probe_names.update(
+        "motion_" + action + "_" + side + "_middle"
+        for action in ["palm_show", "leg_side", "side_step"]
+        for side in ["L", "R"]
     )
     jsonwrite(BASE / "probes.json", [c for c in cases if c["name"] in probe_names])
     print(
@@ -772,7 +802,7 @@ def package():
     delivery = ROOT / "delivery"
     delivery.mkdir(exist_ok=True)
     (MODEL / "README.txt").write_text(
-        "POPY full body research model\nOpen POPY.model3.json with the adjacent textures. 37 parameters, 15 motion3 assets, 16 exp3 presets.\nThe Anon model was used as a semantic reference; its assets are not bundled.\nL/R means character left/right. Hand pose: -1 point, 0 open, +1 fist.\nMotion playback depends on the host. Offline native preview: python -m popy.fullbody frames --motion wave_L --expression smile --fps 15\nEditable 3D animation: separate delivery/POPY_fullbody.blend. No new CMO3.\nLarge research model: native matrix fields, mean-depth ordering, no cloth collision or foot-contact IK. Read docs/FULLBODY.md and the generated comparison report.\n",
+        "POPY full body research model\nOpen POPY.model3.json with the adjacent textures. 39 parameters, 22 motion3 assets, 16 exp3 presets.\nThe Anon model was used as a semantic reference; its assets are not bundled.\nL/R means character left/right. Hand pose: -1 point, 0 open, +1 fist. Forearm Turn: +90 presents the palm. Leg Spread: negative crosses inward, positive swings outward.\nMotion playback depends on the host. Offline native preview: python -m popy.fullbody frames --motion wave_L --expression smile --fps 15\nEditable 3D animation: separate delivery/POPY_fullbody.blend. No new CMO3.\nLarge research model: native matrix fields, mean-depth ordering, no cloth collision or foot-contact IK. Read docs/FULLBODY.md and the generated comparison report.\n",
         encoding="utf8",
     )
     metrics = json.loads((BASE / "report/metrics.json").read_text())

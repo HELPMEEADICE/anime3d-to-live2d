@@ -10,7 +10,7 @@
 
 ## 可操作的控制
 
-原有 19 个头部、眼、嘴、眉、身体、呼吸参数继续保留。新增 18 个参数，总计 37 个。L/R 指角色解剖学左右；角色左手位于正面画面的右侧。
+原有 19 个头部、眼、嘴、眉、身体、呼吸参数继续保留。新增 20 个参数，总计 39 个。L/R 指角色解剖学左右；角色左手位于正面画面的右侧。
 
 | 参数（L/R 各一项） | 范围 / 默认 | 来源与含义 |
 |---|---|---|
@@ -19,8 +19,9 @@
 | `ParamElbowL` / `ParamElbowR` | 0～120° / 0° | 肘弯曲 |
 | `ParamWristL` / `ParamWristR` | −35～35° / 0° | 腕弯曲 |
 | `ParamHandLPose` / `ParamHandRPose` | −1～1 / 0 | −1 指向、0 张手、1 握拳；实际手指骨骼连续弯曲 |
+| `ParamForearmLTurn` / `ParamForearmRTurn` | −100～100° / 0° | 前臂绕轴翻掌；屈肘展示时 +90° 掌面朝向相机 |
 | `ParamLegLSwing` / `ParamLegRSwing` | −25～25° / 0° | 髋关节前后摆 |
-| `ParamLegLSpread` / `ParamLegRSpread` | 0～15° / 0° | 腿向外展开 |
+| `ParamLegLSpread` / `ParamLegRSpread` | −25～35° / 0° | 腿向内交叉或向外侧摆 |
 | `ParamKneeL` / `ParamKneeR` | 0～60° / 0° | 屈膝 |
 | `ParamAnkleL` / `ParamAnkleR` | −20～20° / 0° | 踝俯仰 |
 
@@ -28,7 +29,7 @@
 
 ## 动作和表情的使用
 
-附带 15 个真实 motion3：`idle`、左右 `wave` / `point` / `fist` / `leg_lift`、`stretch`、`thinking`、`surprised`、`nod`、`denial`、`walk_in_place`。
+附带 22 个真实 motion3：`idle`、左右 `wave` / `point` / `fist` / `leg_lift`、`stretch`、`thinking`、`surprised`、`nod`、`denial`、`walk_in_place`，以及左右 `palm_show` / `leg_side` / `side_step` 和 `side_sway`。
 
 附带 16 个 exp3：`neutral`、`smile`、`laugh`、`angry`、`serious`、`surprised`、`thinking`、`uncertain`、左右 `wink`、`eyes_closed`、`joy_closed`、`sleepy`、左右看和上看。它们组合实际已有的眼、眉、嘴参数；没有声称已经实现 Anon 特有的泪滴、爱心眼、汗和表情阴影。
 
@@ -41,7 +42,7 @@ python -m popy.fullbody frames --motion walk_in_place --fps 15
 
 输出在 `artifacts/fullbody/wave_L.webp`、`walk_in_place.webp` 和各自帧目录。这些预览由真实 MOC 参数逐帧求值生成；模型内部保留网格、关键形、骨骼投影对应和连续参数。
 
-Blender 工程中保留原 MToon 材质和描边修改器，烘焙 46 根实际控制骨骼及 Face/Brow Shape Key 通道，按 30 fps 制作 15 段动作和 16 段静态表情。打开 `delivery/POPY_fullbody.blend` 后，用时间轴标记/NLA 预览；每段之间留 1 秒空隙，曲线和原骨骼可以继续编辑。`artifacts/fullbody/blender_timeline.json` 记录具体帧范围与各数据块的 Action。独立重开工程后，8 个检查点与参考几何逐点比较，结果见 `blender_verification.json`。
+Blender 工程中保留原 MToon 材质和描边修改器，烘焙 46 根实际控制骨骼及 Face/Brow Shape Key 通道，按 30 fps 制作 22 段动作和 16 段静态表情。打开 `delivery/POPY_fullbody.blend` 后，用时间轴标记/NLA 预览；每段之间留 1 秒空隙，曲线和原骨骼可以继续编辑。`artifacts/fullbody/blender_timeline.json` 记录具体帧范围与各数据块的 Action。独立重开工程后，12 个检查点与参考几何逐点比较，结果见 `blender_verification.json`。
 
 ## 几何实现
 
@@ -89,10 +90,7 @@ python -m unittest discover -s tests -p test_fullbody.py -k BodyGeometryTests -v
 
 ## 仍有限制
 
-实际生成规模：5,446 个 ArtMesh（包含不可见矩阵/遮挡辅助网格）、636,952 个顶点、745,166 个三角形、6,381,022 个 ArtMesh 关键形、394,065 个 Glue，10 个变形器，变形器最长父链深度为 3，6 张 2048² 源纹理。MOC 为 607,229,120 字节。无损打包前为 1,471,098,368 字节；5 个姿态的图像及全部求值顶点逐位一致。这些统计包含原有复杂头部结构，不能只用 37 个参数来判断运行成本。
-
-最终 207 姿态的平均轮廓 IoU 为 0.99904，最小为 0.99288；归一化前景 RGB MAE 平均为 0.01160。最大 MAE 出现在 `stress_all`，主要差异集中于头发/下颌、衣袖和衣裙交叠边界。25 组保留源顶点探针最大误差为 0.03288 px，不含已折叠源顶点的简化误差。原生参数求值至 GPU 完成的中位耗时为 141.77 ms，最大为 1458.74 ms，包含首帧开销；这是未隔离桌面上的测量，并非所有设备性能保证。20 项新增测试、全项目 75 项 Python 测试与 7 项 Rust 测试通过，原始快照摘要保持不变。
-
+当前动作细化版的规模和最终回归数值见 [翻掌、连贯动作与腿部侧摆](MOTION_REFINEMENT.md) 及 `benchmarks/popy/fullbody/metrics.json`。首版曾为 607,229,120 字节；新增旋转维度后调整排序采样，避免笛卡尔积膨胀。几何仍使用 0.5° 矩阵旋转字段。
 - 绘制顺序关键形、原生 Glue 运算图及既有遮挡辅助网格使文件、导出内存和运行成本很高。这是可运行的研发版本，尚不具备轻量模型的成本。
 - 衣服跟随真实源蒙皮，未新增布料碰撞求解；行走没有足底接触 IK、落脚锁定或整体位移，不能当作已完成的物理行走系统。
 - 指向和握拳是程序化手指姿态，没有手指间接触约束；单参数矩阵曲线仍有插值及浮点误差，平均深度分片仍存在局部遮挡和排序近似。

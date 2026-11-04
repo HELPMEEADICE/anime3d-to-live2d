@@ -25,6 +25,10 @@ for clip, reference in [
     ("thinking", "motion_thinking_middle"),
     ("leg_lift_L", "motion_leg_lift_L_middle"),
     ("walk_in_place", "motion_walk_in_place_middle"),
+    ("palm_show_L", "motion_palm_show_L_middle"),
+    ("palm_show_R", "motion_palm_show_R_middle"),
+    ("leg_side_L", "motion_leg_side_L_middle"),
+    ("leg_side_R", "motion_leg_side_R_middle"),
     ("expression_wink_left", "expression_wink_left_0"),
     ("expression_surprised", "expression_surprised_0"),
 ]:
