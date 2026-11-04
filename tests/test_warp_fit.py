@@ -7,6 +7,19 @@ from popy.warp_fit import fit
 
 
 class SpatialFitTests(unittest.TestCase):
+    def test_vts_packing_overflows_instead_of_introducing_self_masks(self):
+        inventory = [
+            {"id": "M_Body_0", "clips": ["M_Body_1"], "invert_mask": True},
+            {"id": "M_Body_1", "clips": ["M_Body_0"], "invert_mask": True},
+        ]
+        groups = group_inventory(
+            inventory, {"M_Body_0": [0, 0, 0], "M_Body_1": [1, 0, 0]}, vts=True
+        )
+        self.assertEqual(len(groups), 2)
+        for group in groups:
+            union = {s for m in group for s in m["clips"]}
+            self.assertFalse({m["id"] for m in group}.intersection(union))
+
     def test_recovers_bilinear_pose_fields(self):
         rng = np.random.default_rng(82)
         points = np.r_[np.array([[0, 0], [1, 0], [0, 1], [1, 1]]), rng.random((24, 2))]

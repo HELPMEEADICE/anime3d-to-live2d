@@ -26,7 +26,7 @@ def audit_inventory(inventory, limit=36):
     }
 
 
-def group_inventory(inventory, centers=None):
+def group_inventory(inventory, centers=None, vts=False):
     groups = collections.defaultdict(list)
     for m in inventory:
         if m["clips"]:
@@ -34,18 +34,65 @@ def group_inventory(inventory, centers=None):
             semantic = "_".join(name[:2]) if name[0] == "M" else name[0]
             groups[(semantic, m["invert_mask"])].append(m)
     if centers is None:
+        if vts:
+            raise ValueError("VTS packing requires spatial centers")
         return list(groups.values())
     from scipy.cluster.vq import kmeans2
 
     result = []
     budgets = {"M_Body": 1, "M_Eye": 2, "M_Brow": 2, "M_Face": 10, "M_Hair": 21}
+    if vts:
+        budgets = {"M_Body": 1, "M_Eye": 3, "M_Brow": 3, "M_Face": 24, "M_Hair": 33}
     for (semantic, _), members in groups.items():
         count = min(budgets.get(semantic, 1), len(members))
-        if count == 1:
+        if count == 1 and not vts:
             result.append(members)
             continue
         points = np.array([centers[m["id"]] for m in members])
-        _, labels = kmeans2(points, count, iter=40, minit="++", seed=811)
+        if count == 1:
+            centroids, labels = (
+                points.mean(0, keepdims=True),
+                np.zeros(len(points), dtype=int),
+            )
+        else:
+            centroids, labels = kmeans2(points, count, iter=40, minit="++", seed=811)
+        if vts:
+            # Preserve all original sources and forbid newly introduced self
+            # masks. Overflow is explicit rather than deleting occluders.
+            bins = [[] for _ in range(count)]
+            unions = [set() for _ in range(count)]
+            names = [set() for _ in range(count)]
+            ids = {m["id"] for m in members}
+            for i in sorted(
+                range(len(members)),
+                key=lambda i: -len(ids.intersection(members[i]["clips"])),
+            ):
+                m = members[i]
+                sources = set(m["clips"])
+                choices = [
+                    j
+                    for j in range(len(bins))
+                    if m["id"] not in unions[j] and not sources.intersection(names[j])
+                ]
+                if choices:
+                    j = min(
+                        choices,
+                        key=lambda j: float(
+                            np.linalg.norm(
+                                points[i] - centroids[min(j, len(centroids) - 1)]
+                            )
+                        ),
+                    )
+                else:
+                    j = len(bins)
+                    bins.append([])
+                    unions.append(set())
+                    names.append(set())
+                bins[j].append(m)
+                unions[j].update(sources)
+                names[j].add(m["id"])
+            result.extend(g for g in bins if g)
+            continue
         result.extend(
             [
                 [m for m, k in zip(members, labels) if k == i]
@@ -56,7 +103,9 @@ def group_inventory(inventory, centers=None):
     return result
 
 
-def rewrite(source, target, inventory, report, centers=None):
+def rewrite(
+    source, target, inventory, report, centers=None, exclude_members=False, vts=False
+):
     source, target = Path(source), Path(target)
     if source.resolve() == target.resolve():
         raise ValueError("Separate candidate required")
@@ -92,8 +141,13 @@ def rewrite(source, target, inventory, report, centers=None):
             raise ValueError("Clip inventory mismatch")
     lookup = {n: i for i, n in enumerate(ids)}
     replacements = {}
-    for group in group_inventory(inventory, centers):
+    removed = 0
+    for group in group_inventory(inventory, centers, vts):
         union = sorted({s for m in group for s in m["clips"]})
+        if exclude_members:
+            members = {m["id"] for m in group}
+            removed += sum(s in members for s in union)
+            union = [s for s in union if s not in members]
         for m in group:
             replacements[m["id"]] = union
     pool = []
@@ -131,6 +185,16 @@ def rewrite(source, target, inventory, report, centers=None):
         ),
         "after_contexts": len(spans) - int(() in spans),
         "original_glue_program_unchanged": True,
+        "union_member_sources_removed": removed,
+        "original_sources_preserved": all(
+            set(m["clips"]).issubset(replacements.get(m["id"], []))
+            for m in inventory
+            if m["clips"]
+        ),
+        "self_masks_introduced": sum(
+            m["id"] in replacements.get(m["id"], []) and m["id"] not in m["clips"]
+            for m in inventory
+        ),
         "status": "Experimental semantic unions; may over-occlude. Must not replace default without rendered acceptance.",
     }
     Path(report).parent.mkdir(parents=True, exist_ok=True)
@@ -153,14 +217,24 @@ def main():
     )
     p.add_argument("--spatial-rig", type=Path)
     p.add_argument("--audit-only", action="store_true")
-    p.add_argument("--limit", type=int, choices=[36, 64, 256], default=36)
+    p.add_argument("--limit", type=int, choices=[36, 64, 256])
+    p.add_argument("--exclude-members", action="store_true")
+    p.add_argument("--vts", action="store_true")
     a = p.parse_args()
     if a.audit_only:
-        result = audit_inventory(json.loads(a.inventory.read_text()), a.limit)
+        result = audit_inventory(
+            json.loads(a.inventory.read_text()), a.limit or (64 if a.vts else 36)
+        )
         print(json.dumps(result))
         if not result["within_budget"]:
             raise SystemExit(1)
         return
+    if a.vts and a.exclude_members:
+        p.error(
+            "VTS mode preserves original sources; excluded-member experiment is not supported"
+        )
+    if a.vts and not a.spatial_rig:
+        p.error("VTS packing requires --spatial-rig")
     centers = None
     if a.spatial_rig:
         ir = json.loads(a.spatial_rig.read_text())
@@ -183,6 +257,8 @@ def main():
             json.loads(a.inventory.read_text()),
             ROOT / "artifacts/deformer_fit/mask_trial.json",
             centers,
+            a.exclude_members,
+            a.vts,
         )
     )
 

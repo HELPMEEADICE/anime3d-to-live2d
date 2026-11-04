@@ -10,6 +10,12 @@
 
 ## 两个真实遮罩候选：均未通过画质验收
 
+用户已明确优先兼容 **VTube Studio**。后续按默认合计 64 组预算设计；其他已加载模型也占用预算。没有发现运行中的 VTS，默认 Steam 库也未找到安装，因此未进行 VTS 程序内加载验证。
+
+新增 VTS 分组使用原三维空间中心，并将目标/源依赖作为不能共组的冲突约束：任何新组都不能把组内目标引入自身 mask，且不得删除原遮挡源。超过容量时允许显式溢出，不能通过删除源伪造达标。实际候选 `output/POPY_vts_safe_trial/` 为 **53 组**、最大源列表 597，所有原始源保留、新增自遮罩为零。但首批 5 姿态合计仍有 **6,795 个像素**不同，最大差 255，**没有通过画质验收，也不是 VTS 兼容性交付**。数值见 `benchmarks/popy/fullbody/vts_mask_trial.json`。
+
+自遮罩是较早语义合并的真实缺陷：面部粗并集把 237 个目标也作为了源。禁止这种自引用改善了候选，但额外源仍可覆盖其他目标；单纯图着色和静态空间分区不足以解决动态可见性。删除组内源的试验也失败，VTS 模式已经禁止该选项。
+
 `popy.mask_context` 核对 MOC 的 ID 和每个原始 clips 列表后，仅重写引用池，保留全部原 Glue、坐标、拓扑、材质及参数。它拒绝覆盖源文件，输出只作为实验。
 
 | 方案 | 遮罩组合 | 首批 5 姿态错误像素总数 | 最大通道差 |
@@ -34,9 +40,12 @@
 ```powershell
 # 只审计，超过预算返回非零；不会生成降质模型
 python -m popy.mask_context --audit-only --limit 36
+python -m popy.mask_context --audit-only --vts
 # 实验性遮罩合并，默认输出 trial 路径
 python -m popy.mask_context
 python -m popy.mask_context --spatial-rig artifacts/representation_final/rig/POPY.rig.json --out output/POPY_mask_spatial_trial/POPY.moc3
+# 保留源并禁止自遮罩的 VTS 预算候选，仍须画质验收
+python -m popy.mask_context --spatial-rig artifacts/representation_final/rig/POPY.rig.json --out output/POPY_vts_safe_trial/POPY.moc3 --vts
 # 拟合并生成独立 IR；未通过门槛的网格原样保留
 python -m popy.warp_fit --emit artifacts/deformer_fit/rig
 # 已安装的独立导出桥；输出仅作为试验，不覆盖默认模型
