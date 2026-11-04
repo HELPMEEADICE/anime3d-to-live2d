@@ -60,8 +60,16 @@ async fn run() -> Result<()> {
         .iter()
         .map(|s| fs::read(base.join(s.as_str().unwrap())).unwrap())
         .collect();
+    // Explicit host selection for comparable Vulkan/DX12 experiments on Windows.
+    // The renderer and its pipelines remain the unmodified upstream implementation.
+    let backends = match env::var("POPY_WGPU_BACKEND").as_deref() {
+        Ok("dx12") => wgpu::Backends::DX12,
+        Ok("vulkan") => wgpu::Backends::VULKAN,
+        Ok(other) => anyhow::bail!("Unsupported POPY_WGPU_BACKEND: {other}"),
+        Err(_) => wgpu::Backends::PRIMARY,
+    };
     let instance = wgpu::Instance::new(wgpu::InstanceDescriptor {
-        backends: wgpu::Backends::PRIMARY,
+        backends,
         flags: Default::default(),
         memory_budget_thresholds: Default::default(),
         backend_options: Default::default(),

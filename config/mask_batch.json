@@ -1,0 +1,10 @@
+{
+  "vertex_budget": 50000,
+  "helper_penalty": 1024,
+  "minimum_uses": 3,
+  "source_ir": "artifacts/perf_opt/exact_rig/POPY.rig.json",
+  "baseline_model": "output/POPY_optimized_exact",
+  "inventory": "artifacts/perf_opt/images_exact/model_inventory.json",
+  "artifact_directory": "artifacts/mask_batch_final",
+  "output_model": "output/POPY_maskbatched"
+}

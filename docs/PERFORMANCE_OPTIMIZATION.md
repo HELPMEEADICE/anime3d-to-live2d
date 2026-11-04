@@ -1,5 +1,7 @@
 # POPY：保留画质的运算图优化
 
+后续在严格无损版上增加了 [遮罩公共表达式批处理](MASK_BATCHING.md)。本页和两种旧输出作为上一轮基线保留；最新运行时包为 `POPY_fullbody_maskbatched.zip`。
+
 本轮保留原始全身模型 `output/POPY_fullbody/`，另行生成两个候选版本。所有 39 个参数、58 个 motion3、24 个 exp3、六张原分辨率纹理、ArtMesh 顶点/三角形、UV、变形器及遮罩引用均保留。没有简化几何、缩小纹理、缩减角度范围或减少表情。本轮不生成新 CMO3，不修改源 Blender 工程或 Ayagami 上游。
 
 ## 两种编译模式

@@ -25,6 +25,7 @@ jobs:
           python -m unittest discover -s tests -p test_fullbody.py -k BodyGeometryTests -v
           python -m unittest discover -s tests -p test_expressions.py -k ExpressionDesignTests -v
           python -m unittest discover -s tests -p test_performance.py -k CompactionTests -v
+          python -m unittest discover -s tests -p test_mask_batch.py -v
       - name: Fetch unmodified pinned runtime dependency for workspace resolution
         run: |
           git clone https://github.com/AyagamiDev/ayagami vendor/ayagami

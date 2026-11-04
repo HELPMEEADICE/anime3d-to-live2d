@@ -36,6 +36,8 @@
 
 新增 `fullbody/` 保存参考 Anon 后的 POPY 四肢、动作和表情数值记录。模型、纹理、源网格、动画 Blender 工程和渲染图仍只保留在本地；操作流程见 [全身扩展](../../docs/FULLBODY.md)。具体指标及尚存限制以 `fullbody/metrics.json` 为准。
 
+`fullbody/mask_batch.json` 保存后续无损遮罩公共子表达式优化的 MOC/计划/测试输入指纹、1,803 姿态原生顶点验证、362 姿态 RGBA 相等性、八次独立完整渲染计时及全部有效样本。计时包含 GPU 完成，保留长帧；原生 Vulkan 结果不能解释为浏览器 WebGPU 帧率。方法与复现见 [遮罩批处理](../../docs/MASK_BATCHING.md)。
+
 动作细化版的 `fullbody/motion_refinement.json` 另记录翻掌前后源标志点测量、髋关节侧摆的足部位移、曲线接缝速度及相同参数序列的运行时计时。该阶段主回归为 238 姿态 / 45 组实际 MOC 几何探针，完整说明见 [动作细化](../../docs/MOTION_REFINEMENT.md)。首版与新版主报告的姿态集合不同，不能直接把两组中位耗时解释为版本性能变化。
 
 表情动作版的 `fullbody/expression_actions.json` 保存新增 12 类 × 三朝向动作的局部面部指标、36 组头部几何探针、原有文件字节保留检查、Blender NLA 复开检查和 Anon 只读语义审计。本轮主回归扩展为 362 姿态 / 81 组实际 MOC 几何探针。预览由真实 MOC 离线求值生成，不代表实时帧率；说明见 [表情动作](../../docs/EXPRESSION_ACTIONS.md)。
