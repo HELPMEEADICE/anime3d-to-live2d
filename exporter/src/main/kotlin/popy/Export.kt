@@ -52,9 +52,11 @@ fun main(args:Array<String>) {
     val headWarp=ir.getValue("head_warp").jsonObject
     val headWarpGrid=KeyformGrid(axes(headWarp),headWarp.a("cells").map{v->val c=v.jsonObject;KeyformCell(c.a("coordinate").ints(),WarpLatticeForm(c.a("points").floats()))})
     val bodyWarps=ir["body_warps"]?.jsonArray?.map{v->val node=v.jsonObject
-        if(node["kind"]?.jsonPrimitive?.content=="rotation") Deformer.Rotation(DeformerId(node.s("id")),"Native skeleton coordinate carrier",null,null,0f,
+        if(node["kind"]?.jsonPrimitive?.content=="channel_rotation") Deformer.Rotation(DeformerId(node.s("id")),"Dead geometry channel carrier",node["parent"]?.jsonPrimitive?.content?.let{DeformerId(it)},null,0f,
+            KeyformGrid(axes(node),node.a("cells").map{v->val c=v.jsonObject;KeyformCell(c.a("coordinate").ints(),RotationPivotForm(0f,0f,0f,0f))}))
+        else if(node["kind"]?.jsonPrimitive?.content=="rotation") Deformer.Rotation(DeformerId(node.s("id")),"Native skeleton coordinate carrier",null,null,0f,
             KeyformGrid(emptyList(),listOf(KeyformCell(intArrayOf(),RotationPivotForm(0f,0f,0f,1f)))))
-        else Deformer.Warp(DeformerId(node.s("id")),"Skin-weighted pitch correction ${node.f("strength")}",if(node["root"]?.jsonPrimitive?.boolean==true) null else bodyRotationId,null,1,1,true,
+        else Deformer.Warp(DeformerId(node.s("id")),"Skin-weighted pitch correction ${node.f("strength")}",node["parent"]?.jsonPrimitive?.content?.let{DeformerId(it)} ?: if(node["root"]?.jsonPrimitive?.boolean==true) null else bodyRotationId,null,1,1,true,
         KeyformGrid(axes(node),node.a("cells").map{c->val cell=c.jsonObject;KeyformCell(cell.a("coordinate").ints(),WarpLatticeForm(cell.a("points").floats()))}))} ?: listOf(Deformer.Warp(warpId,"Body projection / breath",bodyRotationId,null,1,1,true,warpGrid))
     val deformers=listOf(
         Deformer.Rotation(bodyRotationId,"Body roll (exact angle)",null,null,0f,bodyRotGrid),
@@ -79,7 +81,23 @@ fun main(args:Array<String>) {
             // this editor-side string, so don't retain a second copy at runtime export.
             userData=if(args.contains("--no-cmo")) "" else m.getValue("source").toString())
     }
-    val parts=ir.a("parts").map{v->val p=v.jsonObject;Part(PartId(p.s("id")),p.s("id"),p.a("mesh_ids").map{OrgChild.Drawable(DrawableId(it.jsonPrimitive.content))})}
+    val orderGroups=ir["order_groups"]?.jsonArray?.map{it.jsonObject} ?: emptyList()
+    val orderGroupOf=orderGroups.flatMap{g->g.a("mesh_ids").map{it.jsonPrimitive.content to g}}.toMap()
+    val orderParts=orderGroups.distinctBy{it.s("id")}.map{g->
+        val grid:KeyformGrid<ChannelValue> = KeyformGrid(axes(g),g.a("cells").map{v->val c=v.jsonObject;KeyformCell(c.a("coordinate").ints(),ChannelValue.Scalar(c.f("order")))})
+        val members=orderGroups.filter{it.s("id")==g.s("id")}.flatMap{it.a("mesh_ids").map{OrgChild.Drawable(DrawableId(it.jsonPrimitive.content))}}
+        Part(PartId(g.s("id")),g.s("id"),members,groupMode=PartGroupMode.Grouped,
+            channelGrids=ChannelGrids(mapOf(FormChannel.DRAW_ORDER to grid)))
+    }
+    val baseParts=ir.a("parts").map{v->val p=v.jsonObject
+        val children=mutableListOf<OrgChild>();val seen=mutableSetOf<String>()
+        for(item in p.a("mesh_ids")){val name=item.jsonPrimitive.content;val g=orderGroupOf[name]
+            if(g==null) children.add(OrgChild.Drawable(DrawableId(name)))
+            else if(seen.add(g.s("id"))) children.add(OrgChild.Part(PartId(g.s("id"))))
+        }
+        Part(PartId(p.s("id")),p.s("id"),children)
+    }
+    val parts=baseParts+orderParts
     val glues=ir["glues"]?.jsonArray?.map{v->
         val g=v.jsonObject
         val tracks=if(g.containsKey("axes")) {
@@ -94,8 +112,18 @@ fun main(args:Array<String>) {
         } else ChannelGrids.Empty
         Glue(DrawableId(g.s("mesh_a")),DrawableId(g.s("mesh_b")),g.a("pairs").map{e->val p=e.jsonArray;GluePair(p[0].jsonPrimitive.int,p[1].jsonPrimitive.int,p[2].jsonPrimitive.float,p[3].jsonPrimitive.float)},channelGrids=tracks,intensity=g["intensity"]?.jsonPrimitive?.float ?: 1f,id=g.s("id"))
     } ?: emptyList()
-    val puppet=PuppetModel(params,parts,deformers,drawables,parts.map{OrgChild.Part(it.id)},null,
-        renderRoot=RenderGroup(null,500,drawables.map{RenderDrawable(it.id)}),
+    val renderNodes=mutableListOf<RenderNode>()
+    val emittedOrderGroups=mutableSetOf<String>()
+    for(drawable in drawables) {
+        val group=orderGroupOf[drawable.id.raw]
+        if(group==null) renderNodes.add(RenderDrawable(drawable.id))
+        else if(emittedOrderGroups.add(group["group_id"]?.jsonPrimitive?.content ?: group.s("id"))) {
+            val part=orderParts.first{it.id.raw==group.s("id")}
+            renderNodes.add(RenderGroup(part.id,500,group.a("mesh_ids").map{RenderDrawable(DrawableId(it.jsonPrimitive.content))},part.channelGrids))
+        }
+    }
+    val puppet=PuppetModel(params,parts,deformers,drawables,baseParts.map{OrgChild.Part(it.id)},null,
+        renderRoot=RenderGroup(null,500,renderNodes),
         glues=glues,
         canvasWidth=w,canvasHeight=h,worldOriginX=w/2,worldOriginY=-h/2,pixelsPerUnit=w/2,runtimeTarget=RuntimeTarget.Cubism50)
     val textures=ir.a("textures").map {it.jsonPrimitive.content}

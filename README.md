@@ -10,6 +10,10 @@ Geometry-driven Blender/Python/Rust research converter with a separate GPL Cubis
 
 ## 当前交付位置
 
+**最新无损通道/存储版（默认）**见 [实现、性能及复现](docs/REPRESENTATION_OPTIMIZATION.md)。加载 `delivery/POPY_fullbody_channelpacked.zip` 中的 `POPY/POPY.model3.json`，或本地 `output/POPY_channelpacked/POPY.model3.json`。MOC3 为 318,960,192 字节，较上轮减少约 43.43%；ArtMesh 主关键形 5,439,788→1,438,609，进程树 RSS 中位约 1,973→1,752 MiB。全部顶点、UV、纹理、39 参数、58 动作、24 表情及 Glue 程序保留。1,803 姿态逐位和 362 RGBA 渲染一致；116 项 Python / 7 项 Rust 测试通过。`python -m popy.representation_review all` 可复现。
+
+另有已完成相同质量验收的 `delivery/POPY_fullbody_factored.zip` 旋转载体候选。纯 CPU 对照平均改善约 5.9%，同设备交替整帧约改善 2.7%，但独立进程整帧退步，故未替换默认包。**Glue 卡顿尚未解决，未达到约 5 MB，也没有新 CMO3。** 数值见 `benchmarks/popy/fullbody/representation*.json`；默认图像报告为 `artifacts/representation_final/report/index.html`，候选为 `artifacts/representation_fast/report/index.html`。角色资源仍只在本地保留。
+
 **新增无损遮罩批处理版**见 [算法与复现](docs/MASK_BATCHING.md)。`python -m popy.mask_batch_review all` 在上一轮逐位一致模型上生成 `delivery/POPY_fullbody_maskbatched.zip`，加载其中的 `POPY.model3.json`。以精确的三角形并集公共表达式复用遮罩几何，保留原始网格、纹理、参数和完整尺寸遮罩。1,803 姿态原始顶点逐位一致，Vulkan/DX12 各 362 个姿态像素一致；整帧中位耗时分别下降约 16.1% / 17.1%，Vulkan 仍有数秒长帧，尚未达到稳定实时性能。完整记录在 `benchmarks/popy/fullbody/mask_batch.json`，DX12 图片报告为 `artifacts/mask_batch_final/dx12/report/index.html`，Vulkan 报告为 `artifacts/mask_batch_final/report/index.html`。Windows DX12 复现时先设置 `$env:POPY_WGPU_BACKEND='dx12'`。浏览器 WebGPU 性能及官方 Cubism Core/Editor 尚未验证；原有近似限制保留。
 
 **性能优化版**见 [算法、验证与复现](docs/PERFORMANCE_OPTIMIZATION.md)。`python -m popy.performance_review all` 在原全身基线上独立生成 `delivery/POPY_fullbody_optimized.zip` 与 `delivery/POPY_fullbody_bitexact.zip`。保留全部纹理、顶点、三角形、39 个参数和 58 段动作；用骨架常量运算的代数因式分解及依赖图批处理减少开销。前者修正浮点累计误差，并与 Blender 几何对照；后者保留原版逐位结果，**严格保持画面时优先使用 bitexact 包**。CPU 求值分别约下降 22% / 4%，但精度版本次完整渲染平均数和 P95 上升，GPU 长帧仍未解决。原始全身包继续作为对照保留。实测结果在 `artifacts/perf_opt/report/index.html` 和公开数值记录 `benchmarks/popy/fullbody/performance_optimization.json`；未宣称已达到稳定实时性能。

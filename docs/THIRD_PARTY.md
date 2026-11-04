@@ -22,3 +22,5 @@ Ayagami 仓库的 AI 贡献/研究限制已读。按用户明确要求，仅在�
 全身扩展增加了可选 GPL 位置表去重补丁 `exporter/patches/moc_position_dedup.patch`，覆盖位置值编码、CountInfo 和一个新的辅助文件。仅在 `--deduplicate-positions` 时共享连续、位模式完全相同的位置块，默认导出路径不启用此优化。优化后的模型由未修改的 Ayagami 进行图像和全顶点对照。`exporter/src/main/kotlin/popy/Export.kt` 另支持独立根坐标载体，仍属于 GPL 导出适配器。中立的 `popy/native_skinning.py` 只构建 Rig IR 的矩阵/Glue 运算图，不链接 GPL 格式代码。
 
 工作区 Anon 仅作为控制、动作和表情组织的本地参考，未复制其模型、纹理、绑定、motion3 曲线或 exp3 配方；没有对其资产授予或推定新的再分发许可。
+
+无损通道分解新增的 Warp 显式父节点、非离屏 scalar Part、组织树与绘制组输出支持位于 GPL `exporter/src/main/kotlin/popy/Export.kt`。MIT 的 `order_factor.py` 只分析中立 IR 的读写及通道函数，`moc_pack.py` 独立处理固定布局的原始位模式共享和位置填充裁剪，未复制 GPL 写入器实现。位置长度及质量验证通过独立 MIT Rust 工具调用未修改运行时的公开 API；本轮不向任何上游提交修改。

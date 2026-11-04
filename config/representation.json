@@ -1,0 +1,8 @@
+{
+  "source_ir": "artifacts/mask_batch/rig_p1024/POPY.rig.json",
+  "baseline_model": "output/POPY_maskbatched",
+  "unpacked_model": "output/POPY_channelpacked_unpacked",
+  "output_model": "output/POPY_channelpacked",
+  "artifact_directory": "artifacts/representation_final",
+  "delivery": "delivery/POPY_fullbody_channelpacked.zip"
+}

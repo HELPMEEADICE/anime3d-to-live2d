@@ -1,5 +1,7 @@
 # POPY 数值实验记录
 
+最新通道/存储优化见 `fullbody/representation.json`（默认）和 `representation_rotation.json`（候选）：各 1,803 姿态逐位验证、362 图像一致性、八轮独立进程计时、同进程 CPU 对照及候选的同设备 GPU 对照。`representation_experiments.json` 包含只读 Anon 统计、计算图审计和未采用的 arena 实验；`representation_packages.json` 记录本地包 CRC、指纹和资源验证。旧 Warp 存储候选的原始快照另存为 `representation_storage.json`。见 [完整结论和限制](../../docs/REPRESENTATION_OPTIMIZATION.md)；没有用相对 CPU 提速掩盖整帧退步，也没有将计算图审计称作已导出模型。
+
 这些 JSON 来自本地已完成的 Blender / Ayagami 实测，记录于 2026-11-03（Asia/Shanghai）。公开记录不包含角色图像、纹理、模型或可重建网格的顶点数据。
 
 后续面部修复记录更新于 2026-11-04；各子目录保留当时的基线与实测范围。

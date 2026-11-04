@@ -13,3 +13,7 @@ for arbitrary downstream combinations.
 
 The GPL patch under patches/ caches CMO3 Glue lookup. It is a local PSD2Live
 change, applied by popy/setup_exporter.py; no upstream submission is made.
+
+Export.kt also lowers explicit Warp parents and non-offscreen scalar Parts,
+including their organizational ownership and stable render-group occurrences.
+These additions remain GPL-3.0-or-later within this executable.
