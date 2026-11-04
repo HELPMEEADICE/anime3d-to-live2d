@@ -10,6 +10,8 @@ Geometry-driven Blender/Python/Rust research converter with a separate GPL Cubis
 
 ## 当前交付位置
 
+**性能优化版**见 [算法、验证与复现](docs/PERFORMANCE_OPTIMIZATION.md)。`python -m popy.performance_review all` 在原全身基线上独立生成 `delivery/POPY_fullbody_optimized.zip` 与 `delivery/POPY_fullbody_bitexact.zip`。保留全部纹理、顶点、三角形、39 个参数和 58 段动作；用骨架常量运算的代数因式分解及依赖图批处理减少开销。前者修正浮点累计误差，并与 Blender 几何对照；后者保留原版逐位结果，**严格保持画面时优先使用 bitexact 包**。CPU 求值分别约下降 22% / 4%，但精度版本次完整渲染平均数和 P95 上升，GPU 长帧仍未解决。原始全身包继续作为对照保留。实测结果在 `artifacts/perf_opt/report/index.html` 和公开数值记录 `benchmarks/popy/fullbody/performance_optimization.json`；未宣称已达到稳定实时性能。
+
 **最新全身、四肢动作与表情**见 [实现与操作说明](docs/FULLBODY.md)。运行时加载 `delivery/POPY_fullbody.zip` 内的 `POPY.model3.json`；独立三维动画工程为 `delivery/POPY_fullbody.blend`。现为 39 个连续参数、58 个 motion3 和 24 个 exp3。新增 12 类 × 正面/左右朝向的 36 段表情动作，包含微笑、开心笑、生气、失落、抽泣姿态、害羞、惊讶、疑问、思考、认真、眨眼与困倦；见 [表情动作说明](docs/EXPRESSION_ACTIONS.md)。动作细化版增加独立前臂翻掌，将腿部侧摆扩展到 −25～35°，并重做挥手、点指和步行的衔接；见 [翻掌与侧摆说明](docs/MOTION_REFINEMENT.md)。报告位于 `artifacts/fullbody/report/index.html`。已有面部修复基线后执行 `python -m popy.fullbody all`；动作预览用 `python -m popy.fullbody frames --motion wave_L --expression smile --fps 15`。角色资源保留本地，公开数值记录位于 `benchmarks/popy/fullbody/`。
 
 **最新面部穿透遮盖修复**见 [实现、实测范围与限制](docs/FACE_CLEARANCE.md)。请加载 `delivery/POPY_face_fixed.zip`；报告为 `artifacts/face_repair/report/index.html`。本轮处理耳边白点、脸颊细缝、面内错误头发覆盖、鼻线及极端张嘴时的牙齿覆盖，并保留既有眼睛、发饰和衣领专项回归。有限姿态验证不证明所有组合零缺陷；极端下颌/毛发差异和较高模型成本仍有记录。已有衣领基线后执行 `python -m popy.face_repair all`。旧 CMO3 不含本轮修复。

@@ -4,6 +4,8 @@
 
 后续面部修复记录更新于 2026-11-04；各子目录保留当时的基线与实测范围。
 
+`fullbody/performance_optimization.json` 是随后运算图优化的独立记录：两种真实 MOC 的 1,803 姿态验证、362×3 渲染、81 Blender 源几何对照、相同序列 CPU/完整帧计时和 SHA 指纹。逐位模式保留原画面；精度模式改善骨架误差与 CPU 开销，但本次 GPU 长帧及平均耗时没有改善。原始全身基线、历史动作/表情报告仍保留，见 [完整说明](../../docs/PERFORMANCE_OPTIMIZATION.md)。
+
 - `geometry_quality.json`、`geometry_balanced.json`：28 个独立 Blender 姿态的图像/几何指标、模型统计。
 - `visibility_before.json`、`visibility_after.json`：165 姿态、70 对相邻帧，眼部可见性、同源接缝和时域残差。
 - `runtime_quality.json`、`runtime_balanced.json`：实际 GPU、参数清单与运行耗时。

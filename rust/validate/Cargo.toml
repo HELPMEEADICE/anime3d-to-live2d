@@ -2,6 +2,7 @@
 name = "popy-validate"
 version = "0.1.0"
 edition = "2024"
+default-run = "popy-validate"
 license = "MIT"
 [dependencies]
 ayagami = { path = "../../vendor/ayagami/ayagami" }

@@ -25,17 +25,21 @@ fn main() -> Result<()> {
 async fn run() -> Result<()> {
     let args: Vec<_> = env::args().collect();
     anyhow::ensure!(
-        args.len() == 4 || (args.len() == 5 && args[4] == "--images-only"),
-        "Usage: popy-validate MODEL3.json CASES.json OUTPUT_DIR [--images-only]"
+        args.len() == 4
+            || (args.len() == 5 && ["--images-only", "--timing-only"].contains(&args[4].as_str())),
+        "Usage: popy-validate MODEL3.json CASES.json OUTPUT_DIR [--images-only|--timing-only]"
     );
     let images_only = args.len() == 5;
+    let timing_only = args.get(4).is_some_and(|v| v == "--timing-only");
     let manifest: Value = serde_json::from_slice(&fs::read(&args[1])?)?;
     let base = Path::new(&args[1]).parent().unwrap();
     let out = Path::new(&args[3]);
     fs::create_dir_all(out)?;
+    let parse_start = Instant::now();
     let model = Arc::new(file::ParsedModel::load(&mut File::open(
         base.join(manifest["FileReferences"]["Moc"].as_str().unwrap()),
     )?)?);
+    let parse_ms = parse_start.elapsed().as_secs_f64() * 1000.;
     let inventory: Vec<Value> = model.artmeshes().into_iter().map(|mesh| {
         let range=mesh.index_range();
         json!({"id":mesh.id(),"vertices":mesh.vertex_count(),"culling":mesh.culling(),"invert_mask":mesh.invert_mask(),"texture":mesh.texture(),"clips":mesh.clips().into_iter().map(|m|m.id().to_string()).collect::<Vec<_>>(),"indices":model.index_buffer().unwrap()[range.start as usize..range.end as usize].to_vec()})
@@ -100,6 +104,15 @@ async fn run() -> Result<()> {
     };
     let cases: Vec<Value> = serde_json::from_slice(&fs::read(&args[2])?)?;
     let mut results = Vec::new();
+    // Match a normal host: reuse its output target, clearing it every frame.
+    // Avoid resource-lifetime/allocator stalls masquerading as model cost.
+    let output_texture = Texture::new(
+        &device,
+        uvec2(w, h),
+        wgpu::TextureFormat::Rgba8UnormSrgb,
+        Some(1),
+        Some("POPY offscreen"),
+    );
     for case in cases {
         let name = case["name"].as_str().context("case name")?;
         let t = Instant::now();
@@ -111,16 +124,14 @@ async fn run() -> Result<()> {
                 .driver()
                 .set_param_by_id(id, v.as_f64().unwrap() as f32)?;
         }
-        let texture = Texture::new(
-            &device,
-            uvec2(w, h),
-            wgpu::TextureFormat::Rgba8UnormSrgb,
-            Some(1),
-            Some("POPY offscreen"),
-        );
+        let parameter_ms = t.elapsed().as_secs_f64() * 1000.;
+        let texture = &output_texture;
         let mut encoder =
             device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: Some(name) });
+        let prepare_start = Instant::now();
         renderer.prepare(&mut encoder, &options);
+        let prepare_ms = prepare_start.elapsed().as_secs_f64() * 1000.;
+        let encode_start = Instant::now();
         {
             let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
                 label: Some(name),
@@ -137,9 +148,18 @@ async fn run() -> Result<()> {
             });
             renderer.render(&mut pass, texture.texture.format());
         }
-        queue.submit([encoder.finish()]);
+        let encoded = encoder.finish();
+        let encode_ms = encode_start.elapsed().as_secs_f64() * 1000.;
+        let wait_start = Instant::now();
+        queue.submit([encoded]);
         device.poll(wgpu::PollType::wait_indefinitely())?;
+        let gpu_wait_ms = wait_start.elapsed().as_secs_f64() * 1000.;
         let render_ms = t.elapsed().as_secs_f64() * 1000.;
+        if timing_only {
+            results.push(json!({"name":name,"pose_to_gpu_complete_ms":render_ms,
+                "parameter_ms":parameter_ms,"prepare_ms":prepare_ms,"encode_ms":encode_ms,"gpu_submit_and_wait_ms":gpu_wait_ms}));
+            continue;
+        }
         let geometry: Vec<Value> = if images_only {
             Vec::new()
         } else {
@@ -197,7 +217,7 @@ async fn run() -> Result<()> {
     fs::write(
         out.join("runtime_report.json"),
         serde_json::to_vec_pretty(
-            &json!({"ayagami_commit":"0d1d7aa3efe57b1b363b72e672e353c52a9c15d6","gpu":info.name,"backend":format!("{:?}",info.backend),"canvas":[w,h],"artmeshes":model.artmeshes().into_iter().count(),"parameters":parameters.iter().map(|p|json!({"id":p.id,"min":p.min,"max":p.max,"default":p.default})).collect::<Vec<_>>(),"cases":results}),
+            &json!({"ayagami_commit":"0d1d7aa3efe57b1b363b72e672e353c52a9c15d6","gpu":info.name,"backend":format!("{:?}",info.backend),"moc_parse_ms":parse_ms,"timing_only":timing_only,"canvas":[w,h],"artmeshes":model.artmeshes().into_iter().count(),"parameters":parameters.iter().map(|p|json!({"id":p.id,"min":p.min,"max":p.max,"default":p.default})).collect::<Vec<_>>(),"cases":results}),
         )?,
     )?;
     Ok(())

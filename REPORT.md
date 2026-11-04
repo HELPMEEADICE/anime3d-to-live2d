@@ -1,5 +1,9 @@
 # POPY 实测交付报告
 
+## 运算图性能优化（2026-11-04）
+
+保留全部现有拓扑、纹理、39 参数、58 动作和 24 表情，加入两种独立导出：严格无损的逐顶点依赖图批处理，以及对三维骨架常量 Glue 做代数因子转移的精度版。无损版 1,803 姿态/362 渲染逐位一致，CPU 中位开销约降 4%；精度版 Glue 减少 36.82%，CPU 中位数约降 22.28%，81 组身体/四肢最大重投影误差 0.035868→0.003569 px。精度版完整帧中位数下降 7.59%，但本次平均数和 P95 上升，GPU 长帧没有解决。保留原版和两种交付，优先严格无损包可保证原画面不变。完整数据、算法和限制见 [性能说明](docs/PERFORMANCE_OPTIMIZATION.md) 与 `benchmarks/popy/fullbody/performance_optimization.json`；96 项 Python 和 7 项 Rust 测试通过。
+
 ## 表情动作扩展（2026-11-04）
 
 在动作细化版基础上增加 36 段 `emote_*`：12 类情绪各有 C/L/R 版本，合计 58 motion3、24 exp3、39 参数。眉眼/视线/嘴形与头、身体、手臂分时编排。仅研究本地 Anon 的表演类别，不复制资源、曲线或表情参数值。完整说明和能力限制见 [EXPRESSION_ACTIONS.md](docs/EXPRESSION_ACTIONS.md)，实际验证见 `benchmarks/popy/fullbody/expression_actions.json`。新增动作复用已验证的 MOC，不修改几何绑定；难过、抽泣和害羞仍受缺少苦眉、下撇嘴、泪水和脸红通道限制。
