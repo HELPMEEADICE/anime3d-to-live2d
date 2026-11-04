@@ -29,9 +29,9 @@
 
 ## 动作和表情的使用
 
-附带 22 个真实 motion3：`idle`、左右 `wave` / `point` / `fist` / `leg_lift`、`stretch`、`thinking`、`surprised`、`nod`、`denial`、`walk_in_place`，以及左右 `palm_show` / `leg_side` / `side_step` 和 `side_sway`。
+附带 58 个真实 motion3，原有 22 个四肢/基础动作：`idle`、左右 `wave` / `point` / `fist` / `leg_lift`、`stretch`、`thinking`、`surprised`、`nod`、`denial`、`walk_in_place`，以及左右 `palm_show` / `leg_side` / `side_step` 和 `side_sway`。另有 12 类、每类 C/L/R 三个版本的 36 个 `emote_*` 表情动作，详见 [表情动作说明](EXPRESSION_ACTIONS.md)。
 
-附带 16 个 exp3：`neutral`、`smile`、`laugh`、`angry`、`serious`、`surprised`、`thinking`、`uncertain`、左右 `wink`、`eyes_closed`、`joy_closed`、`sleepy`、左右看和上看。它们组合实际已有的眼、眉、嘴参数；没有声称已经实现 Anon 特有的泪滴、爱心眼、汗和表情阴影。
+附带 24 个 exp3，原有 16 个：`neutral`、`smile`、`laugh`、`angry`、`serious`、`surprised`、`thinking`、`uncertain`、左右 `wink`、`eyes_closed`、`joy_closed`、`sleepy`、左右看和上看。新增 `smile_soft`、`shy`、`sad`、`cry`、`worried`、`skeptical`、`confident`、`drowsy`。它们组合实际已有的眼、眉、嘴参数；没有声称已经实现 Anon 特有的泪滴、爱心眼、汗和表情阴影。
 
 model3 中登记了所有文件。支持 motion3/exp3 的宿主可以读取这些资源；宿主是否实现动作播放、淡入淡出和表情混合，需要由其自身能力决定。这里没有改动 Ayagami 上游，其公开解析器、参数驱动器和 GPU 渲染器用于实际 MOC 求值。外部 Python 播放器负责曲线、循环、表情 Add/Multiply/Overwrite 和范围限制，再将每一时刻的参数交给 Ayagami 渲染。该离线播放器没有实现多个动作之间的宿主级交叉淡入淡出。
 
@@ -42,7 +42,7 @@ python -m popy.fullbody frames --motion walk_in_place --fps 15
 
 输出在 `artifacts/fullbody/wave_L.webp`、`walk_in_place.webp` 和各自帧目录。这些预览由真实 MOC 参数逐帧求值生成；模型内部保留网格、关键形、骨骼投影对应和连续参数。
 
-Blender 工程中保留原 MToon 材质和描边修改器，烘焙 46 根实际控制骨骼及 Face/Brow Shape Key 通道，按 30 fps 制作 22 段动作和 16 段静态表情。打开 `delivery/POPY_fullbody.blend` 后，用时间轴标记/NLA 预览；每段之间留 1 秒空隙，曲线和原骨骼可以继续编辑。`artifacts/fullbody/blender_timeline.json` 记录具体帧范围与各数据块的 Action。独立重开工程后，12 个检查点与参考几何逐点比较，结果见 `blender_verification.json`。
+Blender 工程中保留原 MToon 材质和描边修改器，烘焙 46 根实际控制骨骼及 Face/Brow Shape Key 通道，按 30 fps 制作 58 段动作和 24 段静态表情，共 82 个片段。打开 `delivery/POPY_fullbody.blend` 后，用时间轴标记/NLA 预览；每段之间留 1 秒空隙，曲线和原骨骼可以继续编辑。`artifacts/fullbody/blender_timeline.json` 记录具体帧范围与各数据块的 Action。独立重开工程后，20 个检查点与参考几何逐点比较，结果见 `blender_verification.json`。
 
 ## 几何实现
 

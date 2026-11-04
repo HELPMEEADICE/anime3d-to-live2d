@@ -1,9 +1,9 @@
 {
   "moc_sha256": "b48a2002f2bbf7b3e3a9c2ad049e6d3a282d1247bc956fdc54465292978bb538",
   "full_python_suite": {
-    "tests": 78,
+    "tests": 86,
     "passed": true,
-    "command": "python -m unittest discover -s tests -v"
+    "command": "python -m popy.fullbody test"
   },
   "rust_geometry_tests": {
     "tests": 7,
@@ -30,5 +30,17 @@
     "texture_height": 2048
   },
   "official_cubism_verified": false,
-  "motion_revision": 2
+  "motion_revision": 2,
+  "expression_revision": 1,
+  "new_expression_tests": 8,
+  "previous_exporter_checks_commit": "51dd5282e40fef33f5180fd166ccc2ebbae3e25e",
+  "moc_unchanged_from_previous_revision": true,
+  "expression_actions": {
+    "new_motions": 36,
+    "total_motions": 58,
+    "total_expressions": 24,
+    "blender_clips": 82,
+    "blender_reopened_checks": 20,
+    "preview_frames": 564
+  }
 }

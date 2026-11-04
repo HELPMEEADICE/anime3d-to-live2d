@@ -300,7 +300,7 @@ class BodyGeometryTests(unittest.TestCase):
         ] + cfg["controls"]
         with tempfile.TemporaryDirectory() as d:
             motions, expressions = author_assets(d, p)
-            self.assertEqual((len(motions), len(expressions)), (22, 16))
+            self.assertEqual((len(motions), len(expressions)), (58, 24))
             for refs in motions.values():
                 m = json.loads((Path(d) / refs[0]["File"]).read_text())
                 sg = pt = 0
@@ -409,8 +409,8 @@ class FullBodyAssetTests(unittest.TestCase):
         with (self.model / "POPY.moc3").open("rb") as f:
             self.assertEqual(f.read(4), b"MOC3")
         manifest = json.loads((self.model / "POPY.model3.json").read_text())
-        self.assertEqual(len(manifest["FileReferences"]["Motions"]), 22)
-        self.assertEqual(len(manifest["FileReferences"]["Expressions"]), 16)
+        self.assertEqual(len(manifest["FileReferences"]["Motions"]), 58)
+        self.assertEqual(len(manifest["FileReferences"]["Expressions"]), 24)
         for refs in manifest["FileReferences"]["Motions"].values():
             for ref in refs:
                 m = json.loads((self.model / ref["File"]).read_text())
@@ -444,9 +444,9 @@ class FullBodyAssetTests(unittest.TestCase):
                     name,
                 )
         actual = json.loads((self.base / "blender_verification.json").read_text())
-        self.assertEqual(actual["clips"], 38)
+        self.assertEqual(actual["clips"], 82)
         self.assertEqual(actual["driven_bones"], 46)
-        self.assertEqual(len(actual["evaluated_checks"]), 12)
+        self.assertEqual(len(actual["evaluated_checks"]), 20)
         self.assertLess(max(c["max_error_m"] for c in actual["evaluated_checks"]), 2e-6)
 
     def test_head_baseline_and_source_simplification_preserved(self):

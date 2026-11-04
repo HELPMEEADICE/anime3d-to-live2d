@@ -129,7 +129,7 @@ def main():
     scene.frame_set(1)
     bpy.context.view_layer.update()
     arm["POPY_animation_note"] = (
-        "22 authored joint motions + 16 expression poses; use timeline markers/NLA. Source shape channels and bone curves are editable. Live2D parameters are defined in config/fullbody.json."
+        f"{len(manifest['Motions'])} authored motions + {len(manifest['Expressions'])} expression poses; use timeline markers/NLA. Source shape channels and bone curves are editable. Live2D parameters are defined in config/fullbody.json."
     )
     output = Path(args.out).resolve()
     output.parent.mkdir(exist_ok=True, parents=True)

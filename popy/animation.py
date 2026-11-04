@@ -43,6 +43,8 @@ def curve_value(curve, time):
         if time > p[-1][0]:
             value = p[-1][1]
             continue
+        if time == p[-1][0]:
+            return p[-1][1]
         if kind == 2:
             return p[-1][1] if time == p[-1][0] else p[0][1]
         if kind == 3:
@@ -172,7 +174,7 @@ def motion_tangents(keys, loop=False):
 
 
 def expression_presets():
-    return {
+    presets = {
         "neutral": {},
         "smile": {"ParamMouthForm": 1, "ParamEyeLSmile": 0.4, "ParamEyeRSmile": 0.4},
         "laugh": {
@@ -223,6 +225,10 @@ def expression_presets():
         "look_right": {"ParamEyeBallX": 1},
         "look_up": {"ParamEyeBallY": 1},
     }
+    from .expression_design import extra_presets
+
+    presets.update(extra_presets())
+    return presets
 
 
 def author_assets(directory, parameters):
@@ -247,14 +253,15 @@ def author_assets(directory, parameters):
         expressions.append({"Name": name, "File": path})
     motions = {}
 
-    def save(name, duration, tracks, loop=False):
+    def save(name, duration, tracks, loop=False, refine=True):
         # Explicit reset curves make offline playback deterministic across actions.
         full = {p: [[0, v], [duration, v]] for p, v in defaults.items()}
         full.update(tracks)
         # Preserve the reusable motion codec independently of POPY choreography.
         from .motion_design import refine_tracks
 
-        full = refine_tracks(name, duration, full, loop)
+        if refine:
+            full = refine_tracks(name, duration, full, loop)
         asset = motion_asset(full, duration, loop)
         path = "motions/" + name + ".motion3.json"
         (directory / path).write_text(json.dumps(asset, indent=2))
@@ -397,4 +404,13 @@ def author_assets(directory, parameters):
         for action in ["palm_show", "leg_side", "side_step"]:
             save(action + "_" + side, 4, {})
     save("side_sway", 4, {}, True)
+    from .expression_design import emotion_motions
+
+    for name, duration, tracks in emotion_motions(parameters, expression_presets()):
+        save(name, duration, tracks, refine=False)
+    from .expression_design import catalogue
+
+    (directory / "emotion_catalog.json").write_text(
+        json.dumps(catalogue(), indent=2, ensure_ascii=False), encoding="utf8"
+    )
     return motions, expressions

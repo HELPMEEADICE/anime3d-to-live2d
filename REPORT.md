@@ -1,6 +1,10 @@
 # POPY 实测交付报告
 
-## 最新动作细化
+## 表情动作扩展（2026-11-04）
+
+在动作细化版基础上增加 36 段 `emote_*`：12 类情绪各有 C/L/R 版本，合计 58 motion3、24 exp3、39 参数。眉眼/视线/嘴形与头、身体、手臂分时编排。仅研究本地 Anon 的表演类别，不复制资源、曲线或表情参数值。完整说明和能力限制见 [EXPRESSION_ACTIONS.md](docs/EXPRESSION_ACTIONS.md)，实际验证见 `benchmarks/popy/fullbody/expression_actions.json`。新增动作复用已验证的 MOC，不修改几何绑定；难过、抽泣和害羞仍受缺少苦眉、下撇嘴、泪水和脸红通道限制。
+
+## 四肢动作细化（上一阶段）
 
 本轮将全身版扩展为 39 个连续参数、22 段 motion3 和 16 个表情。独立前臂翻掌使挥手时掌面朝向镜头；腿部侧摆从 0～15° 扩展到 −25～35°，新增左右侧抬腿、侧步和左右摇摆。肩、肘、翻掌、腕摆分阶段衔接，单调 Hermite / Cubism Bezier 共享切线，避免每个关键点都停顿。实现、测量与边界见 [动作细化文档](docs/MOTION_REFINEMENT.md)。下文首版统计作为历史记录保留；最新数值以 `benchmarks/popy/fullbody/` 为准。
 

@@ -335,6 +335,9 @@ def assets():
         for action in ["palm_show", "leg_side", "side_step"]
         for side in ["L", "R"]
     )
+    probe_names.update(
+        "motion_" + name + "_middle" for name in motions if name.startswith("emote_")
+    )
     jsonwrite(BASE / "probes.json", [c for c in cases if c["name"] in probe_names])
     print(
         f"Authored {len(motions)} motions, {len(expressions)} expressions, {len(cases)} test poses",
@@ -801,8 +804,12 @@ def report():
 def package():
     delivery = ROOT / "delivery"
     delivery.mkdir(exist_ok=True)
+    manifest = json.loads((MODEL / "POPY.model3.json").read_text())["FileReferences"]
+    parameters = json.loads((BASE / "parameters.json").read_text())
     (MODEL / "README.txt").write_text(
-        "POPY full body research model\nOpen POPY.model3.json with the adjacent textures. 39 parameters, 22 motion3 assets, 16 exp3 presets.\nThe Anon model was used as a semantic reference; its assets are not bundled.\nL/R means character left/right. Hand pose: -1 point, 0 open, +1 fist. Forearm Turn: +90 presents the palm. Leg Spread: negative crosses inward, positive swings outward.\nMotion playback depends on the host. Offline native preview: python -m popy.fullbody frames --motion wave_L --expression smile --fps 15\nEditable 3D animation: separate delivery/POPY_fullbody.blend. No new CMO3.\nLarge research model: native matrix fields, mean-depth ordering, no cloth collision or foot-contact IK. Read docs/FULLBODY.md and the generated comparison report.\n",
+        "POPY full body research model\nOpen POPY.model3.json with the adjacent textures. "
+        + f"{len(parameters)} parameters, {len(manifest['Motions'])} motion3 assets, {len(manifest['Expressions'])} exp3 presets.\n"
+        + "The Anon model was used as a semantic reference; its assets are not bundled.\nL/R means character left/right. Hand pose: -1 point, 0 open, +1 fist. Forearm Turn: +90 presents the palm. Leg Spread: negative crosses inward, positive swings outward.\nEmotion clips: emote_<type>_C/L/R; C front, L/R head-turn variants. Play without an extra expression to retain animated facial curves. emotion_catalog.json lists labels and limitations.\nMotion playback depends on the host. Offline native preview: python -m popy.fullbody frames --motion emote_laugh_C --fps 15\nEditable 3D animation: separate delivery/POPY_fullbody.blend. No new CMO3.\nLarge research model: native matrix fields, mean-depth ordering, no cloth collision or foot-contact IK. Read docs/FULLBODY.md and docs/EXPRESSION_ACTIONS.md and the generated comparison report.\n",
         encoding="utf8",
     )
     metrics = json.loads((BASE / "report/metrics.json").read_text())
@@ -875,6 +882,7 @@ def main():
             "package",
             "blender",
             "frames",
+            "expressions",
         ],
     )
     parser.add_argument("--reference-model", default=str(ROOT.parent / "anon"))
@@ -899,6 +907,7 @@ def main():
             "validate",
             "packing",
             "report",
+            "expressions",
             "test",
             "package",
         ]
@@ -979,6 +988,10 @@ def main():
             packing()
         elif stage == "report":
             report()
+        elif stage == "expressions":
+            from .expression_review import review
+
+            review(create_previews=True)
         elif stage == "test":
             run(
                 "fullbody_tests",
@@ -990,7 +1003,7 @@ def main():
                     "-s",
                     "tests",
                     "-p",
-                    "test_fullbody.py",
+                    "test_*.py",
                     "-v",
                 ],
             )

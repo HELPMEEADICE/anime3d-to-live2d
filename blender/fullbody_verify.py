@@ -31,6 +31,14 @@ for clip, reference in [
     ("leg_side_R", "motion_leg_side_R_middle"),
     ("expression_wink_left", "expression_wink_left_0"),
     ("expression_surprised", "expression_surprised_0"),
+    ("emote_laugh_C", "motion_emote_laugh_C_middle"),
+    ("emote_angry_L", "motion_emote_angry_L_middle"),
+    ("emote_shy_R", "motion_emote_shy_R_middle"),
+    ("emote_wink_C", "motion_emote_wink_C_middle"),
+    ("emote_wink_R", "motion_emote_wink_R_middle"),
+    ("emote_question_L", "motion_emote_question_L_middle"),
+    ("emote_cry_C", "motion_emote_cry_C_middle"),
+    ("emote_drowsy_R", "motion_emote_drowsy_R_middle"),
 ]:
     entry = entries[clip]
     frame = (
