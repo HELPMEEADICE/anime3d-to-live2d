@@ -32,6 +32,7 @@ fun main(args:Array<String>) {
     require(args.size>=2){"Usage: popy-cubism-exporter IR.json OUTPUT_DIR [--no-cmo]"}
     val input=File(args[0]); val base=input.parentFile; val out=File(args[1]); out.mkdirs()
     var ir=Json.parseToJsonElement(input.readText()).jsonObject
+    val bakedRuntime=ir["baked_runtime"]?.jsonPrimitive?.boolean ?: false
     val absolute=ir["geometry_encoding"]?.jsonPrimitive?.content=="parent_absolute"
     val binary=ByteBuffer.wrap(File(base,ir.s("keyform_data")).readBytes()).order(ByteOrder.LITTLE_ENDIAN)
     fun floats(offset:Int,count:Int):FloatArray=FloatArray(count){binary.getFloat((offset+it)*4)}
@@ -58,7 +59,10 @@ fun main(args:Array<String>) {
             KeyformGrid(emptyList(),listOf(KeyformCell(intArrayOf(),RotationPivotForm(0f,0f,0f,1f)))))
         else Deformer.Warp(DeformerId(node.s("id")),"Skin-weighted pitch correction ${node.f("strength")}",node["parent"]?.jsonPrimitive?.content?.let{DeformerId(it)} ?: if(node["root"]?.jsonPrimitive?.boolean==true) null else bodyRotationId,null,1,1,true,
         KeyformGrid(axes(node),node.a("cells").map{c->val cell=c.jsonObject;KeyformCell(cell.a("coordinate").ints(),WarpLatticeForm(cell.a("points").floats()))}))} ?: listOf(Deformer.Warp(warpId,"Body projection / breath",bodyRotationId,null,1,1,true,warpGrid))
-    val deformers=listOf(
+    val deformers=if(bakedRuntime) listOf(
+        Deformer.Rotation(bodyRotationId,"Baked body roll",null,null,0f,bodyRotGrid),
+        Deformer.Rotation(headRotationId,"Baked head roll",bodyRotationId,null,0f,headRotGrid)
+    ) else listOf(
         Deformer.Rotation(bodyRotationId,"Body roll (exact angle)",null,null,0f,bodyRotGrid),
         Deformer.Rotation(headRotationId,"Head roll / body-yaw pivot",bodyRotationId,null,0f,headRotGrid),
         Deformer.Warp(headWarpId,"Head projection / breath",headRotationId,null,1,1,true,headWarpGrid))+bodyWarps
@@ -68,14 +72,15 @@ fun main(args:Array<String>) {
         val ax=axes(m)
         val geom=KeyformGrid(ax,m.a("cells").map {v->val c=v.jsonObject; forms++; KeyformCell(c.a("coordinate").ints(),MeshDeltaForm(floats(c.getValue("offset").jsonPrimitive.int,n)))})
         val order:KeyformGrid<ChannelValue> = KeyformGrid(ax,m.a("cells").map {v->val c=v.jsonObject; KeyformCell(c.a("coordinate").ints(),ChannelValue.Scalar(c.f("order")))})
+        val opacityGrid:KeyformGrid<ChannelValue>? = if(m.a("cells").any{it.jsonObject.containsKey("opacity")}) KeyformGrid(ax,m.a("cells").map{v->val c=v.jsonObject;KeyformCell(c.a("coordinate").ints(),ChannelValue.Scalar(c.f("opacity")))}) else null
         val blends=m["blend_shapes"]?.jsonArray?.map {v->val b=v.jsonObject
-            val f=b.a("offsets").mapIndexed {i,off-> if(off is JsonNull) null else MeshForm(floats(off.jsonPrimitive.int,n),drawOrder=b["orders"]?.jsonArray?.get(i)?.jsonPrimitive?.float ?: 500f,opacity=m["opacity"]?.jsonPrimitive?.float ?: 1f)}
+            val f=b.a("offsets").mapIndexed {i,off-> if(off is JsonNull) null else MeshForm(floats(off.jsonPrimitive.int,n),drawOrder=b["orders"]?.jsonArray?.get(i)?.jsonPrimitive?.float ?: 500f,opacity=b["opacities"]?.jsonArray?.get(i)?.jsonPrimitive?.float ?: m["opacity"]?.jsonPrimitive?.float ?: 1f)}
             BlendShapeBinding(ParameterId(b.s("parameter")),b.a("keys").floats(),b.getValue("neutral").jsonPrimitive.int,f)
         } ?: emptyList()
         val masks=m["masked_by"]?.jsonArray?.map{DrawableId(it.jsonPrimitive.content)} ?: emptyList()
-        val parent=if(m["deformer"]?.jsonPrimitive?.content=="head") headWarpId else m["projection_warp"]?.jsonPrimitive?.content?.let{DeformerId(it)} ?: warpId
+        val parent=if(bakedRuntime) {if(m["deformer"]?.jsonPrimitive?.content=="head") headRotationId else bodyRotationId} else if(m["deformer"]?.jsonPrimitive?.content=="head") headWarpId else m["projection_warp"]?.jsonPrimitive?.content?.let{DeformerId(it)} ?: warpId
         Drawable(DrawableId(m.s("id")),m.s("id"),parent,BlendMode.Normal,masks,DrawableMesh(if(absolute) FloatArray(n) else pos,m.a("uvs").floats(),m.a("indices").ints()),geom,
-            channelGrids=ChannelGrids(mapOf(FormChannel.DRAW_ORDER to order)),drawOrder=500f,opacity=m["opacity"]?.jsonPrimitive?.float ?: 1f,texturePage=m.getValue("texture").jsonPrimitive.int,culling=m["culling"]?.jsonPrimitive?.boolean ?: true,blendShapes=blends,
+            channelGrids=ChannelGrids(mapOf(FormChannel.DRAW_ORDER to order)+if(opacityGrid==null) emptyMap() else mapOf(FormChannel.OPACITY to opacityGrid)),drawOrder=500f,opacity=m["opacity"]?.jsonPrimitive?.float ?: 1f,texturePage=m.getValue("texture").jsonPrimitive.int,culling=m["culling"]?.jsonPrimitive?.boolean ?: true,blendShapes=blends,
             invertMask=m["invert_mask"]?.jsonPrimitive?.boolean ?: false,
             // Dense 3D correspondence stays in Rig IR. MOC3 does not serialize
             // this editor-side string, so don't retain a second copy at runtime export.

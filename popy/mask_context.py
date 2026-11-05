@@ -104,7 +104,7 @@ def group_inventory(inventory, centers=None, vts=False):
 
 
 def rewrite(
-    source, target, inventory, report, centers=None, exclude_members=False, vts=False
+    source, target, inventory, report, centers=None, exclude_members=False, vts=False, design=None, clip_overrides=None
 ):
     source, target = Path(source), Path(target)
     if source.resolve() == target.resolve():
@@ -142,7 +142,7 @@ def rewrite(
     lookup = {n: i for i, n in enumerate(ids)}
     replacements = {}
     removed = 0
-    for group in group_inventory(inventory, centers, vts):
+    for group in (design if design is not None else group_inventory(inventory, centers, vts)):
         union = sorted({s for m in group for s in m["clips"]})
         if exclude_members:
             members = {m["id"] for m in group}
@@ -150,6 +150,8 @@ def rewrite(
             union = [s for s in union if s not in members]
         for m in group:
             replacements[m["id"]] = union
+    if clip_overrides is not None:
+        replacements={m['id']:clip_overrides.get(m['id'],m['clips']) for m in inventory}
     pool = []
     spans = {}
     newstart = []

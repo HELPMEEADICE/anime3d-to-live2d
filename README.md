@@ -10,6 +10,8 @@ Geometry-driven Blender/Python/Rust research converter with a separate GPL Cubis
 
 ## 当前交付位置
 
+**新增 VTS 有损性能版**：在用户允许损失部分画质后，以真实运行时离线采样拟合局部张量和独立残差，彻底移除 360,242 个 Glue。交付 `delivery/POPY_VTS_Performance.zip`（约 40.5 MB），MOC 563.4→108.7 MB，主关键形 5,439,788→129,677。保留 39 参数、58 动作、24 表情与牙齿修复的 80 组遮罩；VTS 需设置 256 masks、每组至少 512×512。同一原生 DX12 对照 CPU 中位 62.57→1.60 ms，完整帧中位 101.53→29.10 ms，12 姿态渲染进程峰值 RSS 1,273.6→685.1 MiB。**不是 VTS 实机性能验收**；挥手等复合姿态有明显几何误差，不能当作无损版。说明、限制和复现见 [VTS 性能版](docs/VTS_PERFORMANCE.md)，原质量包保留。
+
 **遮罩预算与空间 Warp 实验**：默认模型仍有 1,490 组遮罩组合，不适合直接当作兼容 36/64 组预算的模型交付。新增真实 MOC 的 5/32 组遮罩候选均出现错误覆盖；5 个局部投影已拟合为父子 Warp 并通过 362 姿态评估，但有 97 个光栅像素差，未替换默认版。详见 [结果与复现](docs/SPATIAL_FIT_AND_MASKS.md)。可用 `python -m popy.mask_context --audit-only --limit 36` 做只读兼容性预检，超过预算返回非零。没有宣称整体 Glue/遮罩问题已解决。
 
 **最新无损通道/存储版（默认）**见 [实现、性能及复现](docs/REPRESENTATION_OPTIMIZATION.md)。加载 `delivery/POPY_fullbody_channelpacked.zip` 中的 `POPY/POPY.model3.json`，或本地 `output/POPY_channelpacked/POPY.model3.json`。MOC3 为 318,960,192 字节，较上轮减少约 43.43%；ArtMesh 主关键形 5,439,788→1,438,609，进程树 RSS 中位约 1,973→1,752 MiB。全部顶点、UV、纹理、39 参数、58 动作、24 表情及 Glue 程序保留。1,803 姿态逐位和 362 RGBA 渲染一致；116 项 Python / 7 项 Rust 测试通过。`python -m popy.representation_review all` 可复现。
