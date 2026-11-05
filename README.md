@@ -10,6 +10,8 @@ Geometry-driven Blender/Python/Rust research converter with a separate GPL Cubis
 
 ## 当前交付位置
 
+**VTS 性能版的后续无损优化**：交付 `delivery/POPY_VTS_Exact.zip`，相对下述性能版不新增画质损失；1,803 姿态 311,919,000 次顶点比较位模式零差异、362 RGBA 逐像素一致，纹理/动作/表情字节相同。相邻等价网格合批并共享不可变数据，ArtMesh 3,998→2,800、MOC 108.7→89.3 MB。同一 60 姿态配对测试整帧中位 51.79→33.83 ms，362 姿态渲染进程峰值 RSS 817.4→532.8 MiB；非 VTS 实机数据。原有有损拟合误差保留，仍需 256 masks；部分内部 ArtMesh ID 合并。详见 [无损优化与复现](docs/VTS_EXACT.md)。
+
 **新增 VTS 有损性能版**：在用户允许损失部分画质后，以真实运行时离线采样拟合局部张量和独立残差，彻底移除 360,242 个 Glue。交付 `delivery/POPY_VTS_Performance.zip`（约 40.5 MB），MOC 563.4→108.7 MB，主关键形 5,439,788→129,677。保留 39 参数、58 动作、24 表情与牙齿修复的 80 组遮罩；VTS 需设置 256 masks、每组至少 512×512。同一原生 DX12 对照 CPU 中位 62.57→1.60 ms，完整帧中位 101.53→29.10 ms，12 姿态渲染进程峰值 RSS 1,273.6→685.1 MiB。**不是 VTS 实机性能验收**；挥手等复合姿态有明显几何误差，不能当作无损版。说明、限制和复现见 [VTS 性能版](docs/VTS_PERFORMANCE.md)，原质量包保留。
 
 **遮罩预算与空间 Warp 实验**：默认模型仍有 1,490 组遮罩组合，不适合直接当作兼容 36/64 组预算的模型交付。新增真实 MOC 的 5/32 组遮罩候选均出现错误覆盖；5 个局部投影已拟合为父子 Warp 并通过 362 姿态评估，但有 97 个光栅像素差，未替换默认版。详见 [结果与复现](docs/SPATIAL_FIT_AND_MASKS.md)。可用 `python -m popy.mask_context --audit-only --limit 36` 做只读兼容性预检，超过预算返回非零。没有宣称整体 Glue/遮罩问题已解决。
