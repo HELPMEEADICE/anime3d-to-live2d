@@ -22,6 +22,18 @@ fn load(path: &Path) -> Result<file::ParsedModel> {
             .join(m["FileReferences"]["Moc"].as_str().context("Moc")?),
     )?)?)
 }
+fn page_opaque(path: &Path, page: u32) -> Result<bool> {
+    let manifest: Value = serde_json::from_slice(&fs::read(path)?)?;
+    let texture = path.parent().unwrap().join(
+        manifest["FileReferences"]["Textures"][page as usize]
+            .as_str()
+            .context("Texture")?,
+    );
+    Ok(image::open(texture)?
+        .to_rgba8()
+        .pixels()
+        .all(|p| p.0[3] == 255))
+}
 fn main() -> Result<()> {
     let args: Vec<_> = env::args().collect();
     ensure!(
@@ -40,6 +52,19 @@ fn main() -> Result<()> {
     } else {
         serde_json::from_value(manifest["rows"].clone())?
     };
+    let proxies: Vec<Value> = manifest["mask_proxies"]
+        .as_array()
+        .cloned()
+        .unwrap_or_default();
+    ensure!(
+        proxies.iter().all(|r| r["mask_proxy"] == true)
+            && mapping.iter().all(|r| r["mask_proxy"] != true),
+        "Invalid proxy row class"
+    );
+    let proxied_sources: HashSet<_> = proxies
+        .iter()
+        .map(|r| r["source"].as_str().unwrap())
+        .collect();
     let extras: HashSet<String> = manifest["extra_unobservable"]
         .as_array()
         .into_iter()
@@ -83,7 +108,7 @@ fn main() -> Result<()> {
         .flat_map(|m| m.clips().into_iter().map(|s| s.id().to_string()))
         .collect();
     let mut expansion: HashMap<&str, Vec<(usize, &str)>> = HashMap::new();
-    for row in &mapping {
+    for row in mapping.iter().chain(&proxies) {
         if row["removed"] == true {
             continue;
         }
@@ -145,7 +170,32 @@ fn main() -> Result<()> {
     let mut permutations: HashMap<&str, Vec<usize>> = HashMap::new();
     let resource_manifest: Value = serde_json::from_slice(&fs::read(&args[1])?)?;
     let mut opaque_pages: HashMap<u32, bool> = HashMap::new();
-    for row in &mapping {
+    let opaque_union = manifest["opaque_mask_union"] == true;
+    if opaque_union {
+        let mut pages = HashSet::new();
+        for m in &am {
+            if used.contains(m.id()) && pages.insert(m.texture()) {
+                ensure!(
+                    page_opaque(Path::new(&args[1]), m.texture())?,
+                    "Nonopaque union source"
+                );
+            }
+        }
+        let after_used: HashSet<_> = bm
+            .iter()
+            .flat_map(|m| m.clips().into_iter().map(|s| s.id().to_owned()))
+            .collect();
+        pages.clear();
+        for m in &bm {
+            if after_used.contains(m.id()) && pages.insert(m.texture()) {
+                ensure!(
+                    page_opaque(Path::new(&args[2]), m.texture())?,
+                    "Nonopaque union proxy"
+                );
+            }
+        }
+    }
+    for row in mapping.iter().chain(&proxies) {
         let name = row["source"].as_str().unwrap();
         let n = aid[name].vertex_count() as usize;
         let order: Vec<usize> = if let Some(v) = row["vertex_order"].as_array() {
@@ -165,18 +215,27 @@ fn main() -> Result<()> {
         }
         permutations.insert(name, inverse);
     }
-    for row in &mapping {
+    for row in mapping.iter().chain(&proxies) {
         let a = aid[row["source"].as_str().unwrap()];
         if row["removed"] == true {
             ensure!(
                 zero_before.contains(a.id())
-                    && !used.contains(a.id())
+                    && (!used.contains(a.id()) || proxied_sources.contains(a.id()))
                     && a.clips().into_iter().next().is_none(),
                 "removed observable mesh"
             );
             continue;
         }
         let b = bid[row["target"].as_str().unwrap()];
+        let proxy = row["mask_proxy"] == true;
+        if proxy {
+            ensure!(
+                zero_after.contains(b.id())
+                    && b.clips().into_iter().next().is_none()
+                    && used.contains(a.id()),
+                "observable or unused mask proxy"
+            );
+        }
         if row["ignore_hidden_depth"] == true || row["ignore_hidden_color"] == true {
             ensure!(
                 zero_before.contains(a.id())
@@ -188,22 +247,26 @@ fn main() -> Result<()> {
         let vs = row["vertex_start"].as_u64().unwrap() as usize;
         let n = a.vertex_count() as usize;
         ensure!(
-            a.texture() == b.texture()
+            (a.texture() == b.texture() || (proxy && opaque_union))
                 && a.culling() == b.culling()
-                && a.invert_mask() == b.invert_mask(),
+                && (proxy || a.invert_mask() == b.invert_mask()),
             "flags changed"
         );
-        ensure!(
-            a.clips()
-                .into_iter()
-                .map(|m| m.id().to_owned())
-                .collect::<Vec<_>>()
-                == b.clips()
-                    .into_iter()
-                    .flat_map(|m| expansion[m.id()].iter().map(|(_, name)| name.to_string()))
-                    .collect::<Vec<_>>(),
-            "clipping changed"
-        );
+        let mut old_clips = a
+            .clips()
+            .into_iter()
+            .map(|m| m.id().to_owned())
+            .collect::<Vec<_>>();
+        let mut new_clips = b
+            .clips()
+            .into_iter()
+            .flat_map(|m| expansion[m.id()].iter().map(|(_, name)| name.to_string()))
+            .collect::<Vec<_>>();
+        if opaque_union {
+            old_clips.sort();
+            new_clips.sort();
+        }
+        ensure!(proxy || old_clips == new_clips, "clipping changed");
         let au = a.texcoord_offset() as usize;
         let bu = b.texcoord_offset() as usize + vs;
         let permutation = &permutations[a.id()];
@@ -303,7 +366,7 @@ fn main() -> Result<()> {
         }
         a.drive(&before);
         b.drive(&after);
-        for row in &mapping {
+        for row in mapping.iter().chain(&proxies) {
             let x = aid[row["source"].as_str().unwrap()];
             if row["removed"] == true {
                 ensure!(
@@ -316,17 +379,26 @@ fn main() -> Result<()> {
             let sx = a.artmesh_state(x.uid()).unwrap();
             let sy = b.artmesh_state(y.uid()).unwrap();
             let start = row["vertex_start"].as_u64().unwrap() as usize;
-            ensure!(
-                (sx.depth == sy.depth || row["ignore_hidden_depth"] == true)
-                    && sx.visual.visible == sy.visual.visible
-                    && sx.visual.opacity.to_bits() == sy.visual.opacity.to_bits()
-                    && ((sx.visual.multiply_color == sy.visual.multiply_color
-                        && sx.visual.screen_color == sy.visual.screen_color)
-                        || row["ignore_hidden_color"] == true),
-                "visual changed {} {}",
-                i,
-                x.id()
-            );
+            if row["mask_proxy"] == true {
+                ensure!(
+                    sx.visual.visible == sy.visual.visible && sy.visual.opacity == 0.,
+                    "proxy visibility changed {} {}",
+                    i,
+                    x.id()
+                );
+            } else {
+                ensure!(
+                    (sx.depth == sy.depth || row["ignore_hidden_depth"] == true)
+                        && sx.visual.visible == sy.visual.visible
+                        && sx.visual.opacity.to_bits() == sy.visual.opacity.to_bits()
+                        && ((sx.visual.multiply_color == sy.visual.multiply_color
+                            && sx.visual.screen_color == sy.visual.screen_color)
+                            || row["ignore_hidden_color"] == true),
+                    "visual changed {} {}",
+                    i,
+                    x.id()
+                );
+            }
             for (old, vx) in sx.vertices.iter().enumerate() {
                 let vy = &sy.vertices[start + permutations[x.id()][old]];
                 ensure!(
@@ -345,7 +417,7 @@ fn main() -> Result<()> {
     fs::write(
         &args[5],
         serde_json::to_vec(
-            &json!({"poses":cases.len(),"compared_vertices":count,"different_vertices":0,"before_meshes":am.len(),"after_meshes":bm.len(),"removed_unobservable_meshes":mapping.iter().filter(|r|r["removed"]==true).count(),"retained_vertex_uv_visuals_equal":true,"mask_source_sequence_equal_after_expansion":true,"method":"Unmodified public driver; retained vertices bit-exact. Only repeated-index degenerate triangles may be removed. Dropped meshes must have zero opacity in every main/blend form and no mask dependency; ignored depth is confined to zero-opacity unclipped mask sources. Mask-source batches expand back to each original source list in its exact original order. GPU alpha checked separately."}),
+            &json!({"poses":cases.len(),"compared_vertices":count,"different_vertices":0,"before_meshes":am.len(),"after_meshes":bm.len(),"removed_unobservable_meshes":mapping.iter().filter(|r|r["removed"]==true).count(),"proxy_vertex_rows":proxies.len(),"retained_vertex_uv_visuals_equal":true,"mask_source_sequence_equal_after_expansion":!opaque_union,"mask_source_multiset_equal_after_expansion":true,"opaque_mask_union":opaque_union,"method":"Unmodified public driver; all retained and proxy vertex coordinates bit-exact. Main visual functions unchanged, apart from separately proven zero-opacity exceptions. UVs and every oriented primitive checked. Opaque-union mode directly checks all source/proxy texture alpha bytes are 255 and preserves expanded per-context source multisets; otherwise expanded source order is exact. A dropped original mask source must be permanently invisible, unclipped and retained in a verified proxy. GPU alpha checked separately."}),
         )?,
     )?;
     Ok(())
