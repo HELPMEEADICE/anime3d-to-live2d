@@ -78,7 +78,7 @@ fun main(args:Array<String>) {
             BlendShapeBinding(ParameterId(b.s("parameter")),b.a("keys").floats(),b.getValue("neutral").jsonPrimitive.int,f)
         } ?: emptyList()
         val masks=m["masked_by"]?.jsonArray?.map{DrawableId(it.jsonPrimitive.content)} ?: emptyList()
-        val parent=if(bakedRuntime) {if(m["deformer"]?.jsonPrimitive?.content=="head") headRotationId else bodyRotationId} else if(m["deformer"]?.jsonPrimitive?.content=="head") headWarpId else m["projection_warp"]?.jsonPrimitive?.content?.let{DeformerId(it)} ?: warpId
+        val parent=if(m["world_zero"]?.jsonPrimitive?.boolean==true) null else if(bakedRuntime) {if(m["deformer"]?.jsonPrimitive?.content=="head") headRotationId else bodyRotationId} else if(m["deformer"]?.jsonPrimitive?.content=="head") headWarpId else m["projection_warp"]?.jsonPrimitive?.content?.let{DeformerId(it)} ?: warpId
         Drawable(DrawableId(m.s("id")),m.s("id"),parent,BlendMode.Normal,masks,DrawableMesh(if(absolute) FloatArray(n) else pos,m.a("uvs").floats(),m.a("indices").ints()),geom,
             channelGrids=ChannelGrids(mapOf(FormChannel.DRAW_ORDER to order)+if(opacityGrid==null) emptyMap() else mapOf(FormChannel.OPACITY to opacityGrid)),drawOrder=500f,opacity=m["opacity"]?.jsonPrimitive?.float ?: 1f,texturePage=m.getValue("texture").jsonPrimitive.int,culling=m["culling"]?.jsonPrimitive?.boolean ?: true,blendShapes=blends,
             invertMask=m["invert_mask"]?.jsonPrimitive?.boolean ?: false,

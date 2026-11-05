@@ -34,7 +34,18 @@ fn main() -> Result<()> {
     let bm: Vec<_> = after.artmeshes().into_iter().collect();
     let aid: HashMap<_, _> = am.iter().map(|m| (m.id(), m)).collect();
     let bid: HashMap<_, _> = bm.iter().map(|m| (m.id(), m)).collect();
-    let mapping: Vec<Value> = serde_json::from_slice(&fs::read(&args[3])?)?;
+    let manifest: Value = serde_json::from_slice(&fs::read(&args[3])?)?;
+    let mapping: Vec<Value> = if manifest.is_array() {
+        serde_json::from_value(manifest.clone())?
+    } else {
+        serde_json::from_value(manifest["rows"].clone())?
+    };
+    let extras: HashSet<String> = manifest["extra_unobservable"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .map(|v| v.as_str().unwrap().to_owned())
+        .collect();
     ensure!(mapping.len() == am.len(), "incomplete mapping");
     ensure!(
         mapping
@@ -87,8 +98,22 @@ fn main() -> Result<()> {
     for members in expansion.values_mut() {
         members.sort_by_key(|m| m.0);
     }
+    for name in &extras {
+        let mesh = bid[name.as_str()];
+        ensure!(
+            zero_after.contains(name)
+                && mesh.clips().into_iter().next().is_none()
+                && !bm
+                    .iter()
+                    .any(|m| m.clips().into_iter().any(|s| s.id() == name)),
+            "observable extra carrier"
+        );
+    }
     ensure!(
-        expansion.len() == bm.len() && bm.iter().all(|m| expansion.contains_key(m.id())),
+        expansion.len() + extras.len() == bm.len()
+            && bm
+                .iter()
+                .all(|m| expansion.contains_key(m.id()) || extras.contains(m.id())),
         "unmapped target mesh"
     );
     for (target, members) in &expansion {
@@ -117,6 +142,29 @@ fn main() -> Result<()> {
             .collect::<Vec<_>>()
     };
     ensure!(contract(&before) == contract(&after), "parameters changed");
+    let mut permutations: HashMap<&str, Vec<usize>> = HashMap::new();
+    let resource_manifest: Value = serde_json::from_slice(&fs::read(&args[1])?)?;
+    let mut opaque_pages: HashMap<u32, bool> = HashMap::new();
+    for row in &mapping {
+        let name = row["source"].as_str().unwrap();
+        let n = aid[name].vertex_count() as usize;
+        let order: Vec<usize> = if let Some(v) = row["vertex_order"].as_array() {
+            v.iter().map(|x| x.as_u64().unwrap() as usize).collect()
+        } else {
+            (0..n).collect()
+        };
+        ensure!(
+            order.len() == n
+                && order.iter().all(|&v| v < n)
+                && order.iter().copied().collect::<HashSet<_>>().len() == n,
+            "invalid vertex permutation"
+        );
+        let mut inverse = vec![0; n];
+        for (new, &old) in order.iter().enumerate() {
+            inverse[old] = new;
+        }
+        permutations.insert(name, inverse);
+    }
     for row in &mapping {
         let a = aid[row["source"].as_str().unwrap()];
         if row["removed"] == true {
@@ -129,7 +177,7 @@ fn main() -> Result<()> {
             continue;
         }
         let b = bid[row["target"].as_str().unwrap()];
-        if row["ignore_hidden_depth"] == true {
+        if row["ignore_hidden_depth"] == true || row["ignore_hidden_color"] == true {
             ensure!(
                 zero_before.contains(a.id())
                     && zero_after.contains(b.id())
@@ -158,22 +206,59 @@ fn main() -> Result<()> {
         );
         let au = a.texcoord_offset() as usize;
         let bu = b.texcoord_offset() as usize + vs;
-        ensure!(
-            before.texcoord_buffer().unwrap()[au..au + n]
-                == after.texcoord_buffer().unwrap()[bu..bu + n],
-            "UV changed"
-        );
+        let permutation = &permutations[a.id()];
+        for old in 0..n {
+            let x = before.texcoord_buffer().unwrap()[au + old];
+            let y = after.texcoord_buffer().unwrap()[bu + permutation[old]];
+            ensure!(
+                x.x.to_bits() == y.x.to_bits() && x.y.to_bits() == y.y.to_bits(),
+                "UV changed"
+            );
+        }
         let ar = a.index_range();
         let br = b.index_range();
         let bi = br.start as usize + row["index_start"].as_u64().unwrap() as usize;
         let original = &before.index_buffer().unwrap()[ar.start as usize..ar.end as usize];
-        let keep: Vec<usize> = if let Some(k) = row["kept_triangles"].as_array() {
+        let cache_reorder = row["opaque_mask_triangle_order"].is_array();
+        let keep: Vec<usize> = if let Some(k) = row["opaque_mask_triangle_order"].as_array() {
+            let page = a.texture();
+            if !opaque_pages.contains_key(&page) {
+                let path = Path::new(&args[1]).parent().unwrap().join(
+                    resource_manifest["FileReferences"]["Textures"][page as usize]
+                        .as_str()
+                        .unwrap(),
+                );
+                opaque_pages.insert(
+                    page,
+                    image::open(path)?
+                        .to_rgba8()
+                        .pixels()
+                        .all(|p| p.0[3] == 255),
+                );
+            }
+            ensure!(
+                zero_before.contains(a.id())
+                    && zero_after.contains(b.id())
+                    && used.contains(a.id())
+                    && a.clips().into_iter().next().is_none()
+                    && opaque_pages[&page],
+                "reordered observable or translucent primitives"
+            );
+            let k: Vec<_> = k.iter().map(|v| v.as_u64().unwrap() as usize).collect();
+            ensure!(
+                k.len() == original.len() / 3
+                    && k.iter().all(|&i| i < k.len())
+                    && k.iter().copied().collect::<HashSet<_>>().len() == k.len(),
+                "changed mask triangles"
+            );
+            k
+        } else if let Some(k) = row["kept_triangles"].as_array() {
             k.iter().map(|v| v.as_u64().unwrap() as usize).collect()
         } else {
             (0..original.len() / 3).collect()
         };
         ensure!(
-            keep.windows(2).all(|w| w[0] < w[1]),
+            cache_reorder || keep.windows(2).all(|w| w[0] < w[1]),
             "triangle order changed"
         );
         let kept_set: HashSet<_> = keep.iter().copied().collect();
@@ -195,7 +280,10 @@ fn main() -> Result<()> {
             .iter()
             .zip(&after.index_buffer().unwrap()[bi..bi + expected.len()])
         {
-            ensure!(x as usize + vs == y as usize, "triangle changed");
+            ensure!(
+                permutation[x as usize] + vs == y as usize,
+                "triangle changed"
+            );
         }
     }
     let cases: Vec<Value> = serde_json::from_slice(&fs::read(&args[4])?)?;
@@ -232,17 +320,15 @@ fn main() -> Result<()> {
                 (sx.depth == sy.depth || row["ignore_hidden_depth"] == true)
                     && sx.visual.visible == sy.visual.visible
                     && sx.visual.opacity.to_bits() == sy.visual.opacity.to_bits()
-                    && sx.visual.multiply_color == sy.visual.multiply_color
-                    && sx.visual.screen_color == sy.visual.screen_color,
+                    && ((sx.visual.multiply_color == sy.visual.multiply_color
+                        && sx.visual.screen_color == sy.visual.screen_color)
+                        || row["ignore_hidden_color"] == true),
                 "visual changed {} {}",
                 i,
                 x.id()
             );
-            for (vx, vy) in sx
-                .vertices
-                .iter()
-                .zip(&sy.vertices[start..start + sx.vertices.len()])
-            {
+            for (old, vx) in sx.vertices.iter().enumerate() {
+                let vy = &sy.vertices[start + permutations[x.id()][old]];
                 ensure!(
                     vx.x.to_bits() == vy.x.to_bits() && vx.y.to_bits() == vy.y.to_bits(),
                     "vertex changed {} {}",
