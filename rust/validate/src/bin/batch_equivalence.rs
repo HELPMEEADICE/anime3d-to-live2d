@@ -2,12 +2,17 @@
 // Exact vertex/surface correspondence after adjacent ArtMesh concatenation.
 use anyhow::{Context, Result, ensure};
 use ayagami::{
-    core::{ArtMesh, Item, Model, Param},
+    core::{ArtMesh, ArtMeshForm, BlendFormMap, Item, Model, Param},
     driver::Driver,
     file,
 };
 use serde_json::{Value, json};
-use std::{collections::HashMap, env, fs, fs::File, path::Path};
+use std::{
+    collections::{HashMap, HashSet},
+    env, fs,
+    fs::File,
+    path::Path,
+};
 
 fn load(path: &Path) -> Result<file::ParsedModel> {
     let m: Value = serde_json::from_slice(&fs::read(path)?)?;
@@ -31,6 +36,72 @@ fn main() -> Result<()> {
     let bid: HashMap<_, _> = bm.iter().map(|m| (m.id(), m)).collect();
     let mapping: Vec<Value> = serde_json::from_slice(&fs::read(&args[3])?)?;
     ensure!(mapping.len() == am.len(), "incomplete mapping");
+    ensure!(
+        mapping
+            .iter()
+            .map(|r| r["source"].as_str().unwrap())
+            .collect::<HashSet<_>>()
+            .len()
+            == am.len(),
+        "duplicate source mapping"
+    );
+    let zero_before: HashSet<_> = am
+        .iter()
+        .filter(|m| {
+            m.forms().into_iter().all(|f| f.opacity() == 0.)
+                && m.blend_form_maps()
+                    .into_iter()
+                    .flatten()
+                    .all(|b| b.forms().into_iter().all(|f| f.opacity() == 0.))
+        })
+        .map(|m| m.id().to_string())
+        .collect();
+    let zero_after: HashSet<_> = bm
+        .iter()
+        .filter(|m| {
+            m.forms().into_iter().all(|f| f.opacity() == 0.)
+                && m.blend_form_maps()
+                    .into_iter()
+                    .flatten()
+                    .all(|b| b.forms().into_iter().all(|f| f.opacity() == 0.))
+        })
+        .map(|m| m.id().to_string())
+        .collect();
+    let used: HashSet<_> = am
+        .iter()
+        .flat_map(|m| m.clips().into_iter().map(|s| s.id().to_string()))
+        .collect();
+    let mut expansion: HashMap<&str, Vec<(usize, &str)>> = HashMap::new();
+    for row in &mapping {
+        if row["removed"] == true {
+            continue;
+        }
+        expansion
+            .entry(row["target"].as_str().unwrap())
+            .or_default()
+            .push((
+                row["vertex_start"].as_u64().unwrap() as usize,
+                row["source"].as_str().unwrap(),
+            ));
+    }
+    for members in expansion.values_mut() {
+        members.sort_by_key(|m| m.0);
+    }
+    ensure!(
+        expansion.len() == bm.len() && bm.iter().all(|m| expansion.contains_key(m.id())),
+        "unmapped target mesh"
+    );
+    for (target, members) in &expansion {
+        let mut cursor = 0usize;
+        for &(start, source) in members {
+            ensure!(start == cursor, "overlap or gap in target vertices");
+            cursor += aid[source].vertex_count() as usize;
+        }
+        ensure!(
+            cursor == bid[target].vertex_count() as usize,
+            "extra target vertices"
+        );
+    }
     let contract = |m: &file::ParsedModel| {
         m.params()
             .into_iter()
@@ -48,7 +119,24 @@ fn main() -> Result<()> {
     ensure!(contract(&before) == contract(&after), "parameters changed");
     for row in &mapping {
         let a = aid[row["source"].as_str().unwrap()];
+        if row["removed"] == true {
+            ensure!(
+                zero_before.contains(a.id())
+                    && !used.contains(a.id())
+                    && a.clips().into_iter().next().is_none(),
+                "removed observable mesh"
+            );
+            continue;
+        }
         let b = bid[row["target"].as_str().unwrap()];
+        if row["ignore_hidden_depth"] == true {
+            ensure!(
+                zero_before.contains(a.id())
+                    && zero_after.contains(b.id())
+                    && a.clips().into_iter().next().is_none(),
+                "ignored observable depth"
+            );
+        }
         let vs = row["vertex_start"].as_u64().unwrap() as usize;
         let n = a.vertex_count() as usize;
         ensure!(
@@ -64,7 +152,7 @@ fn main() -> Result<()> {
                 .collect::<Vec<_>>()
                 == b.clips()
                     .into_iter()
-                    .map(|m| m.id().to_owned())
+                    .flat_map(|m| expansion[m.id()].iter().map(|(_, name)| name.to_string()))
                     .collect::<Vec<_>>(),
             "clipping changed"
         );
@@ -78,9 +166,34 @@ fn main() -> Result<()> {
         let ar = a.index_range();
         let br = b.index_range();
         let bi = br.start as usize + row["index_start"].as_u64().unwrap() as usize;
-        for (&x, &y) in before.index_buffer().unwrap()[ar.start as usize..ar.end as usize]
+        let original = &before.index_buffer().unwrap()[ar.start as usize..ar.end as usize];
+        let keep: Vec<usize> = if let Some(k) = row["kept_triangles"].as_array() {
+            k.iter().map(|v| v.as_u64().unwrap() as usize).collect()
+        } else {
+            (0..original.len() / 3).collect()
+        };
+        ensure!(
+            keep.windows(2).all(|w| w[0] < w[1]),
+            "triangle order changed"
+        );
+        let kept_set: HashSet<_> = keep.iter().copied().collect();
+        for (i, t) in original.chunks_exact(3).enumerate() {
+            ensure!(
+                kept_set.contains(&i) || t[0] == t[1] || t[1] == t[2] || t[0] == t[2],
+                "removed nondegenerate triangle"
+            );
+        }
+        let expected: Vec<_> = keep
             .iter()
-            .zip(&after.index_buffer().unwrap()[bi..bi + (ar.end - ar.start) as usize])
+            .flat_map(|&i| original[3 * i..3 * i + 3].iter().copied())
+            .collect();
+        ensure!(
+            row["index_count"].as_u64().unwrap() as usize == expected.len(),
+            "index extent mismatch"
+        );
+        for (&x, &y) in expected
+            .iter()
+            .zip(&after.index_buffer().unwrap()[bi..bi + expected.len()])
         {
             ensure!(x as usize + vs == y as usize, "triangle changed");
         }
@@ -104,12 +217,19 @@ fn main() -> Result<()> {
         b.drive(&after);
         for row in &mapping {
             let x = aid[row["source"].as_str().unwrap()];
+            if row["removed"] == true {
+                ensure!(
+                    a.artmesh_state(x.uid()).unwrap().visual.opacity == 0.,
+                    "removed mesh became visible"
+                );
+                continue;
+            }
             let y = bid[row["target"].as_str().unwrap()];
             let sx = a.artmesh_state(x.uid()).unwrap();
             let sy = b.artmesh_state(y.uid()).unwrap();
             let start = row["vertex_start"].as_u64().unwrap() as usize;
             ensure!(
-                sx.depth == sy.depth
+                (sx.depth == sy.depth || row["ignore_hidden_depth"] == true)
                     && sx.visual.visible == sy.visual.visible
                     && sx.visual.opacity.to_bits() == sy.visual.opacity.to_bits()
                     && sx.visual.multiply_color == sy.visual.multiply_color
@@ -139,7 +259,7 @@ fn main() -> Result<()> {
     fs::write(
         &args[5],
         serde_json::to_vec(
-            &json!({"poses":cases.len(),"compared_vertices":count,"different_vertices":0,"before_meshes":am.len(),"after_meshes":bm.len(),"topology_uv_masks_visuals_equal":true,"method":"Unmodified public driver; every source mesh corresponds to its exact contiguous vertex/index slice in the adjacent batch. GPU order/alpha checked separately."}),
+            &json!({"poses":cases.len(),"compared_vertices":count,"different_vertices":0,"before_meshes":am.len(),"after_meshes":bm.len(),"removed_unobservable_meshes":mapping.iter().filter(|r|r["removed"]==true).count(),"retained_vertex_uv_visuals_equal":true,"mask_source_sequence_equal_after_expansion":true,"method":"Unmodified public driver; retained vertices bit-exact. Only repeated-index degenerate triangles may be removed. Dropped meshes must have zero opacity in every main/blend form and no mask dependency; ignored depth is confined to zero-opacity unclipped mask sources. Mask-source batches expand back to each original source list in its exact original order. GPU alpha checked separately."}),
         )?,
     )?;
     Ok(())

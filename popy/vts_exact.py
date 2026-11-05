@@ -21,6 +21,7 @@ from .representation_review import copy_assets, resource_sha, sha
 BASE = ROOT / "artifacts/vts_exact"
 SOURCE = ROOT / "output/POPY_VTS_Performance"
 MODEL = ROOT / "output/POPY_VTS_Exact"
+PREFIX = "vts_exact"
 
 
 def signature(mesh):
@@ -74,8 +75,13 @@ def groups(meshes, vertex_limit=60000):
 def rig():
     source = ROOT / "artifacts/vts_fast/rig"
     out = BASE / "rig"
-    out.mkdir(parents=True, exist_ok=True)
     ir = json.loads((source / "POPY.rig.json").read_text())
+    return emit_rig(ir, source, out, groups(ir["meshes"]))
+
+
+def emit_rig(ir, source, out, mesh_groups):
+    """Concatenate unchanged vertex programs for a separately proven grouping."""
+    out.mkdir(parents=True, exist_ok=True)
     original_count = len(ir["meshes"])
     data = np.memmap(source / ir["keyform_data"], "<f4", mode="r")
     merged = []
@@ -92,7 +98,7 @@ def rig():
                 cursor += len(payload)
             return begin
 
-        for group in groups(ir["meshes"]):
+        for group in mesh_groups:
             first = group[0]
             mesh = {
                 **first,
@@ -154,13 +160,14 @@ def rig():
     jsonwrite(out / "POPY.rig.json", ir)
     jsonwrite(BASE / "mapping.json", mapping)
     print(ir["diagnostics"]["exact_batching"], flush=True)
+    return mapping
 
 
 def export():
     env = os.environ.copy()
     env["JAVA_HOME"] = r"C:\lib\java"
     env["JAVA_OPTS"] = "-Xmx8g -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError"
-    raw = ROOT / "output/POPY_VTS_Exact_unpacked"
+    raw = MODEL.with_name(MODEL.name + "_unpacked")
     subprocess.run(
         [
             str(
@@ -189,7 +196,7 @@ def validate():
     from .cli import run
 
     run(
-        "vts_exact_equivalence",
+        f"{PREFIX}_equivalence",
         [
             ROOT / "rust/target/release/batch_equivalence.exe",
             SOURCE / "POPY.model3.json",
@@ -209,7 +216,7 @@ def validate():
     for model in models:
         label = model["label"]
         run(
-            f"vts_exact_{label}_rgba362",
+            f"{PREFIX}_{label}_rgba362",
             [
                 ROOT / "rust/target/release/popy-validate.exe",
                 model["manifest"],
@@ -220,7 +227,7 @@ def validate():
             env,
         )
         run(
-            f"vts_exact_{label}_stats",
+            f"{PREFIX}_{label}_stats",
             [
                 ROOT / "rust/target/release/model_stats.exe",
                 model["manifest"],
@@ -228,7 +235,7 @@ def validate():
             ],
         )
     run(
-        "vts_exact_cpu",
+        f"{PREFIX}_cpu",
         [
             ROOT / "rust/target/release/drive_benchmark.exe",
             BASE / "models.json",
@@ -237,7 +244,7 @@ def validate():
         ],
     )
     run(
-        "vts_exact_gpu",
+        f"{PREFIX}_gpu",
         [
             ROOT / "rust/target/release/render_benchmark.exe",
             models[0]["manifest"],
@@ -280,7 +287,7 @@ def report():
         label: next(
             p["peak_process_tree_rss_bytes"]
             for p in reversed(perf)
-            if p["stage"] == f"vts_exact_{label}_rgba362"
+            if p["stage"] == f"{PREFIX}_{label}_rgba362"
         )
         for label in stats
     }
