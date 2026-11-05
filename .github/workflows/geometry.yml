@@ -34,6 +34,7 @@ jobs:
           python -m unittest discover -s tests -p test_vts_mask_exact.py -v
           python -m unittest discover -s tests -p test_cache_layout.py -v
           python -m unittest discover -s tests -p test_mask_proxy.py -v
+          python -m unittest discover -s tests -p test_secondary_physics.py -v
       - name: Fetch unmodified pinned runtime dependency for workspace resolution
         run: |
           git clone https://github.com/AyagamiDev/ayagami vendor/ayagami

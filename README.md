@@ -2,6 +2,8 @@
 
 Geometry-driven Blender/Python/Rust research converter with a separate GPL Cubism exporter and an Ayagami GPU validation harness.
 
+**头发与裙摆物理版**：本地交付 `delivery/POPY_VTS_Physics.zip`，加载模型后在 VTube Studio 开启物理。新增四个连续物理输出，两组双段摆链控制惯性与回弹；零 Glue、80 遮罩组不变。关闭物理的 362 姿态与 MaskBatch 逐像素一致。空间模式为程序化附加形变，不含三维布料碰撞；尚未在 VTS 实机验收。见 [实现、测试及使用说明](docs/SECONDARY_PHYSICS.md)。
+
 **公开仓库包含代码、研究文档与数值测试记录。** POPY 源模型、纹理、角色渲染、`.blend/.moc3/.cmo3`、密集几何采样及本地交付 ZIP 不随仓库发布，其再分发权限尚未确认。下文的 `artifacts/`、`output/` 和 `delivery/` 是本地实验路径或运行后生成的位置，刚克隆仓库时并不存在。可直接阅读 [实测研究报告](REPORT.md)、[算法与格式边界](docs/RESEARCH.md)、[公开数值记录](benchmarks/popy/README.md) 和 [许可说明](docs/THIRD_PARTY.md)。
 
 这是一个已在当前 POPY 上运行的几何驱动研发实现。它从 Blender 的真实网格、蒙皮姿态、Shape Keys 和 UV 构建参数模型，生成真正的 MOC3 与 CMO3，并调用 Ayagami 在无窗口 GPU 环境中渲染和回归。内部不经过 PSD，也不将姿势作为序列帧贴图。
